@@ -1,4 +1,4 @@
-var roleHarvester = {
+var roleFixer = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
@@ -16,21 +16,26 @@ var roleHarvester = {
           creep.memory.harvesting = false
         }
         else {
-          var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                  filter: (structure) => {
-                      return (structure.structureType == STRUCTURE_SPAWN ||
-                              structure.structureType == STRUCTURE_EXTENSION) &&
-                          structure.energy < structure.energyCapacity;
-                  }
-          })
+          if (!creep.memory.repairTaget) {
+            var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                    filter: structure => structure.hits < structure.hitsMax * 0.7
+            })
 
-          if (target != null) {
-            if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+            if (target) {
+              creep.memory.repairTaget = target.id
+            }
+          } else {
+            var target = Game.getObjectById(creep.memory.repairTaget)
+            if (target.hits == target.hitsMax) {
+              creep.memory.repairTaget = null
+            } else {
+              if (creep.repair(target) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
+              }
             }
           }
         }
-	}
+      }
 };
 
-module.exports = roleHarvester;
+module.exports = roleFixer;

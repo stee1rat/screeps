@@ -21,3 +21,8 @@ Game.rooms['E58N56'].findPath(Game.rooms['E58N56'].find(FIND_SOURCES)[1].pos, Ga
 Game.rooms['E58N56'].findPath(Game.rooms['E58N56'].find(FIND_SOURCES)[0].pos, Game.rooms['E58N56'].controller.pos,{ignoreCreeps: true, ignoreRoads: true}).map(p =>Game.rooms['E58N56'].createConstructionSite(p.x, p.y, STRUCTURE_ROAD));
 
 Game.rooms['E58N56'].createConstructionSite(creep.pos.x, creep.pos.y, STRUCTURE_ROAD)
+
+Game.creeps['Builder2984373'].pos.findClosestByPath(STRUCTURE_SPAWN || STRUCTURE_EXTENSION);
+
+
+Game.rooms['E58N56'].find(FIND_STRUCTURES, {filter: structure => structure.structureType == STRUCTURE_CONTAINER})
