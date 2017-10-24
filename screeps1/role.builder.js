@@ -18,12 +18,8 @@ var roleBuilder = {
           creep.memory.harvesting = false
       }
       else {
-          //var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
           var target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
           if (target != null) {
-          //if (targets.length > 0) {
-              //var target = creep.pos.findClosestByPath(targets);
-
               if (creep.build(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                   creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
               }
