@@ -52,7 +52,7 @@ module.exports.loop = function () {
             {memory: {role: 'builder', harvesting: false}});
     }
 
-    if (miners.length < 1) {
+    if (miners.length < 2) {
         var newName = 'Miner' + Game.time;
         console.log('Need to spawn a new miner: ' + newName);
         //Game.spawns['Spawn1'].spawnCreep([WORK,CARRY,MOVE,MOVE], newName,
@@ -64,7 +64,7 @@ module.exports.loop = function () {
         );
     }
 
-    if (harvesters.length < 2) {
+    if (harvesters.length < 1) {
         var newName = 'Harvester' + Game.time;
         console.log('Need to spawn a new harvester.');
         //Game.spawns['Spawn1'].spawnCreep([WORK,CARRY,MOVE,MOVE], newName,

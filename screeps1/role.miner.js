@@ -15,10 +15,17 @@ var roleMiner = {
       } else {
         creep.memory.inPosition = true;
         creep.memory.miningSourceId = creep.pos.findClosestByPath(FIND_SOURCES).id
+        console.log('!!!!!!!!!!')
+        console.log(container )
+        creep.memory.storageContainerId = container.id
       }
     } else {
       let source = Game.getObjectById(creep.memory.miningSourceId);
-      creep.harvest(source);      
+      //let storageContainer = Game.getObjectById(creep.memory.storageContainerId);
+      //console.log(storageContainer)
+      //if (storageContainer.store[RESOURCE_ENERGY] < storageContainer.storeCapacitynumber) {
+        creep.harvest(source);
+      //}
     }
   }
 };
