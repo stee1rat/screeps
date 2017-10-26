@@ -17,16 +17,19 @@ var roleHauler = {
 
           for (i = x1; i <= x2; i++) {
             for (j = y1; j <= y2; j++) {
-              console.log(Game.map.getTerrainAt(i, j, creep.room.name));
+              let terrainType = Game.map.getTerrainAt(i, j, creep.room.name);
+              if (terrainType != 'wall') {
+                console.log(terrainType);
+              }
             }
           }
 
         }
 
-        let withdraw = creep.withdraw(source, RESOURCE_ENERGY)
+        let withdraw = creep.withdraw(source, RESOURCE_ENERGY);
 
         if (withdraw == ERR_NOT_IN_RANGE) {
-          creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}})
+          creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
         }
       } else {
         let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
