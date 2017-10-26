@@ -27,3 +27,5 @@ Game.creeps['Builder2984373'].pos.findClosestByPath(STRUCTURE_SPAWN || STRUCTURE
 Game.rooms['E58N56'].find(FIND_STRUCTURES, {filter: structure => structure.structureType == STRUCTURE_CONTAINER})
 
 Game.map.getTerrainAt(34, 39, Game.creeps['Hauler3043172'].room.name)
+Game.map.getTerrainAt(34, 39, Game.creeps['Hauler3043172'].room.name)
+Game.creeps['Hauler3043172'].room.lookForAt(LOOK_CREEPS, 23, 41).length

@@ -15,11 +15,13 @@ var roleHauler = {
           let y1 = Memory.parkingArea[1][0];
           let y2 = Memory.parkingArea[1][1];
 
-          for (i = x1; i <= x2; i++) {
-            for (j = y1; j <= y2; j++) {
-              let terrainType = Game.map.getTerrainAt(i, j, creep.room.name);
+          for (let x = x1; x <= x2; x++) {
+            for (let y = y1; y <= y2; y++) {
+              let terrainType = Game.map.getTerrainAt(x, y, creep.room.name);
               if (terrainType != 'wall') {
-                console.log(terrainType);
+                if (creep.room.lookForAt(LOOK_CREEPS, x, y).length) == 0) {
+                  creep.moveTo(x, y, {visualizePathStyle: {stroke: '#ffaa00'}});
+                }
               }
             }
           }
