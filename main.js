@@ -14,6 +14,7 @@ module.exports.loop = function () {
   }
 
   let existingCreeps = {}
+  let myConstant = ':)'
 
   for (let i in Game.creeps) {
     let role = Game.creeps[i].memory.role
