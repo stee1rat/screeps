@@ -1,6 +1,6 @@
 var roleHauler = {
-  
-    customFunctions = require('custom.functions');
+
+    let customFunctions = require('custom.functions');
 
     run: function(creep) {
 
