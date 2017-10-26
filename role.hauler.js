@@ -1,6 +1,7 @@
 var roleHauler = {
 
     run: function(creep) {
+      console.log(Memory.message)
       
       if (creep.carry.energy == 0) {
         var source = creep.pos.findClosestByPath(FIND_STRUCTURES, {

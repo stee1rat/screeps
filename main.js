@@ -6,6 +6,8 @@ var roleFixer = require('role.fixer');
 var roleMiner = require('role.miner');
 
 module.exports.loop = function () {
+  Memory.message = ':)'
+
   for (var name in Memory.creeps) {
     if (!Game.creeps[name]) {
       delete Memory.creeps[name];
