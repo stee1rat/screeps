@@ -19,7 +19,7 @@ var roleHauler = {
             for (let y = y1; y <= y2; y++) {
               let terrainType = Game.map.getTerrainAt(x, y, creep.room.name);
               if (terrainType != 'wall') {
-                if (creep.room.lookForAt(LOOK_CREEPS, x, y).length) == 0) {
+                if (creep.room.lookForAt(LOOK_CREEPS, x, y).length == 0) {
                   creep.moveTo(x, y, {visualizePathStyle: {stroke: '#ffaa00'}});
                 }
               }
