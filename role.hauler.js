@@ -21,6 +21,7 @@ var roleHauler = {
               if (terrainType != 'wall') {
                 if (creep.room.lookForAt(LOOK_CREEPS, x, y).length == 0) {
                   creep.moveTo(x, y, {visualizePathStyle: {stroke: '#ffaa00'}});
+                  break;
                 }
               }
             }
