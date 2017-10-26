@@ -13,6 +13,8 @@ module.exports.loop = function () {
     }
   }
 
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
   let existingCreeps = {}
 
   for (let i in Game.creeps) {
