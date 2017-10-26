@@ -6,7 +6,11 @@ var roleFixer = require('role.fixer');
 var roleMiner = require('role.miner');
 
 module.exports.loop = function () {
-  Memory.message = ':)'
+
+  Memory.parkingArea.x1 = 34;
+  Memory.parkingArea.x2 = 38;
+  Memory.parkingArea.y1 = 39;
+  Memory.parkingArea.y1 = 40;
 
   for (var name in Memory.creeps) {
     if (!Game.creeps[name]) {

@@ -24,5 +24,6 @@ Game.rooms['E58N56'].createConstructionSite(creep.pos.x, creep.pos.y, STRUCTURE_
 
 Game.creeps['Builder2984373'].pos.findClosestByPath(STRUCTURE_SPAWN || STRUCTURE_EXTENSION);
 
-
 Game.rooms['E58N56'].find(FIND_STRUCTURES, {filter: structure => structure.structureType == STRUCTURE_CONTAINER})
+
+Game.map.getTerrainAt(34, 39, Game.creeps['Hauler3043172'].room.name)
