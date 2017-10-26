@@ -78,7 +78,7 @@ module.exports.loop = function () {
     );
   }
 
-  if (harvesters < 1) {
+  if (harvesters < 2) {
     var newName = 'Harvester' + Game.time;
     console.log('Need to spawn a new harvester.');
     //Game.spawns['Spawn1'].spawnCreep([WORK,CARRY,MOVE,MOVE], newName,
