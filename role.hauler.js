@@ -10,14 +10,15 @@ var roleHauler = {
         })
 
         if (source == null) {
-          let x1 = Memory.parkingArea[0][0]
-          let x2 = Memory.parkingArea[0][1]
-          let y1 = Memory.parkingArea[1][0]
-          let y2 = Memory.parkingArea[1][1]
+          let x1 = Memory.parkingArea[0][0];
+          let x2 = Memory.parkingArea[0][1];
+          let y1 = Memory.parkingArea[1][0];
+          let y2 = Memory.parkingArea[1][1];
 
           for (i = x1; i <= x2; i++) {
             for (j = y1; j <= y2; j++) {
-              console.log(Game.map.getTerrainAt(i, j, creep.room.name))
+              console.log(Game.map.getTerrainAt(i, j, creep.room.name));
+            }
           }
 
         }
