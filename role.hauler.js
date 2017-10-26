@@ -15,7 +15,8 @@ var roleHauler = {
           let y1 = Memory.parkingArea[1][0];
           let y2 = Memory.parkingArea[1][1];
 
-          if (creep.pos.x < x1 or creep.pos.x > x2 or creep.pos.y < y1 or creep.pos.y > y2) {
+          if (creep.pos.x < x1 || creep.pos.x > x2 ||
+              creep.pos.y < y1 || creep.pos.y > y2) {
             for (let x = x1; x <= x2; x++) {
               for (let y = y1; y <= y2; y++) {
                 let terrainType = Game.map.getTerrainAt(x, y, creep.room.name);
