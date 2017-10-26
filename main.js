@@ -14,7 +14,7 @@ module.exports.loop = function () {
   }
 
   let existingCreeps = {}
-
+// :)
   for (let i in Game.creeps) {
     let role = Game.creeps[i].memory.role
     if (existingCreeps[role] == []._) {
