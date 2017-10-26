@@ -7,10 +7,7 @@ var roleMiner = require('role.miner');
 
 module.exports.loop = function () {
 
-  Memory.parkingArea.x1 = 34;
-  Memory.parkingArea.x2 = 38;
-  Memory.parkingArea.y1 = 39;
-  Memory.parkingArea.y1 = 40;
+  Memory.parkingArea = [[34, 38], [39, 40]]
 
   for (var name in Memory.creeps) {
     if (!Game.creeps[name]) {
