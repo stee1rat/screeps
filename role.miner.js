@@ -19,11 +19,15 @@ var roleMiner = {
           creep.moveTo(container);
         } else {
           creep.memory.inPosition = true;
-          creep.memory.assignedContainer =
+          creep.memory.assignedSource =
               creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE).id;
         }
       } else {
-        let source = Game.getObjectById(creep.memory.assignedContainer);
+        if (creep.memory.assignedSource == []._) {
+          creep.memory.assignedSource =
+              creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE).id;
+        }
+        let source = Game.getObjectById(creep.memory.assignedSource);
         console.log(creep.harvest(source));
       }
     }
