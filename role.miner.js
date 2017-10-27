@@ -28,7 +28,7 @@ var roleMiner = {
               creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE).id;
         }
         let source = Game.getObjectById(creep.memory.assignedSource);
-        console.log(creep.harvest(source));
+        creep.harvest(source);
       }
     }
   }
