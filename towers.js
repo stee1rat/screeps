@@ -6,6 +6,8 @@ var towers = {
     );
 
     for (i = 0; i < towers.length; i++) {
+      let tower = towers[i];
+      
       let closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
       if(closestHostile) tower.attack(closestHostile);
 
