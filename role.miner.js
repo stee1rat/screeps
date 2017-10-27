@@ -1,4 +1,4 @@
-let roleMiner = {
+var roleMiner = {
 
   run: function(creep, customFunctions) {
     if (creep.memory.assignedContainer == []._) {
