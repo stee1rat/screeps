@@ -21,11 +21,10 @@ var roleMiner = {
           creep.memory.inPosition = true;
         }
       } else {
-        console.log(container);
-        //let source = Game.getObjectById(creep.memory.assignedContainer);
+        let source = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
         //let storageContainer = Game.getObjectById(creep.memory.storageContainerId);
         //if (storageContainer.store[RESOURCE_ENERGY] < storageContainer.storeCapacitynumber) {
-        console.log(creep.harvest(container));
+        creep.harvest(source);
       }
     }
   }
