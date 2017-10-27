@@ -1,20 +1,15 @@
 var roleHauler = {
-
   run: function(creep, customFunctions) {
-
       if (creep.carry.energy == 0) {
         let source = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: structure =>
                     structure.structureType == STRUCTURE_CONTAINER &&
                     structure.store[RESOURCE_ENERGY] > 0
         })
-
         if (source == null) {
           customFunctions.park(creep);
         }
-
         let withdraw = creep.withdraw(source, RESOURCE_ENERGY);
-
         if (withdraw == ERR_NOT_IN_RANGE) {
           creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
         }
@@ -26,7 +21,6 @@ var roleHauler = {
                         structure.energy < structure.energyCapacity;
                 }
         })
-
         if (target != null) {
           if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
             creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
