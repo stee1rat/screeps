@@ -24,12 +24,12 @@ var roleMiner = {
         } else {
           creep.memory.inPosition = true;
           creep.memory.assignedSource =
-              creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE).id;
+              creep.pos.findClosestByRange(FIND_SOURCES).id;
         }
       } else {
         if (creep.memory.assignedSource == []._) {
           creep.memory.assignedSource =
-              creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE).id;
+              creep.pos.findClosestByRange(FIND_SOURCES).id;
         }
         let source = Game.getObjectById(creep.memory.assignedSource);
         creep.harvest(source);
