@@ -17,7 +17,7 @@ var towers = {
       let closestHurtCreep = tower.pos.findClosestByRange(FIND_MY_CREEPS, {
           filter: (creep) => creep.hits < creep.hitsMax
       });
-      if(closestDamagedStructure) tower.repair(closestDamagedStructure);
+      if(closestHurtCreep) tower.heal(closestHurtCreep);
     }
   }
 };
