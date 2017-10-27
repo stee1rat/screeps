@@ -21,7 +21,7 @@ var roleMiner = {
           creep.memory.inPosition = true;
         }
       } else {
-
+        console.log(container);
         //let source = Game.getObjectById(creep.memory.assignedContainer);
         //let storageContainer = Game.getObjectById(creep.memory.storageContainerId);
         //if (storageContainer.store[RESOURCE_ENERGY] < storageContainer.storeCapacitynumber) {
