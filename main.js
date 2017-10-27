@@ -79,7 +79,7 @@ module.exports.loop = function () {
 
   for (let i = 0; i < spawnCreeps.length; i++) {
 
-    let role = existingCreeps[spawnCreeps[i].role];
+    let role = spawnCreeps[i].role;
     let goal = spawnCreeps[i].goal;
     let count = role || 0;
 
