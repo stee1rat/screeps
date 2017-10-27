@@ -1,4 +1,5 @@
 var roleBuilder = {
+
   run: function(creep, customFunctions) {
     if (creep.carry.energy == 0 || creep.memory.harvesting) {
       let source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
@@ -16,16 +17,31 @@ var roleBuilder = {
       }
     }
     else {
-      let target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+      // First build containers
+      let target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES,
+          { filter: construction =>
+              construction.structureType == STRUCTURE_CONTAINER }
+      );
+
       if (target != null) {
         if (creep.build(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-          creep.moveTo(target, {
-              visualizePathStyle: {stroke: '#ffffff'},
+          creep.moveTo(target, { visualizePathStyle: {stroke: '#ffffff'},
               reusePath: 5
           });
         }
       } else {
-        customFunctions.park(creep);
+        // Then everything else
+        let target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+        if (target != null) {
+          if (creep.build(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(target, {
+                visualizePathStyle: {stroke: '#ffffff'},
+                reusePath: 5
+            });
+          }
+        } else {
+          customFunctions.park(creep);
+        }
       }
     }
 	}
