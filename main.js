@@ -17,9 +17,8 @@ module.exports.loop = function () {
     if (!Game.creeps[name]) {
       if (Memory.creeps[name].role == 'miner' &&
           Memory.creeps[name].assignedContainer != []._) {
-          i = Memory.containers.indexOf(Memory.creeps[name].assignedContainer);
-          Memory.containers.splice(i, 1);
-        }
+        i = Memory.containers.indexOf(Memory.creeps[name].assignedContainer);
+        Memory.containers.splice(i, 1);
       }
 
       delete Memory.creeps[name];
