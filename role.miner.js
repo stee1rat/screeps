@@ -1,5 +1,4 @@
 var roleMiner = {
-
   run: function(creep, customFunctions) {
     if (creep.memory.assignedContainer == []._) {
       let containers = creep.room.find(FIND_STRUCTURES, {
@@ -7,7 +6,6 @@ var roleMiner = {
           structure.structureType == STRUCTURE_CONTAINER &&
           Memory.containers.indexOf(structure.id) == -1
       });
-
       if (containers.length) {
         Memory.containers.push(containers[0].id);
         creep.memory.assignedContainer = containers[0].id;
@@ -16,7 +14,6 @@ var roleMiner = {
       }
     } else {
       let container = Game.getObjectById(creep.memory.assignedContainer);
-
       if (!creep.memory.inPosition) {
         if (!creep.pos.isEqualTo(container)) {
           creep.moveTo(container);
@@ -32,5 +29,4 @@ var roleMiner = {
     }
   }
 };
-
 module.exports = roleMiner;

@@ -15,7 +15,10 @@ var roleUpgrader = {
 
     if (creep.memory.upgrading) {
       if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-        creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ffffff'}});
+        creep.moveTo(creep.room.controller, {
+            visualizePathStyle: {stroke: '#ffffff'},
+            reusePath: 5
+        });
       }
     }
     else {
@@ -34,7 +37,10 @@ var roleUpgrader = {
       } else {
         var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
         if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
-          creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
+          creep.moveTo(source, {
+              visualizePathStyle: {stroke: '#ffaa00'},
+              reusePath: 5
+          });
         }
       }
     }
