@@ -5,7 +5,7 @@ let roleHauler = require('role.hauler');
 let roleFixer = require('role.fixer');
 let roleMiner = require('role.miner');
 
-let customFunctions = require('custom.functins');
+let customFunctions = require('custom.functions');
 
 module.exports.loop = function () {
 
