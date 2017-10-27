@@ -24,11 +24,16 @@ var roleFixer = {
             }
           } else {
             var target = Game.getObjectById(creep.memory.repairTaget)
-            if (target.hits == target.hitsMax) {
-              creep.memory.repairTaget = null
+
+            if (target == []._) {
+              creep.memory.repairTaget = 0;
             } else {
-              if (creep.repair(target) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
+              if (target.hits == target.hitsMax) {
+                creep.memory.repairTaget = null
+              } else {
+                if (creep.repair(target) == ERR_NOT_IN_RANGE) {
+                  creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
+                }
               }
             }
           }
