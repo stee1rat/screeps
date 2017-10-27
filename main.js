@@ -1,15 +1,17 @@
-var roleHarvester = require('role.harvester');
-var roleUpgrader = require('role.upgrader');
-var roleBuilder = require('role.builder');
-var roleHauler = require('role.hauler');
-var roleFixer = require('role.fixer');
-var roleMiner = require('role.miner');
+let roleHarvester = require('role.harvester');
+let roleUpgrader = require('role.upgrader');
+let roleBuilder = require('role.builder');
+let roleHauler = require('role.hauler');
+let roleFixer = require('role.fixer');
+let roleMiner = require('role.miner');
+
+let customFunctions = require('custom.functins');
 
 module.exports.loop = function () {
 
   Memory.parkingArea = [[34, 38], [39, 40]]
 
-  for (var name in Memory.creeps) {
+  for (let name in Memory.creeps) {
     if (!Game.creeps[name]) {
       delete Memory.creeps[name];
       console.log('Clearing non-existing creep memory:', name);
@@ -77,7 +79,7 @@ module.exports.loop = function () {
       newName, {memory: {role: 'hauler'}}
     );
   }
-  
+
   if (miners < 2) {
     var newName = 'Miner' + Game.time;
     console.log('Need to spawn a new miner: ' + newName);
@@ -104,7 +106,7 @@ module.exports.loop = function () {
   if (Game.spawns['Spawn1'].spawning) {
     var spawningCreep = Game.creeps[Game.spawns['Spawn1'].spawning.name];
     Game.spawns['Spawn1'].room.visual.text(
-      '🛠️' + spawningCreep.memory.role,
+      'Spawning: ' + spawningCreep.memory.role,
       Game.spawns['Spawn1'].pos.x + 1,
       Game.spawns['Spawn1'].pos.y,
       {align: 'left', opacity: 0.8});
@@ -119,10 +121,10 @@ module.exports.loop = function () {
       roleUpgrader.run(creep);
     }
     if(creep.memory.role == 'builder') {
-      roleBuilder.run(creep);
+      roleBuilder.run(creep, customFunctions);
     }
     if(creep.memory.role == 'hauler') {
-      roleHauler.run(creep);
+      roleHauler.run(creep, customFunctions);
     }
     if(creep.memory.role == 'fixer') {
       roleFixer.run(creep);
