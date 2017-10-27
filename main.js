@@ -6,10 +6,57 @@ let roleFixer = require('role.fixer');
 let roleMiner = require('role.miner');
 let customFunctions = require('custom.functions');
 
+let spawnCreeps = [
+  {
+    role: 'harvester',
+    priority: 0,
+    goal: 2,
+    parameters: {harvesting: false },
+    bodyParts: { move: 5, work: 3, carry: 2}
+  },
+  {
+    role: 'miner',
+    goal: 2,
+    priority: 1,
+    parameters: { inPosition: false },
+    bodyParts: { move: 1, work: 7 }
+  },
+  {
+    role: 'hauler',
+    priority: 2,
+    goal: 2,
+    parameters: { inPosition: false },
+    bodyParts: { move: 7, carry: 7 }
+  },
+  {
+    role: 'upgrader',
+    priority: 3,
+    goal: 6,
+    parameters: {},
+    bodyParts: { move: 5, carry: 2, work: 3 }
+  },
+  {
+    role: 'builder',
+    priority: 4,
+    goal: 3,
+    parameters: { harvesting: false },
+    bodyParts: { move: 5, carry: 2, work: 3 }
+  },
+  {
+    role: 'fixer',
+    priority: 5,
+    goal: 1,
+    parameters: { harvesting: false, repairTaget: null},
+    bodyParts: { move: 5, carry: 2, work: 3 }
+  }];
+
+spawnCreeps.sort((a, b) => a.priority - b.priority);
+
 if (Memory.containers == []._) Memory.containers = [];
+Memory.parkingArea = [[34, 38], [39, 40]];
 
 module.exports.loop = function () {
-  Memory.parkingArea = [[34, 38], [39, 40]];
+
   let existingCreeps = {};
   for (let name in Memory.creeps) {
     if (!Game.creeps[name]) {
@@ -30,50 +77,29 @@ module.exports.loop = function () {
     }
   }
 
-  let harvesters = existingCreeps.harvester || 0;
-  let upgraders = existingCreeps.upgrader || 0;
-  let builders = existingCreeps.builder || 0;
-  let haulers = existingCreeps.hauler || 0;
-  let fixers = existingCreeps.fixer || 0;
-  let miners = existingCreeps.miner || 0;
+  for (let i = 0; i < spawnCreeps.length; i++) {
 
-  if (harvesters < 2) {
-    let newName = 'Harvester' + Game.time;
-    console.log('Need to spawn a new harvester [' + harvesters + '/2]');
-    Game.spawns.Spawn1.spawnCreep([WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], newName,
-        {memory: {role: 'harvester', harvesting: false}});
-  } else if (miners < 2) {
-    let newName = 'Miner' + Game.time;
-    console.log('Need to spawn a new miner [' + miners + '/2]');
-    Game.spawns.Spawn1.spawnCreep(
-      [ WORK,WORK,WORK,WORK,WORK,WORK,WORK,MOVE ],
-      newName, {memory: {role: 'miner', inPosition: false}}
-    );
-  } else if (haulers < 2) {
-    let newName = 'Hauler' + Game.time;
-    console.log('Need to spawn a new hauler [' + haulers + '/2]');
-    Game.spawns.Spawn1.spawnCreep(
-      [ CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,
-        MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE ],
-       newName, { memory: { role: 'hauler' } }
-    );
-  } else if (upgraders < 6) {
-    let newName = 'Upgrader' + Game.time;
-    console.log('Need to spawn a new upgrader [' + upgraders + '/6]');
-    Game.spawns.Spawn1.spawnCreep(
-      [WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE],
-      newName, { memory: { role: 'upgrader' } }
-    );
-  } else if (builders < 3) {
-    let newName = 'Builder' + Game.time;
-    console.log('Need to spawn a new builder [' + builders + '/3]');
-    Game.spawns.Spawn1.spawnCreep([WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], newName,
-        {memory: {role: 'builder', harvesting: false}});
-  } else if (fixers < 1) {
-    let newName = 'Fixer' + Game.time;
-    console.log('Need to spawn a new fixer [' + fixers + '/1]');
-    Game.spawns.Spawn1.spawnCreep([WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], newName,
-        {memory: {role: 'fixer', harvesting: false, repairTaget: null}});
+    let role = existingCreeps[spawnCreeps[i].role];
+    let goal = spawnCreeps[i].goal;
+    let count = role || 0;
+
+    if (count < goal) {
+      let name = role + Game.time;
+      console.log('Need to spawn a new ' + role + ' [' + count + '/' + goal +']');
+
+      let parts = [];
+      for (let key in spawnCreeps[i].bodyParts) {
+        for (j = 0; j < spawnCreeps[i].bodyParts[key]; j++) {
+          parts.push(key);
+        }
+      }
+
+      let parameters = spawnCreeps[i].parameters;
+      parameters.role = role;
+      Game.spawns.Spawn1.spawnCreep(parts, name, { memory: parameters } );
+
+      break;
+    }
   }
 
   if (Game.spawns.Spawn1.spawning) {

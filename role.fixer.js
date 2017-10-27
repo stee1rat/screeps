@@ -1,6 +1,4 @@
 var roleFixer = {
-
-    /** @param {Creep} creep **/
     run: function(creep) {
       if (creep.carry.energy == 0 || creep.memory.harvesting) {
         var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE)
