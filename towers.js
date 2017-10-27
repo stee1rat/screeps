@@ -7,12 +7,13 @@ var towers = {
 
     for (i = 0; i < towers.length; i++) {
       let tower = towers[i];
-      
+
       let closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
       if(closestHostile) tower.attack(closestHostile);
 
       let closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-          filter: (structure) => structure.hits < structure.hitsMax
+          filter: (structure) => structure.hits < structure.hitsMax &&
+             structure.hits < 50000
       });
       if(closestDamagedStructure) tower.repair(closestDamagedStructure);
 
