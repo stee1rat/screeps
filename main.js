@@ -81,7 +81,7 @@ module.exports.loop = function () {
 
     let role = spawnCreeps[i].role;
     let goal = spawnCreeps[i].goal;
-    let count = role || 0;
+    let count = existingCreeps[role] || 0;
 
     if (count < goal) {
       let name = role + Game.time;
