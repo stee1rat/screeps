@@ -1,7 +1,6 @@
-module.exports = {
+let roleMiner = {
 
   run: function(creep, customFunctions) {
-
     if (creep.memory.assignedContainer == []._) {
       let containers = creep.room.find(FIND_STRUCTURES, {
         filter: structure =>
@@ -33,3 +32,5 @@ module.exports = {
     }
   }
 };
+
+module.exports = roleMiner;
