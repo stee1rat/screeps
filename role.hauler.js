@@ -3,7 +3,10 @@ var roleHauler = {
   run: function(creep, customFunctions) {
     if (creep.carry.energy === 0) {
       // First the haulers look for dropped energy
-      let source = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY);
+      let source = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES,
+          { filter: resource => resource.resourceType == RESOURCE_ENERGY }
+      );
+
       if (source !== null) {
         let withdraw = creep.pickup(source);
         if (withdraw == ERR_NOT_IN_RANGE) {
