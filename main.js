@@ -4,6 +4,8 @@ let roleBuilder = require('role.builder');
 let roleHauler = require('role.hauler');
 let roleFixer = require('role.fixer');
 let roleMiner = require('role.miner');
+
+let towers = require('towers');
 let customFunctions = require('custom.functions');
 
 let spawnCreeps = [
@@ -132,4 +134,6 @@ module.exports.loop = function () {
       roleMiner.run(creep, customFunctions);
     }
   }
+
+  towers.run();
 };
