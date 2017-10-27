@@ -1,19 +1,48 @@
 var roleBuilder = {
 
   run: function(creep, customFunctions) {
+    if (creep.carry.energy == creep.carryCapacity) {
+      creep.memory.harvesting = false
+    };
+
     if (creep.carry.energy == 0 || creep.memory.harvesting) {
-      let source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-      let harvest = creep.harvest(source)
-      if (harvest == ERR_NOT_IN_RANGE)
-        creep.moveTo(source, {
-            visualizePathStyle: {stroke: '#ffaa00'},
-            reusePath: 5
+      // First look for dropped energy
+      let source = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES,
+          { filter: resource => resource.resourceType == RESOURCE_ENERGY }
+      );
+
+      if (source !== null) {
+        let withdraw = creep.pickup(source);
+        if (withdraw == ERR_NOT_IN_RANGE) {
+          creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
+        }
+      } else {
+        let source = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+            filter: structure =>
+                structure.structureType == STRUCTURE_CONTAINER &&
+                structure.store[RESOURCE_ENERGY] > 0
         });
-      if (harvest == OK) {
-        creep.memory.harvesting = true
-      }
-      if (creep.carry.energy == creep.carryCapacity) {
-        creep.memory.harvesting = false
+
+        // If nothing found at
+        if (source === null) {
+          let source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+          let harvest = creep.harvest(source)
+
+          if (harvest == ERR_NOT_IN_RANGE)
+            creep.moveTo(source, {
+                visualizePathStyle: {stroke: '#ffaa00'},
+                reusePath: 5
+            });
+
+          if (harvest == OK) {
+            creep.memory.harvesting = true
+          }
+        }
+
+        let withdraw = creep.withdraw(source, RESOURCE_ENERGY);
+        if (withdraw == ERR_NOT_IN_RANGE) {
+          creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
+        }
       }
     }
     else {
