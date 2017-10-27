@@ -1,5 +1,4 @@
 module.exports = {
-
   park: function(creep) {
 
     let x1 = Memory.parkingArea[0][0];

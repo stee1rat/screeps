@@ -7,12 +7,19 @@ let roleMiner = require('role.miner');
 
 let customFunctions = require('custom.functions');
 
+if (Memory.containers == []._) Memory.containers = [];
+
 module.exports.loop = function () {
 
   Memory.parkingArea = [[34, 38], [39, 40]]
 
   for (let name in Memory.creeps) {
     if (!Game.creeps[name]) {
+      if (Memory.creeps[name].role == 'miner') {
+        i = Memory.containers.indexOf(Memory.creeps[name].assignedContainer);
+        Memory.containers.splice(i, 1);
+      }
+
       delete Memory.creeps[name];
       console.log('Clearing non-existing creep memory:', name);
     }
@@ -102,11 +109,10 @@ module.exports.loop = function () {
         {memory: {role: 'harvester', harvesting: false}});
   }
 
-
   if (Game.spawns['Spawn1'].spawning) {
     var spawningCreep = Game.creeps[Game.spawns['Spawn1'].spawning.name];
     Game.spawns['Spawn1'].room.visual.text(
-      'Spawning: ' + spawningCreep.memory.role,
+      'Spawning ' + spawningCreep.memory.role,
       Game.spawns['Spawn1'].pos.x + 1,
       Game.spawns['Spawn1'].pos.y,
       {align: 'left', opacity: 0.8});
@@ -130,7 +136,7 @@ module.exports.loop = function () {
       roleFixer.run(creep);
     }
     if(creep.memory.role == 'miner') {
-      roleMiner.run(creep);
+      roleMiner.run(creep, customFunctions);
     }
   }
 }
