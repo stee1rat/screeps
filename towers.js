@@ -11,16 +11,18 @@ var towers = {
       let closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
       if(closestHostile) tower.attack(closestHostile);
 
-      let closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-          filter: (structure) => structure.hits < structure.hitsMax &&
-             structure.hits < 50000
-      });
-      if(closestDamagedStructure) tower.repair(closestDamagedStructure);
+      if (tower.energy > tower.energyCapacity / 2) {
+        let closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: (structure) => structure.hits < structure.hitsMax &&
+               structure.hits < 50000
+        });
+        if(closestDamagedStructure) tower.repair(closestDamagedStructure);
 
-      let closestHurtCreep = tower.pos.findClosestByRange(FIND_MY_CREEPS, {
-          filter: (creep) => creep.hits < creep.hitsMax
-      });
-      if(closestHurtCreep) tower.heal(closestHurtCreep);
+        let closestHurtCreep = tower.pos.findClosestByRange(FIND_MY_CREEPS, {
+            filter: (creep) => creep.hits < creep.hitsMax
+        });
+        if(closestHurtCreep) tower.heal(closestHurtCreep);
+      }
     }
   }
 };
