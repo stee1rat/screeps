@@ -2,7 +2,7 @@ let customFunctions = require('custom.functions');
 
 let roleBuilder = {
 
-  run: function(creep, ) {
+  run: function(creep) {
     if (creep.carry.energy == creep.carryCapacity) {
       creep.memory.harvesting = false
     };
