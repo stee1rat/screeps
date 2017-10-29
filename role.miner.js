@@ -22,7 +22,9 @@ var roleMiner = {
           creep.memory.inPosition = true;
         }
       } else {
-        creep.harvest(source);
+        if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
+          creep.memory.inPosition = false;
+        }
       }
     }
   }
