@@ -28,7 +28,7 @@ var roleFixer = {
             if (target == []._) {
               creep.memory.repairTaget = 0;
             } else {
-              if (target.hits == target.hitsMax) {
+              if (target.hits == target.hitsMax && target.hits < 50000) {
                 creep.memory.repairTaget = null
               } else {
                 if (creep.repair(target) == ERR_NOT_IN_RANGE) {
