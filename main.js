@@ -4,11 +4,9 @@ let roleBuilder = require('role.builder');
 let roleHauler = require('role.hauler');
 let roleFixer = require('role.fixer');
 let roleMiner = require('role.miner');
-
 let towers = require('towers');
 
-require('creeps.prototypes')();
-
+require('creeps.prototype')();
 
 let spawnCreeps = [
   {
