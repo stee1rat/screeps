@@ -1,6 +1,8 @@
-var roleMiner = {
+let customFunctions = require('custom.functions');
 
-  run: function(creep, customFunctions) {
+let roleMiner = {
+
+  run: function(creep) {
     if (creep.memory.source == []._) {
       let sources = creep.room.find(FIND_SOURCES, {
         filter: source => Memory.sources.indexOf(source.id) == -1

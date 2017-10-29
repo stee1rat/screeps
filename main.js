@@ -6,7 +6,6 @@ let roleFixer = require('role.fixer');
 let roleMiner = require('role.miner');
 
 let towers = require('towers');
-let customFunctions = require('custom.functions');
 
 let spawnCreeps = [
   {
@@ -126,16 +125,16 @@ module.exports.loop = function () {
       roleUpgrader.run(creep);
     }
     if(creep.memory.role == 'builder') {
-      roleBuilder.run(creep, customFunctions);
+      roleBuilder.run(creep);
     }
     if(creep.memory.role == 'hauler') {
-      roleHauler.run(creep, customFunctions);
+      roleHauler.run(creep);
     }
     if(creep.memory.role == 'fixer') {
       roleFixer.run(creep);
     }
     if(creep.memory.role == 'miner') {
-      roleMiner.run(creep, customFunctions);
+      roleMiner.run(creep);
     }
   }
 

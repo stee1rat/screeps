@@ -1,6 +1,8 @@
-var roleBuilder = {
+let customFunctions = require('custom.functions');
 
-  run: function(creep, customFunctions) {
+let roleBuilder = {
+
+  run: function(creep, ) {
     if (creep.carry.energy == creep.carryCapacity) {
       creep.memory.harvesting = false
     };

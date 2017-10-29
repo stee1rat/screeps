@@ -1,6 +1,8 @@
-var roleHauler = {
+let customFunctions = require('custom.functions');
 
-  run: function(creep, customFunctions) {
+let roleHauler = {
+
+  run: function(creep) {
     if (creep.carry.energy === 0) {
       // First the haulers look for dropped energy
       let source = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES,
