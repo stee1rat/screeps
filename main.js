@@ -54,19 +54,23 @@ let spawnCreeps = [
 
 spawnCreeps.sort((a, b) => a.priority - b.priority);
 
-if (Memory.containers == []._) Memory.containers = [];
+//if (Memory.containers == []._) Memory.containers = [];
+if (Memory.sources == []._) Memory.sources = [];
 Memory.parkingArea = [[34, 38], [39, 40]];
 
 module.exports.loop = function () {
-
   let existingCreeps = {};
+
   for (let name in Memory.creeps) {
     if (!Game.creeps[name]) {
-      if (Memory.creeps[name].role == 'miner' &&
-          Memory.creeps[name].assignedContainer != []._) {
-        i = Memory.containers.indexOf(Memory.creeps[name].assignedContainer);
-        Memory.containers.splice(i, 1);
+
+      if (Memory.creeps[name].role == 'miner') {
+        if (Memory.creeps[name].source != []._) {
+          let i = Memory.sources.indexOf(Memory.creeps[name].source);
+          Memory.sources.splice(i, 1);
+        }
       }
+
       delete Memory.creeps[name];
       console.log('Clearing non-existing creep memory:', name);
     } else {

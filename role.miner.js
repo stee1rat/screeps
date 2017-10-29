@@ -1,40 +1,31 @@
 var roleMiner = {
 
   run: function(creep, customFunctions) {
-    if (creep.memory.assignedContainer == []._) {
-
-      let containers = creep.room.find(FIND_STRUCTURES, {
-        filter: structure =>
-          structure.structureType == STRUCTURE_CONTAINER &&
-          Memory.containers.indexOf(structure.id) == -1
+    if (creep.memory.source == []._) {
+      let sources = creep.room.find(FIND_SOURCES, {
+        filter: source => Memory.sources.indexOf(source.id) == -1
       });
 
-      if (containers.length) {
-        Memory.containers.push(containers[0].id);
-        creep.memory.assignedContainer = containers[0].id;
+      if (sources.length) {
+        Memory.sources.push(sources[0].id);
+        creep.memory.source = sources[0].id;
       } else {
         customFunctions.park(creep);
       }
     } else {
-      let container = Game.getObjectById(creep.memory.assignedContainer);
+      let source = Game.getObjectById(creep.memory.source);
 
       if (!creep.memory.inPosition) {
-        if (!creep.pos.isEqualTo(container)) {
-          creep.moveTo(container);
+        if (!creep.pos.isEqualTo(source)) {
+          creep.moveTo(source);
         } else {
           creep.memory.inPosition = true;
-          creep.memory.assignedSource =
-              creep.pos.findClosestByRange(FIND_SOURCES).id;
         }
       } else {
-        if (creep.memory.assignedSource == []._) {
-          creep.memory.assignedSource =
-              creep.pos.findClosestByRange(FIND_SOURCES).id;
-        }
-        let source = Game.getObjectById(creep.memory.assignedSource);
         creep.harvest(source);
       }
     }
   }
 };
+
 module.exports = roleMiner;
