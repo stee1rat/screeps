@@ -7,6 +7,9 @@ let roleMiner = require('role.miner');
 
 let towers = require('towers');
 
+require('creeps.prototypes')();
+
+
 let spawnCreeps = [
   {
     role: 'harvester',

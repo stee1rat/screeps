@@ -4,7 +4,7 @@ let roleHauler = {
 
   run: function(creep) {
     if (creep.carry.energy === 0) {
-      if (customFunctions.getEnergy(creep) == null) {
+      if (creep.getEnergy() === null) {
         customFunctions.park(creep);
       }
     } else {
