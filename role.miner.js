@@ -16,7 +16,7 @@ var roleMiner = {
       let source = Game.getObjectById(creep.memory.source);
 
       if (!creep.memory.inPosition) {
-        if (!creep.isNearTo(source)) {
+        if (!creep.pos.isNearTo(source)) {
           creep.moveTo(source);
         } else {
           creep.memory.inPosition = true;
