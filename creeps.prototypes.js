@@ -22,10 +22,10 @@ module.exports = function () {
 
       if (source === null) {
         if (this.getActiveBodyparts(WORK) > 0) {
-          let source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-          let harvest = creep.harvest(source);
+          let source = this.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+          let harvest = this.harvest(source);
           if (harvest == ERR_NOT_IN_RANGE) {
-            creep.moveTo(source, {
+            this.moveTo(source, {
                 visualizePathStyle: {stroke: '#ffaa00'},
                 reusePath: 5
             });
