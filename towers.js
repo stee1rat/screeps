@@ -9,7 +9,10 @@ var towers = {
       let tower = towers[i];
 
       let closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-      if(closestHostile) tower.attack(closestHostile);
+      if (closestHostile) {
+        tower.attack(closestHostile);
+        return OK;
+      }
 
       if (tower.energy > tower.energyCapacity / 2) {
         let closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
