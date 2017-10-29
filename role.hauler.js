@@ -1,5 +1,3 @@
-let customFunctions = require('custom.functions');
-
 let roleHauler = {
 
   run: function(creep) {
@@ -14,7 +12,14 @@ let roleHauler = {
                   structure.energy < structure.energyCapacity;
           }
       });
-
+      if (target === null) {
+        target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return structure.structureType == STRUCTURE_STORAGE &&
+                    structure.energy < structure.energyCapacity;
+            }
+        });
+      }
       if (target !== null) {
         if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
           creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
