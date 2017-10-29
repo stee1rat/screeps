@@ -3,6 +3,11 @@ module.exports = function () {
   Creep.prototype.getEnergy = function() {
     let harvest = () => {
       let source = Game.getObjectById(this.memory.harvesting);
+
+      if (source.energy === 0) {
+        return ERR_NOT_ENOUGH_ENERGY;
+      }
+
       let harvest = this.harvest(source);
       if (harvest == ERR_NOT_IN_RANGE) {
         this.moveTo(source, {
