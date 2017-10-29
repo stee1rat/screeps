@@ -21,7 +21,7 @@ let spawnCreeps = [
     goal: 2,
     priority: 1,
     parameters: { inPosition: false },
-    bodyParts: { move: 1, work: 8 }
+    bodyParts: { move: 1, work: 10 }
   },
   {
     role: 'hauler',
