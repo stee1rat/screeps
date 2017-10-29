@@ -46,7 +46,7 @@ module.exports = function () {
         if (this.getActiveBodyparts(WORK) > 0) {
           let source = this.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
           if (source) {
-            this.memory.harvesting = source;
+            this.memory.harvesting = source.id;
             return harvest();
           } else {
             return null;
