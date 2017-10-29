@@ -10,7 +10,8 @@ module.exports = {
       let withdraw = creep.pickup(source);
       if (withdraw == ERR_NOT_IN_RANGE) {
         creep.moveTo(source, {
-          visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 5
+          visualizePathStyle: {stroke: '#ffaa00'},
+          reusePath: 5
         });
       }
     } else {
@@ -28,7 +29,10 @@ module.exports = {
 
       let withdraw = creep.withdraw(source, RESOURCE_ENERGY);
       if (withdraw == ERR_NOT_IN_RANGE) {
-        creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
+        creep.moveTo(source, {
+          visualizePathStyle: {stroke: '#ffaa00'},
+          reusePath: 5
+        });
       }
     }
     return OK;
