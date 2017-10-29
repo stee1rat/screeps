@@ -2,7 +2,8 @@ var roleFixer = {
 
   run: function(creep) {
     if (creep.carry.energy === 0 || creep.memory.harvesting) {
-      let source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+      creep.getEnergy();
+      /*let source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
       let harvest = creep.harvest(source);
 
       if (harvest == ERR_NOT_IN_RANGE) {
@@ -15,7 +16,7 @@ var roleFixer = {
 
       if (creep.carry.energy == creep.carryCapacity) {
         creep.memory.harvesting = false;
-      }
+      }*/
     } else {
       if (!creep.memory.repairTaget) {
         let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
