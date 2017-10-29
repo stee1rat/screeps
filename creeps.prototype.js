@@ -45,7 +45,7 @@ module.exports = function () {
               structure.store[RESOURCE_ENERGY] > 0
       });
 
-      // If there are not energy in containers or on the group and
+      // If there are no energy in containers or on the group and
       // the Creep has WORK body parts then send it harvesting
       if (source === null) {
         if (this.getActiveBodyparts(WORK) > 0) {
