@@ -4,9 +4,7 @@ let roleHauler = {
 
   run: function(creep) {
     if (creep.carry.energy === 0) {
-      if (creep.getEnergy() === null) {
-        customFunctions.park(creep);
-      }
+      creep.getEnergy();
     } else {
       let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
           filter: (structure) => {

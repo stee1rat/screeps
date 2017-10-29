@@ -1,5 +1,5 @@
 module.exports = function () {
-    Creep.prototype.getEnergy = function() {
+  Creep.prototype.getEnergy = function() {
     let source = this.pos.findClosestByPath(FIND_DROPPED_RESOURCES,
       { filter: resource => resource.resourceType == RESOURCE_ENERGY }
     );
@@ -13,16 +13,24 @@ module.exports = function () {
         });
       }
     } else {
-      // Container energy
+      // Get energy from container
       let source = this.pos.findClosestByPath(FIND_STRUCTURES, {
           filter: structure =>
               structure.structureType == STRUCTURE_CONTAINER &&
               structure.store[RESOURCE_ENERGY] > 0
       });
 
-      // If nothing found return null
       if (source === null) {
-        return null;
+        if (this.getActiveBodyparts(WORK) > 0) {
+          let source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+          let harvest = creep.harvest(source);
+          if (harvest == ERR_NOT_IN_RANGE) {
+            creep.moveTo(source, {
+                visualizePathStyle: {stroke: '#ffaa00'},
+                reusePath: 5
+            });
+          }
+        }
       }
 
       let withdraw = this.withdraw(source, RESOURCE_ENERGY);
@@ -33,6 +41,5 @@ module.exports = function () {
         });
       }
     }
-    return OK;
   };
 };
