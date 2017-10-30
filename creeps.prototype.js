@@ -45,6 +45,15 @@ module.exports = function () {
               structure.store[RESOURCE_ENERGY] > 0
       });
 
+      if (this.role == 'upgrader' && source === null) {
+        source = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+          filter: (structure) => {
+            return structure.structureType == STRUCTURE_STORAGE
+                   _.sum(structure.store) < structure.storeCapacity
+          }
+        });
+      }
+
       // If there are no energy in containers or on the group and
       // the Creep has WORK body parts then send it harvesting
       if (source === null) {
