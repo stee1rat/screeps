@@ -16,7 +16,7 @@ let roleHauler = {
         target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: (structure) => {
                 return structure.structureType == STRUCTURE_STORAGE &&
-                    structure.energy < structure.energyCapacity;
+                    structure.store < structure.storeCapacity;
             }
         });
       }
