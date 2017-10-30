@@ -13,12 +13,14 @@ let roleHauler = {
           }
       });
       if (target === null) {
+        console.log('lets find storage');
         target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: (structure) => {
                 return structure.structureType == STRUCTURE_STORAGE &&
                     structure.store < structure.storeCapacity
             }
         });
+        console.log(target);
       }
       if (target !== null) {
         if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
