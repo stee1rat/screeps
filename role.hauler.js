@@ -16,8 +16,8 @@ let roleHauler = {
         console.log('lets find storage');
         target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: (structure) => {
-                return structure.structureType == STRUCTURE_STORAGE &&
-                    structure.store < structure.storeCapacity
+                return structure.structureType == STRUCTURE_STORAGE /*&&
+                    structure.store < structure.storeCapacity*/
             }
         });
         console.log(target);
