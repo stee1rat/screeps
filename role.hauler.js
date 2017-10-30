@@ -13,12 +13,10 @@ let roleHauler = {
           }
       });
       if (target === null) {
-        console.log('lets find storage');
         target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
           filter: (structure) => {
             return structure.structureType == STRUCTURE_STORAGE
-                _.sum(Game.rooms['E58N56'].storage.store)
-                  < structure.storeCapacity
+                   _.sum(structure.store) < structure.storeCapacity
           }
         });
         console.log(target);
