@@ -19,7 +19,6 @@ let roleHauler = {
                    _.sum(structure.store) < structure.storeCapacity
           }
         });
-        console.log(target);
       }
       if (target !== null) {
         if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
