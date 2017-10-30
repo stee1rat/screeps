@@ -45,7 +45,9 @@ module.exports = function () {
               structure.store[RESOURCE_ENERGY] > 0
       });
 
-      if (this.role == 'upgrader' && source === null) {
+      if ((this.role == 'upgrader' ||
+           this.role == 'builder') &&
+            source === null) {
         source = creep.pos.findClosestByPath(FIND_STRUCTURES, {
           filter: (structure) => {
             return structure.structureType == STRUCTURE_STORAGE
