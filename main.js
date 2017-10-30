@@ -40,7 +40,7 @@ let spawnCreeps = [
   {
     role: 'builder',
     priority: 4,
-    goal: 4,
+    goal: 2,
     parameters: { harvesting: false },
     bodyParts: { move: 8, carry: 4, work: 4 }
   },
