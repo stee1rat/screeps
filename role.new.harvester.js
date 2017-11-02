@@ -3,36 +3,22 @@ let roleHarvester2 = {
   run: function(creep) {
     if (creep.spawning) {
       if (!creep.memory.init) {
-        // find how many harvesters are on each source in the room
-        let sourcesList = creep.room.find(FIND_SOURCES);
-        let sources = {};
-        for (i = 0; i < sourcesList; i++) {
-          sources[sourcesList[i].id] = 0;
-        }
-        for (let name in Game.creeps) {
-          let creep = Game.creeps[name];
-          if (creep.memory.role == 'harvester') {
-            if (!sources[creep.memory.targetSource]) {
-              sources[creep.memory.targetSource] = 0;
-            } else {
-              sources[creep.memory.targetSource]++;
-            }
-          }
-        }
-        let targetSource = '';
-        for (let key in sources) {
-          if (sources.hasOwnProperty(key)) {
-            if (targetSource == '' || sources[key] < targetSource) {
-              targetSource = key;
-            }
-          }
-        }
-        creep.memory.targetSource = targetSource;
+        // assign to a source
+        let sources = creep.room.find(FIND_SOURCES);
+        for (let i = 0; i < sources.lengh; i++) {
+           let source = creep.room.find(FIND_MY_CREEPS, {
+             filter: c => c.memory.source == s.id
+           });
+           // Assign 3 (0, 1, 2) creeps per source
+           if(!source || source.length <= 2) {
+               creep.memory.source = source.id;
+           }
+         }
         creep.memory.init = true;
       }
       return;
     }
-    console.log(creep.memory.targetSource)
+    console.log(creep.memory.source);
     if (creep.carry.energy === 0 || creep.memory.harvesting) {
       let source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
       let harvest = creep.harvest(source);
