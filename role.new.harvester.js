@@ -50,11 +50,10 @@ let roleHarvester2 = {
           });
         }
 
-        console.log("WTF!")
         creep.memory.target = target.id;
       }
     } else {
-      let target = Game.getObjectById(creep.memory.source);
+      let target = Game.getObjectById(creep.memory.target);
       if (target !== null) {
         if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
           creep.moveTo(target, {
