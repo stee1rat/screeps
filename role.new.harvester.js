@@ -23,7 +23,7 @@ let roleHarvester2 = {
         for (let key in sources) {
           if (sources.hasOwnProperty(key)) {
             if (targetSource == '' || sources[key] < targetSource) {
-              targetSource = sources[key];
+              targetSource = key;
             }
           }
         }
