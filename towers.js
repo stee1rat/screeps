@@ -17,7 +17,7 @@ var towers = {
       if (tower.energy > tower.energyCapacity / 2) {
         let closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
             filter: (structure) => structure.hits < structure.hitsMax &&
-               structure.hits < 50000
+               structure.hits < 50001
         });
         if(closestDamagedStructure) tower.repair(closestDamagedStructure);
 
