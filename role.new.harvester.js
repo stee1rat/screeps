@@ -1,27 +1,27 @@
 let roleHarvester2 = {
 
   run: function(creep) {
-    if (creep.spawning) {
-      function getTargetId() {
-        let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+    function getTargetId() {
+      let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+          filter: structure =>
+              (structure.structureType == STRUCTURE_SPAWN ||
+               structure.structureType == STRUCTURE_EXTENSION) &&
+               structure.energy < structure.energyCapacity
+      });
+
+      if (target === null) {
+        target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: structure =>
-                (structure.structureType == STRUCTURE_SPAWN ||
-                 structure.structureType == STRUCTURE_EXTENSION) &&
-                 structure.energy < structure.energyCapacity
+                (structure.structureType == STRUCTURE_STORAGE ||
+                 structure.structureType == STRUCTURE_CONTAINER) &&
+                _.sum(structure.store) < structure.storeCapacity
         });
-
-        if (target === null) {
-          target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-              filter: structure =>
-                  (structure.structureType == STRUCTURE_STORAGE ||
-                   structure.structureType == STRUCTURE_CONTAINER) &&
-                  _.sum(structure.store) < structure.storeCapacity
-          });
-        }
-
-        return target.id;
       }
 
+      return target.id;
+    }
+
+    if (creep.spawning) {
       if (!creep.memory.init) {
         // assign to a source
         let sources = creep.room.find(FIND_SOURCES);
