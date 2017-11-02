@@ -10,7 +10,7 @@ let roleHarvester2 = {
             filter: c => c.memory.source == sources[i].id
           });
           // assign 3 (0, 1, 2) creeps per source
-          if(source === null || source.length <= 2) {
+          if(source === null || source.length <= 1) {
             creep.memory.source = sources[i].id;
           }
         }
@@ -18,11 +18,10 @@ let roleHarvester2 = {
       }
       return;
     }
-    console.log(creep.memory.source)
 
     if (creep.carry.energy === 0 || creep.memory.harvesting) {
-      let source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-      //let source = Game.getObjectById(creep.memory.source);
+      //let source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+      let source = Game.getObjectById(creep.memory.source);
       let harvest = creep.harvest(source);
       if (harvest == ERR_NOT_IN_RANGE) {
         creep.moveTo(source, {
