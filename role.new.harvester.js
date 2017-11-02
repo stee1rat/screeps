@@ -44,7 +44,8 @@ let roleHarvester2 = {
         if (target === null) {
           target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
               filter: structure =>
-                  structure.structureType == STRUCTURE_STORAGE &&
+                  (structure.structureType == STRUCTURE_STORAGE ||
+                   structure.structureType == STRUCTURE_CONTAINER) &&
                   _.sum(structure.store) < structure.storeCapacity
           });
         }
