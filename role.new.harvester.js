@@ -19,6 +19,8 @@ let roleHarvester2 = {
       return;
     }
 
+    console.log(creep.memory.source);
+
     if (creep.carry.energy === 0 || creep.memory.harvesting) {
       //let source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
       let source = Game.getObjectById(creep.memory.source);
