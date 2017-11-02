@@ -40,6 +40,9 @@ let roleHarvester2 = {
     }
 
     if (creep.carry.energy === 0 || creep.memory.harvesting) {
+      if (!creep.memory.source) {
+        creep.memory.init = false;
+      }
       let source = Game.getObjectById(creep.memory.source);
       let harvest = creep.harvest(source);
       if (harvest == ERR_NOT_IN_RANGE) {
