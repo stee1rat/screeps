@@ -21,21 +21,20 @@ let roleHarvester2 = {
       return target.id;
     }
 
-    if (creep.spawning) {
-      if (!creep.memory.init) {
-        // assign to a source
-        let sources = creep.room.find(FIND_SOURCES);
-        for (let i = 0; i < sources.length; i++) {
-          let source = creep.room.find(FIND_MY_CREEPS, {
-            filter: c => c.memory.source == sources[i].id
-          });
-          // assign 3 (0, 1, 2) creeps per source
-          if(source === null || source.length <= 2) {
-            creep.memory.source = sources[i].id;
-          }
+    if (creep.spawning || !creep.memory.init ) {
+      // assign to a source
+      let sources = creep.room.find(FIND_SOURCES);
+      for (let i = 0; i < sources.length; i++) {
+        let source = creep.room.find(FIND_MY_CREEPS, {
+          filter: c => c.memory.source == sources[i].id
+        });
+        // assign 3 (0, 1, 2) creeps per source
+        if(source === null || source.length <= 2) {
+          creep.memory.source = sources[i].id;
         }
-        creep.memory.init = true;
       }
+      creep.memory.init = true;
+
       return;
     }
 
