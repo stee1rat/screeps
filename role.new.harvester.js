@@ -19,10 +19,7 @@ let roleHarvester2 = {
       return;
     }
 
-    console.log(creep.memory.source);
-
     if (creep.carry.energy === 0 || creep.memory.harvesting) {
-      //let source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
       let source = Game.getObjectById(creep.memory.source);
       let harvest = creep.harvest(source);
       if (harvest == ERR_NOT_IN_RANGE) {
@@ -36,21 +33,26 @@ let roleHarvester2 = {
       }
       if (creep.carry.energy == creep.carryCapacity) {
         creep.memory.harvesting = false;
+
+        let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+            filter: structure =>
+                (structure.structureType == STRUCTURE_SPAWN ||
+                 structure.structureType == STRUCTURE_EXTENSION) &&
+                 structure.energy < structure.energyCapacity
+        });
+
+        if (target === null) {
+          target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+              filter: structure =>
+                  structure.structureType == STRUCTURE_STORAGE &&
+                  _.sum(structure.store) < structure.storeCapacity
+          });
+        }
+
+        creep.memory.target = target.id;
       }
     } else {
-      let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-          filter: structure =>
-              (structure.structureType == STRUCTURE_SPAWN ||
-               structure.structureType == STRUCTURE_EXTENSION) &&
-               structure.energy < structure.energyCapacity
-      });
-      if (target === null) {
-        target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-            filter: structure =>
-                structure.structureType == STRUCTURE_STORAGE &&
-                _.sum(structure.store) < structure.storeCapacity
-        });
-      }
+      let target = Game.getObjectById(creep.memory.source);
       if (target !== null) {
         if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
           creep.moveTo(target, {
@@ -58,6 +60,8 @@ let roleHarvester2 = {
               reusePath: 5
           });
         }
+      } else {
+        creep.memory.harvesting = true;
       }
     }
 	}
