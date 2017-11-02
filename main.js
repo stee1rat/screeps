@@ -1,4 +1,5 @@
 let roleHarvester = require('role.harvester');
+let roleHarvester2 = require('role.new.harvester');
 let roleUpgrader = require('role.upgrader');
 let roleBuilder = require('role.builder');
 let roleHauler = require('role.hauler');
@@ -13,6 +14,13 @@ let spawnCreeps = [
     role: 'harvester',
     priority: 0,
     goal: 2,
+    parameters: {harvesting: false },
+    bodyParts: { move: 5, work: 3, carry: 2}
+  },
+  {
+    role: 'harvester2',
+    priority: 6,
+    goal: 1,
     parameters: {harvesting: false },
     bodyParts: { move: 5, work: 3, carry: 2}
   },
@@ -121,6 +129,9 @@ module.exports.loop = function () {
     var creep = Game.creeps[name];
     if(creep.memory.role == 'harvester') {
       roleHarvester.run(creep);
+    }
+    if(creep.memory.role == 'harvester2') {
+      roleHarvester2.run(creep);
     }
     if(creep.memory.role == 'upgrader') {
       roleUpgrader.run(creep);
