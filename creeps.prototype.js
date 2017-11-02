@@ -38,23 +38,23 @@ module.exports = function () {
         });
       }
     } else {
-      // Get energy from a container
+      // Get energy from a container or storage
       let source = this.pos.findClosestByPath(FIND_STRUCTURES, {
           filter: structure =>
-              structure.structureType == STRUCTURE_CONTAINER &&
+              (structure.structureType == STRUCTURE_CONTAINER ||
+               structure.structureType == STRUCTURE_STORAGE) &&
               structure.store[RESOURCE_ENERGY] > 0
       });
 
-      if ((this.role == 'upgrader' ||
-           this.role == 'builder') &&
+      /*if ((this.role == 'upgrader' || this.role == 'builder') &&
             source === null) {
         source = creep.pos.findClosestByPath(FIND_STRUCTURES, {
           filter: (structure) => {
-            return structure.structureType == STRUCTURE_STORAGE
-                   _.sum(structure.store) < structure.storeCapacity
+            return structure.structureType == STRUCTURE_STORAGE &&
+                   structure.store[RESOURCE_ENERGY] > 0
           }
         });
-      }
+      }*/
 
       // If there are no energy in containers or on the group and
       // the Creep has WORK body parts then send it harvesting
