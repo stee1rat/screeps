@@ -63,7 +63,7 @@ let roleHarvester2 = {
             target.energy == target.energyCapacity) ||
           ((target.structureType == STRUCTURE_STORAGE ||
             target.structureType == STRUCTURE_CONTAINER) &&
-            _.sum(target.store) < target.storeCapacity)) {
+            _.sum(target.store) < target.storeCapacity))  {
         creep.memory.target = getTargetId();
       }
       if (target !== null) {
