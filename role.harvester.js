@@ -1,6 +1,9 @@
 var roleHarvester = {
 
   run: function(creep) {
+    if (creep.spawning) {
+      return;
+    }
     if (creep.carry.energy === 0 || creep.memory.harvesting) {
       let source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
       let harvest = creep.harvest(source);
