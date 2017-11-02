@@ -2,6 +2,26 @@ let roleHarvester2 = {
 
   run: function(creep) {
     if (creep.spawning) {
+      function getTargetId() {
+        let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+            filter: structure =>
+                (structure.structureType == STRUCTURE_SPAWN ||
+                 structure.structureType == STRUCTURE_EXTENSION) &&
+                 structure.energy < structure.energyCapacity
+        });
+
+        if (target === null) {
+          target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+              filter: structure =>
+                  (structure.structureType == STRUCTURE_STORAGE ||
+                   structure.structureType == STRUCTURE_CONTAINER) &&
+                  _.sum(structure.store) < structure.storeCapacity
+          });
+        }
+
+        return target.id;
+      }
+
       if (!creep.memory.init) {
         // assign to a source
         let sources = creep.room.find(FIND_SOURCES);
@@ -33,27 +53,19 @@ let roleHarvester2 = {
       }
       if (creep.carry.energy == creep.carryCapacity) {
         creep.memory.harvesting = false;
-
-        let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-            filter: structure =>
-                (structure.structureType == STRUCTURE_SPAWN ||
-                 structure.structureType == STRUCTURE_EXTENSION) &&
-                 structure.energy < structure.energyCapacity
-        });
-
-        if (target === null) {
-          target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-              filter: structure =>
-                  (structure.structureType == STRUCTURE_STORAGE ||
-                   structure.structureType == STRUCTURE_CONTAINER) &&
-                  _.sum(structure.store) < structure.storeCapacity
-          });
-        }
-
-        creep.memory.target = target.id;
+        creep.memory.target = getTargetId();
       }
     } else {
       let target = Game.getObjectById(creep.memory.target);
+
+      if (((target.structureType == STRUCTURE_SPAWN ||
+            target.structureType == STRUCTURE_EXTENSION) &&
+            target.energy == target.energyCapacity) ||
+          ((target.structureType == STRUCTURE_STORAGE ||
+            target.structureType == STRUCTURE_CONTAINER) &&
+            target.store == target.storeCapacity)) {
+        creep.memory.target = getTargetId();
+      }
       if (target !== null) {
         if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
           creep.moveTo(target, {
