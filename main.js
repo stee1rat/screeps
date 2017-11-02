@@ -19,8 +19,8 @@ let spawnCreeps = [
   },
   {
     role: 'harvester2',
-    priority: 6,
-    goal: 1,
+    priority: 0,
+    goal: 2,
     parameters: {harvesting: false },
     bodyParts: { move: 5, work: 3, carry: 2}
   },
@@ -103,7 +103,7 @@ module.exports.loop = function () {
 
       let parts = [];
       for (let key in spawnCreeps[i].bodyParts) {
-        for (j = 0; j < spawnCreeps[i].bodyParts[key]; j++) {
+        for (let j = 0; j < spawnCreeps[i].bodyParts[key]; j++) {
           parts.push(key);
         }
       }
