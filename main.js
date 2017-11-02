@@ -26,14 +26,14 @@ let spawnCreeps = [
   },
   {
     role: 'miner',
-    goal: 2,
+    goal: 0,
     priority: 1,
     parameters: { inPosition: false },
     bodyParts: { move: 1, work: 10 }
   },
   {
     role: 'hauler',
-    priority: 2,
+    priority: 0,
     goal: 3,
     parameters: {},
     bodyParts: { move: 8, carry: 8 }
