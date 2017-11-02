@@ -10,7 +10,7 @@ let roleHarvester2 = {
             filter: c => c.memory.source == sources[i].id
           });
           // assign 3 (0, 1, 2) creeps per source
-          if(source === null || source.length <= 1) {
+          if(source === null || source.length <= 2) {
             creep.memory.source = sources[i].id;
           }
         }
