@@ -13,7 +13,7 @@ let roleHarvester2 = {
           console.log(source);
           // assign 3 (0, 1, 2) creeps per source
           if(!source || source.length <= 2) {
-            creep.memory.source = source.id;
+            creep.memory.source = sources[i].id;
           }
         }
         creep.memory.init = true;
