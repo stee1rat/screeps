@@ -5,15 +5,15 @@ let roleHarvester2 = {
       if (!creep.memory.init) {
         // assign to a source
         let sources = creep.room.find(FIND_SOURCES);
-        for (let i = 0; i < sources.lengh; i++) {
-           let source = creep.room.find(FIND_MY_CREEPS, {
-             filter: c => c.memory.source == s.id
-           });
+        for (let i = 0; i < sources.length; i++) {
+          let source = creep.room.find(FIND_MY_CREEPS, {
+            filter: c => c.memory.source == s.id
+          });
            // Assign 3 (0, 1, 2) creeps per source
-           if(!source || source.length <= 2) {
-               creep.memory.source = source.id;
-           }
-         }
+          if(!source || source.length <= 2) {
+            creep.memory.source = source.id;
+          }
+        }
         creep.memory.init = true;
       }
       return;
