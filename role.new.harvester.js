@@ -50,6 +50,7 @@ let roleHarvester2 = {
           });
         }
 
+        console.log("WTF!")
         creep.memory.target = target.id;
       }
     } else {
