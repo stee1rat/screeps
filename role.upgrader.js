@@ -3,6 +3,7 @@
 let roleUpgrader = {
 
   run: function(creep) {
+    var startCpu = Game.cpu.getUsed();
     if (creep.spawning || !creep.memory.init ) {
       creep.memory.init = true;
       return;
@@ -83,6 +84,7 @@ let roleUpgrader = {
         }
       }
     }
+    console.log( creep.name + ': ' + (Game.cpu.getUsed() - startCpu ));
   }
 };
 
