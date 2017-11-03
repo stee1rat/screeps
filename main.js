@@ -164,7 +164,7 @@ module.exports.loop = function () {
       console.log( 'MINER: ' + (Game.cpu.getUsed() - cpuUsed ));
     }
   }
-
+  let cpuUsed = Game.cpu.getUsed();
   towers.run();
   console.log( 'TOWERS: ' + (Game.cpu.getUsed() - cpuUsed ));
 };
