@@ -32,6 +32,8 @@ var towers = {
         if(damagedStructure.length) {
           tower.repair(damagedStructure[0]);
           continue;
+        } else {
+          break;
         }
       }
     }
