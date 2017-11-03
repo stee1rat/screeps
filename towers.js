@@ -10,10 +10,9 @@ var towers = {
       let tower = towers[i];
 
       let hostiles = tower.room.find(FIND_HOSTILE_CREEPS);
-
-      if (hostiles && hostiles.length) {
-        tower.attack(hostile[0]);
-        return;
+      if (hostiles.length) {
+        tower.attack(hostiles[0]);
+        continue;
       }
 
       if (tower.energy > tower.energyCapacity/2) {
@@ -22,7 +21,7 @@ var towers = {
         });
         if(hurtCreeps && hurtCreeps.length) {
           tower.heal(hurtCreeps[0]);
-          return;
+          continue;
         }
 
         let damagedStructure = tower.room.find(FIND_STRUCTURES, {
@@ -31,7 +30,7 @@ var towers = {
         });
         if(damagedStructure && damagedStructure.length) {
           tower.repair(damagedStructure[0]);
-          return;
+          continue;
         }
       }
     }
