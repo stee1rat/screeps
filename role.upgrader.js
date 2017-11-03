@@ -51,6 +51,7 @@ let roleUpgrader = {
         // find another source
         if (!source) {
           creep.memory.source = null;
+          return;
         }
         // if the source is a dropped energy pick it up
         if (source.resourceType) {
