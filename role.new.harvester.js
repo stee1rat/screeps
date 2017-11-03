@@ -14,7 +14,6 @@ let roleHarvester2 = {
         }
       }
       creep.memory.init = true;
-
       return;
     }
     if (creep.carry.energy === 0 || creep.memory.harvesting) {
