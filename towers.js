@@ -5,6 +5,8 @@ var towers = {
         { filter: { structureType: STRUCTURE_TOWER } }
     );
 
+    console.log(towers);
+
     let towersLength = towers.length;
     for (let i = 0; i < towersLength; i++) {
       let tower = towers[i];
@@ -23,7 +25,7 @@ var towers = {
           tower.heal(hurtCreeps[0]);
           return;
         }
-        
+
         let damagedStructure = tower.room.find(FIND_STRUCTURES, {
           filter: structure => structure.hits < structure.hitsMax &&
                                structure.hits < 50001
