@@ -18,7 +18,10 @@ let roleHarvester2 = {
         });
       }
 
-      return target.id || null;
+      if (target === null)
+        return null
+      else
+        return target.id;
     }
 
     if (creep.spawning || !creep.memory.init ) {
