@@ -25,9 +25,9 @@ let roleUpgrader = {
     }
     if (!creep.memory.upgrading && creep.carry.energy < creep.carryCapacity) {
       if (!creep.memory.source) {
-        let source = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES,
-          { filter: resource => resource.resourceType == RESOURCE_ENERGY }
-        );
+        let source = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
+          filter: resource => resource.resourceType == RESOURCE_ENERGY
+        });
         if (source === null) {
           source = creep.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: structure =>
