@@ -5,13 +5,12 @@ var towers = {
         { filter: { structureType: STRUCTURE_TOWER } }
     );
 
-    console.log(towers);
-
     let towersLength = towers.length;
     for (let i = 0; i < towersLength; i++) {
       let tower = towers[i];
 
       let hostiles = tower.room.find(FIND_HOSTILE_CREEPS);
+      console.log(hostiles);
       if (hostiles && hostiles.length) {
         tower.attack(hostile[0]);
         return;
