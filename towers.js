@@ -16,10 +16,11 @@ var towers = {
       }
 
       if (tower.energy > tower.energyCapacity/2) {
-        let hurtCreeps = tower.pos.findClosestByRange(FIND_MY_CREEPS, {
-            filter: creep => creep.hits < creep.hitsMax
+        let hurtCreeps = tower.room.find(FIND_MY_CREEPS, {
+          filter: c => c.hits < c.hitsMax
         });
-        if(hurtCreeps && hurtCreeps.length) {
+
+        if (hurtCreeps.length) {
           tower.heal(hurtCreeps[0]);
           continue;
         }
@@ -28,7 +29,7 @@ var towers = {
           filter: structure => structure.hits < structure.hitsMax &&
                                structure.hits < 50001
         });
-        if(damagedStructure && damagedStructure.length) {
+        if(damagedStructure.length) {
           tower.repair(damagedStructure[0]);
           continue;
         }
