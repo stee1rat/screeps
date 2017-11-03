@@ -17,7 +17,6 @@ let roleHarvester2 = {
 
       return;
     }
-
     if (creep.carry.energy === 0 || creep.memory.harvesting) {
       if (!creep.memory.source) {
         creep.memory.init = false;
@@ -26,8 +25,7 @@ let roleHarvester2 = {
       let harvest = creep.harvest(source);
       if (harvest == ERR_NOT_IN_RANGE) {
         creep.moveTo(source, {
-            visualizePathStyle: {stroke: '#ffaa00'},
-            reusePath: 5
+            visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 5
         });
       }
       if (harvest == OK) {
@@ -44,16 +42,14 @@ let roleHarvester2 = {
              structure.structureType == STRUCTURE_EXTENSION) &&
              structure.energy < structure.energyCapacity
         });
-
         if (target === null) {
           target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: structure =>
               (structure.structureType == STRUCTURE_STORAGE ||
                structure.structureType == STRUCTURE_CONTAINER) &&
-              _.sum(structure.store) < structure.storeCapacity
+               _.sum(structure.store) < structure.storeCapacity
           });
         }
-
         if (target) creep.memory.target = target.id;
       }
       let target = Game.getObjectById(creep.memory.target);

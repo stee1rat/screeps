@@ -22,7 +22,7 @@ let spawnCreeps = [
     priority: 0,
     goal: 6,
     parameters: {harvesting: false },
-    bodyParts: { move: 11, work: 6, carry: 5}
+    bodyParts: { move: 12, work: 7, carry: 5}
   },
   {
     role: 'miner',
