@@ -67,6 +67,7 @@ if (Memory.sources == []._) Memory.sources = [];
 Memory.parkingArea = [[34, 38], [39, 40]];
 
 module.exports.loop = function () {
+  let TOTAL_CPU = Game.cpu.getUsed();
   let existingCreeps = {};
 
   for (let name in Memory.creeps) {
@@ -167,4 +168,5 @@ module.exports.loop = function () {
   let cpuUsed = Game.cpu.getUsed();
   towers.run();
   console.log( 'TOWERS: ' + (Game.cpu.getUsed() - cpuUsed ));
+  console.log( 'TOTAL: ' + (Game.cpu.getUsed() - TOTAL_CPU ));
 };
