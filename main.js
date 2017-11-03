@@ -43,7 +43,7 @@ let spawnCreeps = [
     priority: 3,
     goal: 5,
     parameters: {},
-    bodyParts: { move: 11, carry: 5, work: 6 }
+    bodyParts: { move: 9, carry: 4, work: 5 }
   },
   {
     role: 'builder',
