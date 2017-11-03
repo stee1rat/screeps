@@ -143,6 +143,9 @@ module.exports.loop = function () {
       let cpuUsed = Game.cpu.getUsed();
       roleUpgrader.run(creep);
       console.log( 'UPGADER: ' + (Game.cpu.getUsed() - cpuUsed ));
+      if (Game.cpu.getUsed() - cpuUsed > 0.5) {
+        creep.say('CPU: ' + (Game.cpu.getUsed() - cpuUsed) + '!!!!!')
+      }
     }
     if(creep.memory.role == 'builder') {
       let cpuUsed = Game.cpu.getUsed();
@@ -153,6 +156,9 @@ module.exports.loop = function () {
       let cpuUsed = Game.cpu.getUsed();
       roleHauler.run(creep);
       console.log( 'HAULER: ' + (Game.cpu.getUsed() - cpuUsed ));
+      if (Game.cpu.getUsed() - cpuUsed > 0.5) {
+        creep.say('CPU: ' + (Game.cpu.getUsed() - cpuUsed) + '!!!!!')
+      }
     }
     if(creep.memory.role == 'fixer') {
       let cpuUsed = Game.cpu.getUsed();
