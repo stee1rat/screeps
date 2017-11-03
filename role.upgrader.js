@@ -18,11 +18,13 @@ let roleUpgrader = {
       creep.say('upgrade');
     }
     if (creep.memory.upgrading) {
+      var upgradeCpu = Game.cpu.getUsed();
       if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
         creep.moveTo(creep.room.controller, {
             visualizePathStyle: {stroke: '#ffffff'}, reusePath: 5
         });
       }
+      console.log('UPGARDE: ' + (Game.cpu.getUsed() - startCpu ));
     }
     if (!creep.memory.upgrading && creep.carry.energy < creep.carryCapacity) {
       if (!creep.memory.source) {
@@ -84,7 +86,7 @@ let roleUpgrader = {
         }
       }
     }
-    console.log( creep.name + ': ' + (Game.cpu.getUsed() - startCpu ));
+    console.log( 'FULL CPU': ' + (Game.cpu.getUsed() - startCpu ));
   }
 };
 
