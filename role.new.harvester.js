@@ -1,29 +1,6 @@
 let roleHarvester2 = {
 
   run: function(creep) {
-    function getTargetId() {
-      let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-          filter: structure =>
-              (structure.structureType == STRUCTURE_SPAWN ||
-               structure.structureType == STRUCTURE_EXTENSION) &&
-               structure.energy < structure.energyCapacity
-      });
-
-      if (target === null) {
-        target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-            filter: structure =>
-                (structure.structureType == STRUCTURE_STORAGE ||
-                 structure.structureType == STRUCTURE_CONTAINER) &&
-                _.sum(structure.store) < structure.storeCapacity
-        });
-      }
-
-      if (target === null)
-        return null
-      else
-        return target.id;
-    }
-
     if (creep.spawning || !creep.memory.init ) {
       // assign to a source
       let sources = creep.room.find(FIND_SOURCES);
@@ -58,9 +35,27 @@ let roleHarvester2 = {
       }
       if (creep.carry.energy == creep.carryCapacity) {
         creep.memory.harvesting = false;
-        creep.memory.target = getTargetId();
       }
     } else {
+      if (!creep.memory.target) {
+        let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+          filter: structure =>
+            (structure.structureType == STRUCTURE_SPAWN ||
+             structure.structureType == STRUCTURE_EXTENSION) &&
+             structure.energy < structure.energyCapacity
+        });
+
+        if (target === null) {
+          target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+            filter: structure =>
+              (structure.structureType == STRUCTURE_STORAGE ||
+               structure.structureType == STRUCTURE_CONTAINER) &&
+              _.sum(structure.store) < structure.storeCapacity
+          });
+        }
+
+        if (target) creep.memory.target = target.id;
+      }
       let target = Game.getObjectById(creep.memory.target);
       if (target !== null) {
         if (((target.structureType == STRUCTURE_SPAWN ||
@@ -69,7 +64,8 @@ let roleHarvester2 = {
             ((target.structureType == STRUCTURE_STORAGE ||
               target.structureType == STRUCTURE_CONTAINER) &&
               _.sum(target.store) == target.storeCapacity))  {
-          creep.memory.target = getTargetId();
+          creep.memory.target = null;
+          return;
         }
         if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
           creep.moveTo(target, {
