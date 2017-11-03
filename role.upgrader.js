@@ -86,7 +86,7 @@ let roleUpgrader = {
         }
       }
     }
-    console.log( 'FULL CPU': ' + (Game.cpu.getUsed() - startCpu ));
+    console.log( 'FULL CPU: ' + (Game.cpu.getUsed() - startCpu ));
   }
 };
 
