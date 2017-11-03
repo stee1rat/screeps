@@ -72,7 +72,7 @@ let roleUpgrader = {
               visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 5
             });
           }
-        // otherwise it has to be source, so harvest it
+        // otherwise it has to be a source, so harvest it
         } else {
           let harvest = creep.harvest(source);
           if (harvest == ERR_NOT_IN_RANGE) {
