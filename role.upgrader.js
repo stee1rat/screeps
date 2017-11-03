@@ -23,9 +23,9 @@ let roleUpgrader = {
         creep.moveTo(creep.room.controller, {
             visualizePathStyle: {stroke: '#ffffff'}, reusePath: 5
         });
-        console.log('MOVE TO CONTROLLER: ' + (Game.cpu.getUsed() - startCpu ));
+        //console.log('MOVE TO CONTROLLER: ' + (Game.cpu.getUsed() - startCpu ));
       } else {
-        console.log('UPGARDE: ' + (Game.cpu.getUsed() - startCpu ));
+        //console.log('UPGARDE: ' + (Game.cpu.getUsed() - startCpu ));
       }
     }
     if (!creep.memory.upgrading && creep.carry.energy < creep.carryCapacity) {
@@ -88,7 +88,7 @@ let roleUpgrader = {
         }
       }
     }
-    console.log( 'FULL CPU: ' + (Game.cpu.getUsed() - startCpu ));
+    //console.log( 'FULL CPU: ' + (Game.cpu.getUsed() - startCpu ));
   }
 };
 
