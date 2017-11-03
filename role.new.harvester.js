@@ -62,16 +62,15 @@ let roleHarvester2 = {
       }
     } else {
       let target = Game.getObjectById(creep.memory.target);
-
-      if (((target.structureType == STRUCTURE_SPAWN ||
-            target.structureType == STRUCTURE_EXTENSION) &&
-            target.energy == target.energyCapacity) ||
-          ((target.structureType == STRUCTURE_STORAGE ||
-            target.structureType == STRUCTURE_CONTAINER) &&
-            _.sum(target.store) == target.storeCapacity))  {
-        creep.memory.target = getTargetId();
-      }
       if (target !== null) {
+        if (((target.structureType == STRUCTURE_SPAWN ||
+              target.structureType == STRUCTURE_EXTENSION) &&
+              target.energy == target.energyCapacity) ||
+            ((target.structureType == STRUCTURE_STORAGE ||
+              target.structureType == STRUCTURE_CONTAINER) &&
+              _.sum(target.store) == target.storeCapacity))  {
+          creep.memory.target = getTargetId();
+        }
         if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
           creep.moveTo(target, {
               visualizePathStyle: {stroke: '#ffffff'},
