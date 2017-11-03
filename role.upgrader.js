@@ -34,7 +34,8 @@ let roleUpgrader = {
               (structure.structureType == STRUCTURE_CONTAINER ||
                structure.structureType == STRUCTURE_STORAGE) &&
                structure.store[RESOURCE_ENERGY] > 0
-        });
+          });
+        }
         if (source === null) {
           if (creep.getActiveBodyparts(WORK) > 0) {
             source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
@@ -81,7 +82,6 @@ let roleUpgrader = {
         }
       }
     }
-  }
   }
 };
 
