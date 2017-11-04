@@ -29,6 +29,7 @@ let roleHauler = {
           creep.memory.source = null;
           return;
         }
+
         // if the source is a dropped energy pick it up
         if (source.resourceType) {
           let pickup = creep.pickup(source);
@@ -42,18 +43,25 @@ let roleHauler = {
           }
         }
         // if the source is container withdraw
-        if (source.structureType == STRUCTURE_CONTAINER && source.store[RESOURCE_ENERGY] > 0)  {
-          let withdraw = creep.withdraw(source, RESOURCE_ENERGY);
-          if (withdraw == ERR_NOT_IN_RANGE) {
-            creep.moveTo(source, { visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 5 });
+        if (source.structureType == STRUCTURE_CONTAINER)  {
+          if (source.store[RESOURCE_ENERGY] > 0) {
+            let withdraw = creep.withdraw(source, RESOURCE_ENERGY);
+            if (withdraw == ERR_NOT_IN_RANGE) {
+              creep.moveTo(source, { visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 5 });
+            }
+          } else {
+            creep.memory.source = null;
           }
         }
         //if the source is storage and there are refills needed
-        if (source.structureType == STRUCTURE_STORAGE && source.store[RESOURCE_ENERGY] > 0 &&
-            Memory.targetsToRefill.length > 0)  {
-          let withdraw = creep.withdraw(source, RESOURCE_ENERGY);
-          if (withdraw == ERR_NOT_IN_RANGE) {
-            creep.moveTo(source, { visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 5 });
+        if (source.structureType == STRUCTURE_STORAGE) && Memory.targetsToRefill.length > 0)  {
+          if (source.store[RESOURCE_ENERGY] > 0) {
+            let withdraw = creep.withdraw(source, RESOURCE_ENERGY);
+            if (withdraw == ERR_NOT_IN_RANGE) {
+              creep.moveTo(source, { visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 5 });
+            }
+          } else {
+            creep.memory.source = null;
           }
         }
       }
