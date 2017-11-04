@@ -54,7 +54,7 @@ let roleHauler = {
           }
         }
         //if the source is storage and there are refills needed
-        if (source.structureType == STRUCTURE_STORAGE) && Memory.targetsToRefill.length > 0)  {
+        if (source.structureType == STRUCTURE_STORAGE && Memory.targetsToRefill.length > 0)  {
           if (source.store[RESOURCE_ENERGY] > 0) {
             let withdraw = creep.withdraw(source, RESOURCE_ENERGY);
             if (withdraw == ERR_NOT_IN_RANGE) {
