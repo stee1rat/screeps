@@ -117,7 +117,7 @@ module.exports.loop = function () {
     }
   }
 
-  cpuUsed = Game.cpu.getUsed();
+  let cpuUsed = Game.cpu.getUsed();
   Memory.targetsToRefill = Game.spawns.Spawn1.room.find(FIND_MY_STRUCTURES, {
     filter: s => (s.structureType == STRUCTURE_SPAWN ||
                   s.structureType == STRUCTURE_EXTENSION ||
@@ -138,17 +138,17 @@ module.exports.loop = function () {
     var creep = Game.creeps[name];
 
     if(creep.memory.role == 'harvester') {
-      let cpuUsed = Game.cpu.getUsed();
+      cpuUsed = Game.cpu.getUsed();
       roleHarvester.run(creep);
       console.log( 'HARVESTER: ' + (Game.cpu.getUsed() - cpuUsed ));
     }
     if(creep.memory.role == 'harvester2') {
-      let cpuUsed = Game.cpu.getUsed();
+      cpuUsed = Game.cpu.getUsed();
       roleHarvester2.run(creep);
       console.log( 'HARVESTER2: ' + (Game.cpu.getUsed() - cpuUsed ));
     }
     if(creep.memory.role == 'upgrader') {
-      let cpuUsed = Game.cpu.getUsed();
+      cpuUsed = Game.cpu.getUsed();
       roleUpgrader.run(creep);
       //console.log( 'UPGADER: ' + (Game.cpu.getUsed() - cpuUsed ));
       if (Game.cpu.getUsed() - cpuUsed > 0.5) {
@@ -156,12 +156,12 @@ module.exports.loop = function () {
       }
     }
     if(creep.memory.role == 'builder') {
-      let cpuUsed = Game.cpu.getUsed();
+      cpuUsed = Game.cpu.getUsed();
       roleBuilder.run(creep);
       //console.log( 'BUILDER: ' + (Game.cpu.getUsed() - cpuUsed ));
     }
     if(creep.memory.role == 'hauler') {
-      let cpuUsed = Game.cpu.getUsed();
+      cpuUsed = Game.cpu.getUsed();
       roleHauler.run(creep);
       console.log( 'HAULER: ' + (Game.cpu.getUsed() - cpuUsed ));
       if (Game.cpu.getUsed() - cpuUsed > 0.5) {
@@ -169,17 +169,17 @@ module.exports.loop = function () {
       }
     }
     if(creep.memory.role == 'fixer') {
-      let cpuUsed = Game.cpu.getUsed();
+      cpuUsed = Game.cpu.getUsed();
       roleFixer.run(creep);
       console.log( 'FIXER: ' + (Game.cpu.getUsed() - cpuUsed ));
     }
     if(creep.memory.role == 'miner') {
-      let cpuUsed = Game.cpu.getUsed();
+      cpuUsed = Game.cpu.getUsed();
       roleMiner.run(creep);
       //console.log( 'MINER: ' + (Game.cpu.getUsed() - cpuUsed ));
     }
   }
-  let cpuUsed = Game.cpu.getUsed();
+  cpuUsed = Game.cpu.getUsed();
   towers.run();
   //console.log( 'TOWERS: ' + (Game.cpu.getUsed() - cpuUsed ));
   console.log( 'TOTAL: ' + (Game.cpu.getUsed() - TOTAL_CPU ));
