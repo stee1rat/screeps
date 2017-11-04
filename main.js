@@ -123,7 +123,7 @@ module.exports.loop = function () {
                   s.structureType == STRUCTURE_EXTENSION ||
                   s.structureType == STRUCTURE_TOWER) &&
                   s.energy < s.energyCapacity }).map(s => s.id);
-  console.log('targetsToRefill: ' + (cpuUsed - Game.cpu.getUsed()))
+  console.log('targetsToRefill: ' + (Game.cpu.getUsed() - cpuUsed))
 
   if (Game.spawns.Spawn1.spawning) {
     let spawningCreep = Game.creeps[Game.spawns.Spawn1.spawning.name];
