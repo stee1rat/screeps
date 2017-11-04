@@ -90,7 +90,7 @@ let roleHauler = {
       if (!target) {
         target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
           filter: s => s.structureType == STRUCTURE_TOWER &&
-                       s.energy < s.energyCapacity/2 &&
+                       s.energy <= s.energyCapacity/2 &&
                        !_.some(Game.creeps, c => c.memory.role == 'hauler' &&
                                                  c.memory.targetID == s.id)
         });

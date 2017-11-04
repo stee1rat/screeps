@@ -118,11 +118,12 @@ module.exports.loop = function () {
   }
 
   let cpuUsed = Game.cpu.getUsed();
+
   Memory.targetsToRefill = Game.spawns.Spawn1.room.find(FIND_MY_STRUCTURES, {
-    filter: s => (s.structureType == STRUCTURE_SPAWN ||
-                  s.structureType == STRUCTURE_EXTENSION ||
-                  s.structureType == STRUCTURE_TOWER) &&
+    filter: s => (s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION ||
+                 (s.structureType == STRUCTURE_TOWER && s.energy <= s.energyCapacity/2)) &&
                   s.energy < s.energyCapacity }).map(s => s.id);
+
   console.log('targetsToRefill: ' + (Game.cpu.getUsed() - cpuUsed))
   cpuUsed = Game.cpu.getUsed();
   let test = Memory.targetsToRefill.map(x => Game.getObjectById(x));
