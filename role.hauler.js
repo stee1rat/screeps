@@ -57,40 +57,7 @@ let roleHauler = {
     } else {
       creep.memory.source = null;
 
-      let targets = creep.room.find(FIND_STRUCTURES, {
-        filter: s => ((s.structureType == STRUCTURE_SPAWN ||
-                       s.structureType == STRUCTURE_EXTENSION ||
-                       s.structureType == STRUCTURE_TOWER) &&
-                       s.energy < s.energyCapacity) ||
-                     (s.structureType == STRUCTURE_STORAGE &&
-                      _.sum(s.store) < s.storeCapacity)
-      });
-      let target = _.filter(targets, s => s.structureType == STRUCTURE_SPAWN);
-
-      if (!target) {
-        target = _.filter(targets, s => s.structureType == STRUCTURE_EXTENSION);
-      }
-
-      if (!target) {
-        target = _.filter(targets, s => s.structureType == STRUCTURE_TOWER);
-      }
-
-      if (!target) {
-        target = _.filter(targets, s => s.structureType == STRUCTURE_STORAGE);
-      }
-
-      if (target && target.structureType != STRUCTURE_STORAGE) {
-        for (key of target) {
-          console.log(key);
-        }
-        //console.log(target, typeof target, target.structureType)
-        let searchTarget = target[0];
-        target = creep.pos.findClosestByPath(targets, searchTarget.structureType);
-      } else {
-        target = target[0];
-      }
-
-      /*let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+      let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
         filter: structure => (structure.structureType == STRUCTURE_SPAWN ||
                               structure.structureType == STRUCTURE_EXTENSION) &&
                               structure.energy < structure.energyCapacity
@@ -107,7 +74,7 @@ let roleHauler = {
                    	          _.sum(structure.store) < structure.storeCapacity
 
         });
-      }*/
+      }
       if (target) {
         if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
           creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
