@@ -81,7 +81,7 @@ let roleHauler = {
 
       if (target && target.structureType != STRUCTURE_STORAGE) {
         let searchTarget = target[0];
-        target = creep.pos.findClosestByPath(targets, target[0].structureType);
+        target = creep.pos.findClosestByPath(targets, searchTarget[0].structureType);
       } else {
         target = target[0];
       }
