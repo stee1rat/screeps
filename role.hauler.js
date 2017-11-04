@@ -80,7 +80,7 @@ let roleHauler = {
       }
 
       if (target && target.structureType != STRUCTURE_STORAGE) {
-        for (key in target) {
+        for (key of target) {
           console.log(key);
         }
         //console.log(target, typeof target, target.structureType)
