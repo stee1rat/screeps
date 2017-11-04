@@ -144,13 +144,13 @@ module.exports.loop = function () {
       roleUpgrader.run(creep);
       console.log( 'UPGADER: ' + (Game.cpu.getUsed() - cpuUsed ));
       if (Game.cpu.getUsed() - cpuUsed > 0.5) {
-        creep.say('CPU: ' + (Game.cpu.getUsed() - cpuUsed) + '!!!!!')
+        //creep.say('CPU: ' + (Game.cpu.getUsed() - cpuUsed) + '!!!!!')
       }
     }
     if(creep.memory.role == 'builder') {
       let cpuUsed = Game.cpu.getUsed();
       roleBuilder.run(creep);
-      console.log( 'BUILDER: ' + (Game.cpu.getUsed() - cpuUsed ));
+      //console.log( 'BUILDER: ' + (Game.cpu.getUsed() - cpuUsed ));
     }
     if(creep.memory.role == 'hauler') {
       let cpuUsed = Game.cpu.getUsed();
