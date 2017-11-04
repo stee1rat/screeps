@@ -56,7 +56,37 @@ let roleHauler = {
       }
     } else {
       creep.memory.source = null;
-      let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+
+      let targets = creep.pos.find(FIND_STRUCTURES, {
+        filter: s => ((s.structureType == STRUCTURE_SPAWN ||
+                       s.structureType == STRUCTURE_EXTENSION ||
+                       s.structureType == STRUCTURE_TOWER ||) &&
+                       s.energy < s.energyCapacity) ||
+                     (s.structureType == STRUCTURE_STORAGE &&
+                      _.sum(s.store) < s.storeCapacity)
+      });
+      let target = _.filter(targets, s => s.structureType == STRUCTURE_SPAWN);
+
+      if (!target) {
+        target = _.filter(targets, s => s.structureType == STRUCTURE_EXTENSION);
+      }
+
+      if (!target) {
+        target = _.filter(targets, s => s.structureType == STRUCTURE_TOWER);
+      }
+
+      if (!target) {
+        target = _.filter(targets, s => s.structureType == STRUCTURE_STORAGE);
+      }
+
+      if (target && target.structureType != STRUCTURE_STORAGE) {
+        let searchTarget = target[0];
+        target = targets.findClosestByPath(target[0].structureType);
+      } else {
+        target = target[0];
+      }
+
+      /*let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
         filter: structure => (structure.structureType == STRUCTURE_SPAWN ||
                               structure.structureType == STRUCTURE_EXTENSION) &&
                               structure.energy < structure.energyCapacity
@@ -73,8 +103,8 @@ let roleHauler = {
                    	          _.sum(structure.store) < structure.storeCapacity
 
         });
-      }
-      if (target !== null) {
+      }*/
+      if (target) {
         if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
           creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
         }
