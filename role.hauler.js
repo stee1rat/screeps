@@ -70,6 +70,7 @@ let roleHauler = {
       if (creep.memory.targetID) {
         let target = Game.getObjectById(creep.memory.targetID);
         let transfer = creep.transfer(target, RESOURCE_ENERGY);
+        console.log(transfer)
         if (transfer == ERR_NOT_IN_RANGE) {
           creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
         }
