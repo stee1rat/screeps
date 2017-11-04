@@ -62,18 +62,18 @@ let roleHauler = {
                               structure.structureType == STRUCTURE_EXTENSION) &&
                               structure.energy < structure.energyCapacity
       });
-      if (target === null) {
+      if (!target) {
         target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
           filter: structure => structure.structureType == STRUCTURE_TOWER &&
                                structure.energy < structure.energyCapacity
         });
       }
-      if (target === null) {
-        target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-          filter: structure => structure.structureType == STRUCTURE_STORAGE &&
-                   	          _.sum(structure.store) < structure.storeCapacity
-
+      if (!target) {
+        target = creep.room.find(FIND_STRUCTURES, {
+          filter: s => s.structureType == STRUCTURE_STORAGE &&
+                       _.sum(s.store) < s.storeCapacity
         });
+        target = target.length ? target[0] : null;
       }
       if (target) {
         if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
