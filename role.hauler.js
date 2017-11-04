@@ -39,7 +39,7 @@ let roleHauler = {
               visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 5
             });
 
-            console.log( Game.cpu.getUsed() - startCpu ); // 0.2
+            //console.log( Game.cpu.getUsed() - startCpu ); // 0.2
           }
         }
         // if the source is storage/container withdraw from it
