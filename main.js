@@ -117,11 +117,13 @@ module.exports.loop = function () {
     }
   }
 
+  cpuUsed = Game.cpu.getUsed();
   Memory.targetsToRefill = Game.spawns.Spawn1.room.find(FIND_MY_STRUCTURES, {
     filter: s => (s.structureType == STRUCTURE_SPAWN ||
                   s.structureType == STRUCTURE_EXTENSION ||
                   s.structureType == STRUCTURE_TOWER) &&
                   s.energy < s.energyCapacity }).map(s => s.id);
+  console.log('targetsToRefill: ' + (cpuUsed - Game.cpu.getUsed()))
 
   if (Game.spawns.Spawn1.spawning) {
     let spawningCreep = Game.creeps[Game.spawns.Spawn1.spawning.name];
