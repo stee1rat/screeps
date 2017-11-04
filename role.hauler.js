@@ -58,10 +58,13 @@ let roleHauler = {
       creep.memory.source = null;
       if (creep.memory.targetID) {
         let target = Game.getObjectById(creep.memory.targetID);
-        if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+        let transfer = creep.transfer(target, RESOURCE_ENERGY);
+        if (transfer == ERR_NOT_IN_RANGE) {
           creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
         }
-        delete creep.memory.targetID;
+        if (transfer == OK) {
+          delete creep.memory.targetID;
+        }
         return;
       }
       let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
