@@ -54,6 +54,7 @@ let roleHauler = {
           }
         }
         //if the source is storage and there are refills needed
+        console.log(Memory.targetsToRefill.length)
         if (source.structureType == STRUCTURE_STORAGE && Memory.targetsToRefill.length > 0)  {
           if (source.store[RESOURCE_ENERGY] > 0) {
             let withdraw = creep.withdraw(source, RESOURCE_ENERGY);
@@ -70,7 +71,7 @@ let roleHauler = {
       if (creep.memory.targetID) {
         let target = Game.getObjectById(creep.memory.targetID);
         let transfer = creep.transfer(target, RESOURCE_ENERGY);
-        console.log(transfer)
+        //console.log(transfer)
         if (transfer == ERR_NOT_IN_RANGE) {
           creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
         }
