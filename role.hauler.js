@@ -73,6 +73,7 @@ let roleHauler = {
         if (transfer == ERR_NOT_IN_RANGE) {
           creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
         }
+        console.log(transfer);
         if (transfer == OK) {
           delete creep.memory.targetID;
         }
