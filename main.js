@@ -142,7 +142,7 @@ module.exports.loop = function () {
     if(creep.memory.role == 'upgrader') {
       let cpuUsed = Game.cpu.getUsed();
       roleUpgrader.run(creep);
-      console.log( 'UPGADER: ' + (Game.cpu.getUsed() - cpuUsed ));
+      //console.log( 'UPGADER: ' + (Game.cpu.getUsed() - cpuUsed ));
       if (Game.cpu.getUsed() - cpuUsed > 0.5) {
         //creep.say('CPU: ' + (Game.cpu.getUsed() - cpuUsed) + '!!!!!')
       }
@@ -168,11 +168,11 @@ module.exports.loop = function () {
     if(creep.memory.role == 'miner') {
       let cpuUsed = Game.cpu.getUsed();
       roleMiner.run(creep);
-      console.log( 'MINER: ' + (Game.cpu.getUsed() - cpuUsed ));
+      //console.log( 'MINER: ' + (Game.cpu.getUsed() - cpuUsed ));
     }
   }
   let cpuUsed = Game.cpu.getUsed();
   towers.run();
-  console.log( 'TOWERS: ' + (Game.cpu.getUsed() - cpuUsed ));
+  //console.log( 'TOWERS: ' + (Game.cpu.getUsed() - cpuUsed ));
   console.log( 'TOTAL: ' + (Game.cpu.getUsed() - TOTAL_CPU ));
 };
