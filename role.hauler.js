@@ -57,7 +57,7 @@ let roleHauler = {
     } else {
       creep.memory.source = null;
 
-      let targets = creep.pos.find(FIND_STRUCTURES, {
+      let targets = creep.room.find(FIND_STRUCTURES, {
         filter: s => ((s.structureType == STRUCTURE_SPAWN ||
                        s.structureType == STRUCTURE_EXTENSION ||
                        s.structureType == STRUCTURE_TOWER) &&
@@ -81,7 +81,7 @@ let roleHauler = {
 
       if (target && target.structureType != STRUCTURE_STORAGE) {
         let searchTarget = target[0];
-        target = targets.findClosestByPath(target[0].structureType);
+        target = creep.pos.findClosestByPath(targets, target[0].structureType);
       } else {
         target = target[0];
       }
