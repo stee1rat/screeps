@@ -123,6 +123,7 @@ module.exports.loop = function () {
                   s.structureType == STRUCTURE_EXTENSION ||
                   s.structureType == STRUCTURE_TOWER) &&
                   s.energy < s.energyCapacity }).map(s => s.id);
+  let test = Memory.targetsToRefill.map(x => Game.getObjectById(x));
   console.log('targetsToRefill: ' + (Game.cpu.getUsed() - cpuUsed))
 
   if (Game.spawns.Spawn1.spawning) {
