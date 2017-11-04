@@ -60,7 +60,7 @@ let roleHauler = {
       let targets = creep.pos.find(FIND_STRUCTURES, {
         filter: s => ((s.structureType == STRUCTURE_SPAWN ||
                        s.structureType == STRUCTURE_EXTENSION ||
-                       s.structureType == STRUCTURE_TOWER ||) &&
+                       s.structureType == STRUCTURE_TOWER) &&
                        s.energy < s.energyCapacity) ||
                      (s.structureType == STRUCTURE_STORAGE &&
                       _.sum(s.store) < s.storeCapacity)
