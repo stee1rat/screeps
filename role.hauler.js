@@ -80,8 +80,8 @@ let roleHauler = {
       }
 
       if (target && target.structureType != STRUCTURE_STORAGE) {
-        for (key in targets) {
-          console.log(key);
+        for (key in target) {
+          console.log(key, target[key]);
         }
         //console.log(target, typeof target, target.structureType)
         let searchTarget = target[0];
