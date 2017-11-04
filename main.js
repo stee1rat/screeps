@@ -29,7 +29,7 @@ let spawnCreeps = [
     goal: 2,
     priority: 1,
     parameters: { inPosition: false },
-    bodyParts: { move: 1, work: 10 }
+    bodyParts: { move: 1, work: 8 }
   },
   {
     role: 'hauler',
@@ -116,6 +116,12 @@ module.exports.loop = function () {
       break;
     }
   }
+
+  Memory.targetsToRefill = Game.spawns.Spawn1.room.find(FIND_MY_STRUCTURES, {
+    filter: s => (s.structureType == STRUCTURE_SPAWN ||
+                  s.structureType == STRUCTURE_EXTENSION ||
+                  s.structureType == STRUCTURE_TOWER) &&
+                  s.energy < s.energyCapacity }).map(s => s.id);
 
   if (Game.spawns.Spawn1.spawning) {
     let spawningCreep = Game.creeps[Game.spawns.Spawn1.spawning.name];

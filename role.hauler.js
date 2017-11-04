@@ -42,15 +42,19 @@ let roleHauler = {
             //console.log( Game.cpu.getUsed() - startCpu ); // 0.2
           }
         }
-        // if the source is storage/container withdraw from it
-        if ((source.structureType == STRUCTURE_STORAGE ||
-             source.structureType == STRUCTURE_CONTAINER) &&
-             source.store[RESOURCE_ENERGY] > 0)  {
+        // if the source is container withdraw
+        if (source.structureType == STRUCTURE_CONTAINER && source.store[RESOURCE_ENERGY] > 0)  {
           let withdraw = creep.withdraw(source, RESOURCE_ENERGY);
           if (withdraw == ERR_NOT_IN_RANGE) {
-            creep.moveTo(source, {
-              visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 5
-            });
+            creep.moveTo(source, { visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 5 });
+          }
+        }
+        //if the source is storage and there are refills needed
+        if (source.structureType == STRUCTURE_STORAGE && source.store[RESOURCE_ENERGY] > 0 &&
+            Memory.targetsToRefill.length > 0)  {
+          let withdraw = creep.withdraw(source, RESOURCE_ENERGY);
+          if (withdraw == ERR_NOT_IN_RANGE) {
+            creep.moveTo(source, { visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 5 });
           }
         }
       }
