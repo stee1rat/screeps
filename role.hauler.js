@@ -56,16 +56,27 @@ let roleHauler = {
       }
     } else {
       creep.memory.source = null;
-
+      if (creep.memory.targetID) {
+        let target = Game.getObjectById(creep.memory.targetID);
+        if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+          creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
+        }
+        delete creep.memory.targetID;
+        return;
+      }
       let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-        filter: structure => (structure.structureType == STRUCTURE_SPAWN ||
-                              structure.structureType == STRUCTURE_EXTENSION) &&
-                              structure.energy < structure.energyCapacity
+        filter: s => (s.structureType == STRUCTURE_SPAWN ||
+                      s.structureType == STRUCTURE_EXTENSION) &&
+                      s.energy < s.energyCapacity &&
+                      !_.some(Game.creeps, c => c.memory.role == 'hauler' &&
+                                                c.memory.targetID == s.id)
       });
       if (!target) {
         target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-          filter: structure => structure.structureType == STRUCTURE_TOWER &&
-                               structure.energy < structure.energyCapacity
+          filter: s => s.structureType == STRUCTURE_TOWER &&
+                       s.energy < s.energyCapacity &&
+                       !_.some(Game.creeps, c => c.memory.role == 'hauler' &&
+                                                 c.memory.targetID == s.id)
         });
       }
       if (!target) {
@@ -76,9 +87,7 @@ let roleHauler = {
         target = target.length ? target[0] : null;
       }
       if (target) {
-        if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-          creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
-        }
+        creep.memory.targetID = target.id;
       }
     }
 	}
