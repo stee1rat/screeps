@@ -1,10 +1,9 @@
 let roleHauler = {
 
   run: function(creep) {
-    /*let roomCreeps = creep.room.find(FIND_MY_CREEPS, {filter: c =>
-       c.memory.source && c.memory.role == 'hauler'
-    });
-    console.log(roomCreeps.length);*/
+    if (creep.spawning) {
+      return;
+    }
     if (creep.carry.energy === 0) {
       if (!creep.memory.source) {
         let source = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
