@@ -101,7 +101,6 @@ let roleUpgrader = {
              source.structureType == STRUCTURE_CONTAINER) &&
              source.store[RESOURCE_ENERGY] > 0)  {
           let withdraw = creep.withdraw(source, RESOURCE_ENERGY);
-          console.log(withdraw)
           if (withdraw == ERR_NOT_IN_RANGE) {
             creep.moveTo(source, {
               visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 5
@@ -109,6 +108,7 @@ let roleUpgrader = {
           }
         // otherwise it has to be a source, so harvest it
         } else {
+          console.log(source.structureType)
           let harvest = creep.harvest(source);
           if (harvest == ERR_NOT_IN_RANGE) {
             creep.moveTo(source, {
