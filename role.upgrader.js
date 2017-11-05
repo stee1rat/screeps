@@ -1,5 +1,3 @@
-/* jshint esversion: 6 */
-
 let roleUpgrader = {
 
   run: function(creep) {
@@ -30,18 +28,46 @@ let roleUpgrader = {
     }
     if (!creep.memory.upgrading && creep.carry.energy < creep.carryCapacity) {
       if (!creep.memory.source) {
-        let source = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
-          filter: resource => resource.resourceType == RESOURCE_ENERGY
-        });
-        if (source === null) {
-          source = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-            filter: structure =>
-              (structure.structureType == STRUCTURE_CONTAINER ||
-               structure.structureType == STRUCTURE_STORAGE) &&
-               structure.store[RESOURCE_ENERGY] > 0
-          });
+        let source = null;
+
+        // look for available dropped energy
+        if (Memory.droppedEnergy.length) {
+          let droppedEnergy = _.map(Memory.droppedEnergy, e => Game.getObjectById(e));
+          let availableEnergy = _.filter(droppedEnergy, e =>
+            e.amount - _.sum(_.map(Game.creeps, c =>
+              //(c.memory.role == 'hauler' && c.memory.source == e.id &&
+              (c.memory.source == e.id &&
+               Game.getObjectById(c.memory.source)) &&
+               c.carryCapacity || 0)) > 0
+          );
+          if (availableEnergy) {
+            source = creep.pos.findClosestByPath(availableEnergy);
+          }
         }
-        if (source === null) {
+        // look for avaiable energy in containers
+        // containers with more energy are prefered
+        if (!source && Memory.containers.length) {
+          let containers = _.map(Memory.containers, e => Game.getObjectById(e));
+          let availableContainers = _.filter(containers, x =>
+            x.store[RESOURCE_ENERGY] - _.sum(_.map(Game.creeps, c =>
+              //(c.memory.role == 'hauler' && c.memory.source == x.id &&
+              (c.memory.source == x.id &&
+               Game.getObjectById(c.memory.source)) &&
+               c.carryCapacity || 0)) > 0
+          );
+          if (availableContainers) {
+            source = availableContainers.sort((a, b) =>
+              b.store[RESOURCE_ENERGY] - a.store[RESOURCE_ENERGY])[0];
+          }
+        }
+        // if there are no other energy sources get it from storage
+        if (!source) {
+          source = creep.room.find(FIND_STRUCTURES, {
+            filter: s => s.structureType == STRUCTURE_STORAGE && s.store[RESOURCE_ENERGY] > 0
+          })[0];
+        }
+        // if everything is empty, lets go mining
+        if (!source) {
           if (creep.getActiveBodyparts(WORK) > 0) {
             source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
           }
