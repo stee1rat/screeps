@@ -9,12 +9,14 @@ let roleHauler = {
         let source = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
           filter: resource => resource.resourceType == RESOURCE_ENERGY
         });
-        if (source === null) {
+        if (!source) {
           source = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-            filter: structure =>
-              (structure.structureType == STRUCTURE_CONTAINER ||
-               structure.structureType == STRUCTURE_STORAGE) &&
-               structure.store[RESOURCE_ENERGY] > 0
+            filter: s => s.structureType == STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > 0
+          });
+        }
+        if (!source) {
+          source = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+            filter: s => s.structureType == STRUCTURE_STORAGE && s.store[RESOURCE_ENERGY] > 0
           });
         }
         if (source) {
