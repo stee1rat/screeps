@@ -30,7 +30,7 @@ var towers = {
                                structure.hits < 50001
         });
         if(damagedStructure.length) {
-          tower.repair(damagedStructure.sort((a, b) => b.hitsMax/100*b.hits - a.hitsMax/100*a.hits)[0]);
+          tower.repair(damagedStructure.sort((a, b) => a.hitsMax/100*b.hits - b.hitsMax/100*a.hits)[0]);
           continue;
         } else {
           break;
