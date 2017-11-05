@@ -29,21 +29,21 @@ let spawnCreeps = [
     goal: 2,
     priority: 1,
     parameters: { inPosition: false },
-    bodyParts: { move: 1, work: 8 }
+    bodyParts: { move: 2, work: 6 }
   },
   {
     role: 'hauler',
     priority: 2,
     goal: 3,
     parameters: {},
-    bodyParts: { move: 8, carry: 8 }
+    bodyParts: { move: 7, carry: 7 }
   },
   {
     role: 'upgrader',
     priority: 3,
     goal: 5,
     parameters: {},
-    bodyParts: { move: 12, carry: 5, work: 7 }
+    bodyParts: { move: 8, carry: 4, work: 4 }
   },
   {
     role: 'builder',
