@@ -108,7 +108,10 @@ let roleUpgrader = {
           }
         // otherwise it has to be a source, so harvest it
         } else {
-          console.log(source.structureType)
+          if (source.structureType) {
+            creep.memory.source = null;
+            return;
+          }
           let harvest = creep.harvest(source);
           if (harvest == ERR_NOT_IN_RANGE) {
             creep.moveTo(source, {
