@@ -119,16 +119,23 @@ module.exports.loop = function () {
 
   let cpuUsed = Game.cpu.getUsed();
 
-  Memory.targetsToRefill = Game.spawns.Spawn1.room.find(FIND_MY_STRUCTURES, {
-    filter: s => (s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION ||
-                 (s.structureType == STRUCTURE_TOWER && s.energy <= s.energyCapacity/2)) &&
-                  s.energy < s.energyCapacity }).map(s => s.id);
+  let structures = Game.spawns.Spawn1.room.find(FIND_STRUCTURES);
+
+  Memory.structures = structures.map(s => s.id);
+
+  Memory.targetsToRefill = _.filter(structures, s => (s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION ||
+               (s.structureType == STRUCTURE_TOWER && s.energy <= s.energyCapacity/2)) &&
+                s.energy < s.energyCapacity).map(s => s.id);
 
   Memory.droppedEnergy = Game.spawns.Spawn1.room.find(FIND_DROPPED_RESOURCES, {
     filter: s => s.resourceType == RESOURCE_ENERGY}).map(s => s.id);
 
-  Memory.containers = Game.spawns.Spawn1.room.find(FIND_STRUCTURES, {
-    filter: s => s.structureType == STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > 0}).map(s => s.id);
+  Memory.containers = _.filter(structures, s => s.structureType == STRUCTURE_CONTAINER).map(s => s.id);
+
+  Memory.storageID = _.filter(structures, s => s.structureType == STRUCTURE_STORAGE).map(s => s.id || null);
+  if (!Memory.storageID.length) {
+    delete Memory.storageID ;
+  }
 
 /*   _.each(Game.creeps, function(value) {
       if (value.memory.source && value.memory.role == 'hauler' && Game.getObjectById(value.memory.source))

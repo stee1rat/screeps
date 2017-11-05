@@ -1,3 +1,5 @@
+/* jshint esversion: 6 */
+
 let roleUpgrader = {
 
   run: function(creep) {
@@ -61,10 +63,11 @@ let roleUpgrader = {
           }
         }
         // if there are no other energy sources get it from storage
-        if (!source) {
-          source = creep.room.find(FIND_STRUCTURES, {
-            filter: s => s.structureType == STRUCTURE_STORAGE && s.store[RESOURCE_ENERGY] > 0
-          })[0];
+        if (!source && Memory.storageID) {
+          let storage = Game.getObjectById(Memory.storageID);
+          if (storage.store[RESOURCE_ENERGY] > 0) {
+            source = storage;
+          }
         }
         // if everything is empty, lets go mining
         if (!source) {
@@ -84,7 +87,7 @@ let roleUpgrader = {
           creep.memory.source = null;
           return;
         }
-        // if the source is a dropped energy pick it up
+        // if the source is a dropped energy then pick it up
         if (source.resourceType) {
           let pickup = creep.pickup(source);
           if (pickup == ERR_NOT_IN_RANGE) {
@@ -93,7 +96,7 @@ let roleUpgrader = {
             });
           }
         }
-        // if the source is storage/container withdraw from it
+        // if the source is a storage/container withdraw from it
         if ((source.structureType == STRUCTURE_STORAGE ||
              source.structureType == STRUCTURE_CONTAINER) &&
              source.store[RESOURCE_ENERGY] > 0)  {

@@ -13,7 +13,8 @@ let roleHauler = {
           let droppedEnergy = _.map(Memory.droppedEnergy, e => Game.getObjectById(e));
           let availableEnergy = _.filter(droppedEnergy, e =>
             e.amount - _.sum(_.map(Game.creeps, c =>
-              (c.memory.role == 'hauler' && c.memory.source == e.id &&
+              //(c.memory.role == 'hauler' && c.memory.source == e.id &&
+              (c.memory.source == e.id &&
                Game.getObjectById(c.memory.source)) &&
                c.carryCapacity || 0)) > 0
           );
@@ -27,7 +28,8 @@ let roleHauler = {
           let containers = _.map(Memory.containers, e => Game.getObjectById(e));
           let availableContainers = _.filter(containers, x =>
             x.store[RESOURCE_ENERGY] - _.sum(_.map(Game.creeps, c =>
-              (c.memory.role == 'hauler' && c.memory.source == x.id &&
+              //(c.memory.role == 'hauler' && c.memory.source == x.id &&
+              (c.memory.source == x.id &&
                Game.getObjectById(c.memory.source)) &&
                c.carryCapacity || 0)) > 0
           );
@@ -36,11 +38,11 @@ let roleHauler = {
               b.store[RESOURCE_ENERGY] - a.store[RESOURCE_ENERGY])[0];
           }
         }
-        // if there are no other energy sources get it from storage
-        if (!source) {
-          source = creep.room.find(FIND_STRUCTURES, {
-            filter: s => s.structureType == STRUCTURE_STORAGE && s.store[RESOURCE_ENERGY] > 0
-          })[0];
+        if (!source && Memory.storageID) {
+          let storage = Game.getObjectById(Memory.storageID);
+          if (storage.store[RESOURCE_ENERGY] > 0) {
+            source = storage;
+          }
         }
         if (source) {
           creep.memory.source = source.id;
@@ -105,28 +107,53 @@ let roleHauler = {
         }
         return;
       }
-      let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-        filter: s => (s.structureType == STRUCTURE_SPAWN ||
-                      s.structureType == STRUCTURE_EXTENSION) &&
-                      s.energy < s.energyCapacity &&
-                      !_.some(Game.creeps, c => c.memory.role == 'hauler' &&
-                                                c.memory.targetID == s.id)
-      });
-      if (!target) {
-        target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-          filter: s => s.structureType == STRUCTURE_TOWER &&
-                       s.energy <= s.energyCapacity/2 &&
-                       !_.some(Game.creeps, c => c.memory.role == 'hauler' &&
-                                                 c.memory.targetID == s.id)
-        });
+      let target = null;
+
+      // refills needed for spawn and extentions
+      let targetsToRefill = _.map(Memory.targetsToRefill, x => Game.getObjectById(x));
+
+      let spawn = _.filter(targetsToRefill, s =>
+        (s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION) &&
+        s.energy < s.energyCapacity && !_.some(Game.creeps, c => c.memory.targetID == s.id));
+
+      if (spawn.length) {
+        target = creep.pos.findClosestByPath(spawn);
       }
+
+      // refills needed for towers
       if (!target) {
-        target = creep.room.find(FIND_STRUCTURES, {
-          filter: s => s.structureType == STRUCTURE_STORAGE &&
-                       _.sum(s.store) < s.storeCapacity
-        });
-        target = target.length ? target[0] : null;
+        let towers = _.filter(targetsToRefill, s =>
+          s.structureType == STRUCTURE_TOWER && s.energy <= s.energyCapacity/2 &&
+          !_.some(Game.creeps, c => c.memory.targetID == s.id));
+
+        if (towers.length) {
+          target = creep.pos.findClosestByPath(towers);
+        }
       }
+
+      // drop energy to a storage
+      if (!target && Memory.storageID) {
+        let storage = Game.getObjectById(Memory.storageID);
+        if (_.sum(storage.store) < storage.storeCapacity) {
+          target = storage;
+        }
+      }
+
+      // drop energy to a container
+      /*if (!target && Memory.containers.length) {
+        console.log('CONTAINERS');
+        let containers = _.map(Memory.containers, e => Game.getObjectById(e));
+        let availableContainers = _.filter(containers, x =>
+          _.sum(x.store) + _.sum(_.map(Game.creeps, c =>
+            (c.memory.targetID == x.id && _.sum(c.carry)) || 0)) < x.storeCapacity
+        );
+        console.log('availableContainers: ' + availableContainers);
+        console.log('availableContainers.length: ' + availableContainers.length);
+        if (availableContainers) {
+          target = availableContainers.sort((a, b) =>
+            a.store[RESOURCE_ENERGY] - b.store[RESOURCE_ENERGY])[0];
+        }
+      }*/
       if (target) {
         creep.memory.targetID = target.id;
       }
