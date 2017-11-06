@@ -13,7 +13,8 @@ let roleRemoteHarvester = {
     }
     console.log(creep.pos.roomName, Game.flags[creep.memory.flagName].pos.roomName)
     if (creep.pos.roomName != Game.flags[creep.memory.flagName].pos.roomName) {
-      creep.moveTo(Game.flags[creep.memory.flagName].pos);
+      creep.move(RIGHT);
+      //creep.moveTo(Game.flags[creep.memory.flagName].pos);
     } else {
       //if (creep.pos != ('29,38')){
         creep.move(RIGHT);
