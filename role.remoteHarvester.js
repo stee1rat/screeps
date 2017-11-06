@@ -1,4 +1,4 @@
-let roleHarvester2 = {
+let roleRemoteHarvester = {
 
   run: function(creep) {
     if (creep.spawning || !creep.memory.init ) {
@@ -86,4 +86,4 @@ let roleHarvester2 = {
 	}
 };
 
-module.exports = roleHarvester2;
+module.exports = roleRemoteHarvester;
