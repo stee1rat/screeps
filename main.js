@@ -1,6 +1,6 @@
 let roleHarvester = require('role.harvester');
 let roleHarvester2 = require('role.new.harvester');
-let roleRemoteHarvester = require('roleRemoteHarvester');
+let roleRemoteHarvester = require('role.remoteHarvester');
 let roleUpgrader = require('role.upgrader');
 let roleBuilder = require('role.builder');
 let roleHauler = require('role.hauler');
