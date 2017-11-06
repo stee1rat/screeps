@@ -29,7 +29,7 @@ var towers = {
           filter: structure => structure.hits < structure.hitsMax &&
                                structure.hits < 50001
         });
-        console.log(damagedStructure.length);
+
         if(damagedStructure.length) {
           tower.repair(damagedStructure.sort((a, b) => b.hitsMax/100*b.hits - a.hitsMax/100*a.hits)[0]);
           continue;

@@ -1,5 +1,6 @@
 let roleHarvester = require('role.harvester');
 let roleHarvester2 = require('role.new.harvester');
+let roleRemoteHarvester = require('roleRemoteHarvester');
 let roleUpgrader = require('role.upgrader');
 let roleBuilder = require('role.builder');
 let roleHauler = require('role.hauler');
@@ -21,6 +22,13 @@ let spawnCreeps = [
     role: 'harvester2',
     priority: 0,
     goal: 0,
+    parameters: {harvesting: false },
+    bodyParts: { move: 12, work: 7, carry: 5}
+  },
+  {
+    role: 'remoteHarvester',
+    priority: 10,
+    goal: 1,
     parameters: {harvesting: false },
     bodyParts: { move: 12, work: 7, carry: 5}
   },
@@ -208,6 +216,11 @@ module.exports.loop = function () {
     if(creep.memory.role == 'miner') {
       cpuUsed = Game.cpu.getUsed();
       roleMiner.run(creep);
+      //console.log( 'MINER: ' + (Game.cpu.getUsed() - cpuUsed ));
+    }
+    if(creep.memory.role == 'remoteHarvester') {
+      cpuUsed = Game.cpu.getUsed();
+      roleRemoteHarvester.run(creep);
       //console.log( 'MINER: ' + (Game.cpu.getUsed() - cpuUsed ));
     }
   }

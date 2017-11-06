@@ -1,9 +1,14 @@
-let roleRemoteHarvester = {
+let roleHarvester2 = {
 
   run: function(creep) {
     if (creep.spawning || !creep.memory.init ) {
-      // assign to a source
-      let sources = creep.room.find(FIND_SOURCES);
+      // assign to a room
+      if (!creep.memory.room) {
+        let flag = _.map(Game.flags, f => f)
+        //creep.memory.roomName = flag[0].pos.roomName;
+        creep.memory.flagName = flag[0].name;
+      }
+      /*let sources = creep.room.find(FIND_SOURCES);
       for (let i = 0; i < sources.length; i++) {
         let source = creep.room.find(FIND_MY_CREEPS, {
           filter: c => c.memory.source == sources[i].id
@@ -12,8 +17,14 @@ let roleRemoteHarvester = {
         if(source === null || source.length <= 2) {
           creep.memory.source = sources[i].id;
         }
-      }
+      }*/
       creep.memory.init = true;
+      return;
+    }
+    if (creep.pos.roomName != Game.flags[creep.memory.flagName].pos.roomName) {
+      creep.moveTo(Game.flags[creep.memory.flagName].pos);
+    } else {
+      console.log('WOOOOW');
       return;
     }
     if (creep.carry.energy === 0 || creep.memory.harvesting) {
@@ -75,4 +86,4 @@ let roleRemoteHarvester = {
 	}
 };
 
-module.exports = roleRemoteHarvester;
+module.exports = roleHarvester2;
