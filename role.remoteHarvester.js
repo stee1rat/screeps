@@ -11,18 +11,18 @@ let roleRemoteHarvester = {
       creep.memory.init = true;
       return;
     }
-    // workaround for the jumps between rooms    
-    if (creep.pos.x === 0) {
+    // workaround for the jumps between rooms
+    if (creep.pos.x === 0 && creep.pos.roomName != Game.flags[creep.memory.flagName].pos.roomName) {
       creep.move(RIGHT);
     }
-    if (creep.pos.x === 49) {
+    if (creep.pos.x === 49 && creep.pos.roomName != Game.flags[creep.memory.flagName].pos.roomName) {
       creep.move(LEFT);
     }
-    if (creep.pos.y === 0) {
-      creep.move(DOWN)
+    if (creep.pos.y === 0 && creep.pos.roomName != Game.flags[creep.memory.flagName].pos.roomName) {
+      creep.move(BOTTOM)
     }
-    if (creep.pos.y === 49) {
-      creep.move(UP)
+    if (creep.pos.y === 49 && creep.pos.roomName != Game.flags[creep.memory.flagName].pos.roomName) {
+      creep.move(TOP)
     }
     /*if(creep.pos.x === 0 || creep.pos.y === 0 || creep.pos.x === 49 || creep.pos.y === 49) {
       creep.moveTo(new RoomPosition(25,25,creep.pos.roomName));
