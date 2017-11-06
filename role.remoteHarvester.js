@@ -39,6 +39,8 @@ let roleRemoteHarvester = {
             creep.moveTo(Game.rooms[creep.memory.home].controller);
           }
         return;
+      } else {
+        creep.moveTo(Game.rooms[creep.memory.home].controller);
       }
       if (!creep.memory.target) {
         let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
