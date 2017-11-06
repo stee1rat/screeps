@@ -40,6 +40,7 @@ let roleRemoteHarvester = {
           }
         return;
       } else {
+        console.log('!!!!!!!!!!!!!!!')
         creep.moveTo(Game.rooms[creep.memory.home].controller);
       }
       if (!creep.memory.target) {
