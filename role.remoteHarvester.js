@@ -8,11 +8,11 @@ let roleRemoteHarvester = {
       creep.memory.init = true;
       return;
     }
-    if (creep.pos.roomName != Game.flags[creep.memory.flagName].pos.roomName) {
-      creep.moveTo(Game.flags[creep.memory.flagName].pos);
-      return;
-    }
     if (creep.carry.energy === 0 || creep.memory.harvesting) {
+      if (creep.pos.roomName != Game.flags[creep.memory.flagName].pos.roomName) {
+        creep.moveTo(Game.flags[creep.memory.flagName].pos);
+        return;
+      }
       if (!creep.memory.source) {
         let sources = creep.room.find(FIND_SOURCES);
         creep.memory.source = sources[0].id;
@@ -40,7 +40,6 @@ let roleRemoteHarvester = {
           }
         return;
       } else {
-        console.log('!!!!!!!!!!!!!!!')
         creep.moveTo(Game.rooms[creep.memory.home].controller);
       }
       if (!creep.memory.target) {
