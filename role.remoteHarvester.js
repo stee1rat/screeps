@@ -2,12 +2,9 @@ let roleRemoteHarvester = {
 
   run: function(creep) {
     if (creep.spawning || !creep.memory.init ) {
-      // assign to a room
-      if (!creep.memory.room) {
-        let flag = _.map(Game.flags, f => f)
-        //creep.memory.roomName = flag[0].pos.roomName;
-        creep.memory.flagName = flag[0].name;
-      }
+      let flag = _.map(Game.flags, f => f)
+      creep.memory.flagName = flag[0].name;
+      creep.memory.home = creep.pos.roomName;
       creep.memory.init = true;
       return;
     }
@@ -36,6 +33,10 @@ let roleRemoteHarvester = {
         delete creep.memory.source;
       }
     } else {
+      if (creep.pos.roomName != creep.memory.home) {
+        creep.moveTo(creep.memory.home);
+        return;
+      }
       if (!creep.memory.target) {
         let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
           filter: structure =>
