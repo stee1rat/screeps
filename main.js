@@ -28,7 +28,7 @@ let spawnCreeps = [
   {
     role: 'remoteHarvester',
     priority: 10,
-    goal: 3,
+    goal: 4,
     parameters: {harvesting: false },
     bodyParts: { move: 12, work: 7, carry: 5}
   },
