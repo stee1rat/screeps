@@ -11,6 +11,7 @@ let roleRemoteHarvester = {
       creep.memory.init = true;
       return;
     }
+    console.log(creep.pos.roomName, )
     if (creep.pos.roomName != Game.flags[creep.memory.flagName].pos.roomName) {
       creep.moveTo(Game.flags[creep.memory.flagName].pos);
     } else {
