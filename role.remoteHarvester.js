@@ -33,6 +33,7 @@ let roleRemoteHarvester = {
       }
       if (creep.carry.energy == creep.carryCapacity) {
         creep.memory.harvesting = false;
+        delete creep.memory.source;
       }
     } else {
       if (!creep.memory.target) {
