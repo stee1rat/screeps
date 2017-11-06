@@ -12,7 +12,7 @@ let roleRemoteHarvester = {
       return;
     }
     // workaround for the jumps between rooms
-    console.log(creep.pos.roomName);
+    console.log(JSON.stringify(creep.pos));
     if(creep.pos.x*creep.pos.y === 0 || creep.pos.x === 49 || creep.pos.y === 49) {
       creep.moveTo(new RoomPosition(25,25,creep.pos.roomName));
     }
