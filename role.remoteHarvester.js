@@ -11,36 +11,15 @@ let roleRemoteHarvester = {
       creep.memory.init = true;
       return;
     }
-    // workaround for the jumps between rooms
-    if (creep.pos.x === 0 && creep.pos.roomName != Game.flags[creep.memory.flagName].pos.roomName) {
-      creep.move(RIGHT);
-    }
-    if (creep.pos.x === 49 && creep.pos.roomName != Game.flags[creep.memory.flagName].pos.roomName) {
-      creep.move(LEFT);
-    }
-    if (creep.pos.y === 0 && creep.pos.roomName != Game.flags[creep.memory.flagName].pos.roomName) {
-      creep.move(BOTTOM)
-    }
-    if (creep.pos.y === 49 && creep.pos.roomName != Game.flags[creep.memory.flagName].pos.roomName) {
-      creep.move(TOP)
-    }
-    /*if(creep.pos.x === 0 || creep.pos.y === 0 || creep.pos.x === 49 || creep.pos.y === 49) {
-      creep.moveTo(new RoomPosition(25,25,creep.pos.roomName));
-    }*/
     if (creep.pos.roomName != Game.flags[creep.memory.flagName].pos.roomName) {
       creep.moveTo(Game.flags[creep.memory.flagName].pos);
-    } else {
-      console.log('WOOOOW');
-      let sources = creep.room.find(FIND_SOURCES);
-      for (let i = 0; i < sources.length; i++) {
-        console.log(sources.id);
-          //creep.memory.source = sources.id;
-      }
       return;
     }
     if (creep.carry.energy === 0 || creep.memory.harvesting) {
       if (!creep.memory.source) {
-        creep.memory.init = false;
+        let sources = creep.room.find(FIND_SOURCES);
+        creep.memory.source = sources[0].id;
+        creep.moveTo(sources[0]);
       }
       let source = Game.getObjectById(creep.memory.source);
       let harvest = creep.harvest(source);
