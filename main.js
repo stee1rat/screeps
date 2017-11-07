@@ -1,3 +1,4 @@
+//
 let roleHarvester = require('role.harvester');
 let roleHarvester2 = require('role.new.harvester');
 let roleRemoteHarvester = require('role.remoteHarvester');
