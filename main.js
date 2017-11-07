@@ -26,13 +26,6 @@ let spawnCreeps = [
     bodyParts: { move: 12, work: 7, carry: 5}
   },
   {
-    role: 'remoteHarvester',
-    priority: 10,
-    goal: 4,
-    parameters: {harvesting: false },
-    bodyParts: { move: 12, work: 7, carry: 5}
-  },
-  {
     role: 'miner',
     goal: 2,
     priority: 1,
@@ -42,7 +35,7 @@ let spawnCreeps = [
   {
     role: 'hauler',
     priority: 2,
-    goal: 4,
+    goal: 5,
     parameters: {},
     bodyParts: { move: 7, carry: 7 }
   },
@@ -56,7 +49,7 @@ let spawnCreeps = [
   {
     role: 'builder',
     priority: 4,
-    goal: 1,
+    goal: 2,
     parameters: { harvesting: false },
     bodyParts: { move: 8, carry: 4, work: 4 }
   },
@@ -98,6 +91,41 @@ module.exports.loop = function () {
         existingCreeps[role] ++;
       }
     }
+  }
+
+  for (let name in Memory.flags) {
+    if (!Game.flags[name]) {
+      delete Memory.flags[name];
+      console.log('Clearing non-existing flag memory:', name);
+    }
+  }
+
+  if (!Game.spawns.Spawn1.spawning) {
+    _.each(_.filter(Game.flags, f => f.memory.harvesters), flag => {
+      let harvesters = _.filter(Game.creeps, c =>
+        c.memory.role == 'remoteHarvester' &&
+        c.memory.flagName == flag.name).length;
+
+      if (harvesters < flag.memory.harvesters) {
+        console.log('NEED TO SPAWN ' + (flag.memory.harvesters - harvesters) +
+          ' REMOTE HARVESTERS FOR ' + flag.name);
+
+          let parts = _.map({ move: 12, work: 7, carry: 5}, (p,n) => _.times(p, x => n))
+          parts = _.reduce(parts, (t, n) => t.concat(n),[]);
+          let role = 'remoteHarvester';
+          let name = role + Game.time;
+          let parameters = {
+            role: role,
+            harvesting: false,
+            init: true,
+            home: Game.spawns.Spawn1.pos.roomName,
+            flagName: flag.name
+          }
+
+          Game.spawns.Spawn1.spawnCreep(parts, name, { memory: parameters } );
+          return false;
+        }
+    });
   }
 
   for (let i = 0; i < spawnCreeps.length; i++) {
@@ -145,26 +173,6 @@ module.exports.loop = function () {
     delete Memory.storageID ;
   }
 
-/*   _.each(Game.creeps, function(value) {
-      if (value.memory.source && value.memory.role == 'hauler' && Game.getObjectById(value.memory.source))
-        console.log(value.memory.source, value.carryCapacity, value.name, Game.getObjectById(value.memory.source).amount);
-    });
-
-    let test = _.sum(_.map(Game.creeps, c =>
-      (c.memory.source && c.memory.role == 'hauler' && Game.getObjectById(c.memory.source)) && c.carryCapacity || 0));
-
-    console.log(JSON.stringify(test));*/
-
-  // console.log(Memory.targetsToRefill.length);
-  // _.remove(Memory.targetsToRefill, x => x == '3020e1a4ba9638c5026db3e7')
-  //console.log(Memory.targetsToRefill.length);
-  //let sum = _.sum(test, x => x.energyCapacity);
-
-  //console.log('targetsToRefill: ' + (Game.cpu.getUsed() - cpuUsed))
-  //cpuUsed = Game.cpu.getUsed();
-  //let test = Memory.targetsToRefill.map(x => Game.getObjectById(x));
-//  console.log('targetsToRefill to objects : ' + (Game.cpu.getUsed() - cpuUsed), test.length)
-
   if (Game.spawns.Spawn1.spawning) {
     let spawningCreep = Game.creeps[Game.spawns.Spawn1.spawning.name];
     Game.spawns.Spawn1.room.visual.text(
@@ -174,9 +182,7 @@ module.exports.loop = function () {
       {align: 'left', opacity: 0.8});
   }
 
-  for(var name in Game.creeps) {
-    var creep = Game.creeps[name];
-
+  _.each(_.filter(Game.creeps, c => c.memory.role != 'remoteHarvester'), creep => {
     if(creep.memory.role == 'harvester') {
       cpuUsed = Game.cpu.getUsed();
       roleHarvester.run(creep);
@@ -218,12 +224,19 @@ module.exports.loop = function () {
       roleMiner.run(creep);
       //console.log( 'MINER: ' + (Game.cpu.getUsed() - cpuUsed ));
     }
+  });
+
+  _.each(_.filter(Game.creeps, c => c.memory.role == 'remoteHarvester'), creep => {
     if(creep.memory.role == 'remoteHarvester') {
       cpuUsed = Game.cpu.getUsed();
       roleRemoteHarvester.run(creep);
-      //console.log( 'MINER: ' + (Game.cpu.getUsed() - cpuUsed ));
+      //console.log( 'REMOTEHARVESTER: ' + (Game.cpu.getUsed() - cpuUsed ));
     }
-  }
+  });
+
+  //for (let name in Game.flags) {
+    //console.log(JSON.stringify(Game.flags[name].memory));
+  //}
   cpuUsed = Game.cpu.getUsed();
   towers.run();
   //console.log( 'TOWERS: ' + (Game.cpu.getUsed() - cpuUsed ));

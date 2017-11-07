@@ -46,27 +46,30 @@ let roleUpgrader = {
             source = creep.pos.findClosestByPath(availableEnergy);
           }
         }
-        // look for avaiable energy in containers
-        // containers with more energy are prefered
-        if (!source && Memory.containers.length) {
-          let containers = _.map(Memory.containers, e => Game.getObjectById(e));
-          let availableContainers = _.filter(containers, x =>
-            x.store[RESOURCE_ENERGY] - _.sum(_.map(Game.creeps, c =>
-              //(c.memory.role == 'hauler' && c.memory.source == x.id &&
-              (c.memory.source == x.id &&
-               Game.getObjectById(c.memory.source)) &&
-               c.carryCapacity || 0)) > 0
-          );
-          if (availableContainers) {
-            source = availableContainers.sort((a, b) =>
-              b.store[RESOURCE_ENERGY] - a.store[RESOURCE_ENERGY])[0];
+        // take energy from container or storagem, whatever is closer
+        if (!source) {
+          let containersAndStorage = [];
+          if (Memory.containers.length) {
+            let containers = _.map(Memory.containers, e => Game.getObjectById(e));
+            let availableContainers = _.filter(containers, x =>
+              x.store[RESOURCE_ENERGY] - _.sum(_.map(Game.creeps, c =>
+                //(c.memory.role == 'hauler' && c.memory.source == x.id &&
+                (c.memory.source == x.id &&
+                 Game.getObjectById(c.memory.source)) &&
+                 c.carryCapacity || 0)) > 0
+            );
+            if (availableContainers) {
+                containersAndStorage = containersAndStorage.concat(availableContainers);
+            }
           }
-        }
-        // if there are no other energy sources get it from storage
-        if (!source && Memory.storageID) {
-          let storage = Game.getObjectById(Memory.storageID);
-          if (storage.store[RESOURCE_ENERGY] > 0) {
-            source = storage;
+          if (Memory.storageID) {
+            let storage = Game.getObjectById(Memory.storageID);
+            if (storage.store[RESOURCE_ENERGY] > 0) {
+              containersAndStorage = containersAndStorage.concat(storage);
+            }
+          }
+          if (containersAndStorage.length) {
+            source = creep.pos.findClosestByPath(containersAndStorage);
           }
         }
         // if everything is empty, lets go mining

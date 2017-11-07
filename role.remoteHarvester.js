@@ -1,11 +1,13 @@
 let roleRemoteHarvester = {
 
   run: function(creep) {
-    if (creep.spawning || !creep.memory.init ) {
-      let flag = _.map(Game.flags, f => f)
-      creep.memory.flagName = flag[0].name;
-      creep.memory.home = creep.pos.roomName;
-      creep.memory.init = true;
+    if (creep.spawning || !creep.memory.init) {
+      if (!creep.memory.init) {
+        let flag = _.map(_.filter(Game.flags, f => f.memory.harvesting), f => f)
+        creep.memory.flagName = flag[0].name;
+        creep.memory.home = creep.pos.roomName;
+        creep.memory.init = true;
+      }
       return;
     }
     if (creep.carry.energy === 0 || creep.memory.harvesting) {
@@ -13,12 +15,15 @@ let roleRemoteHarvester = {
         creep.moveTo(Game.flags[creep.memory.flagName].pos);
         return;
       }
-      if (!creep.memory.source) {
-        let sources = creep.room.find(FIND_SOURCES);
+      let source = Game.getObjectById(creep.memory.source);
+      if (!creep.memory.source || source.energy == 0) {
+        let sources = creep.room.find(FIND_SOURCES_ACTIVE);
+        if (!sources.length) {
+          sources = creep.room.find(FIND_SOURCES);
+        }
         creep.memory.source = sources[0].id;
         creep.moveTo(sources[0]);
       }
-      let source = Game.getObjectById(creep.memory.source);
       let harvest = creep.harvest(source);
       if (harvest == ERR_NOT_IN_RANGE) {
         creep.moveTo(source, {
