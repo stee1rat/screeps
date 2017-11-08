@@ -9,10 +9,10 @@ let roleClaimer = {
     }
     console.log(creep.pos.roomName, creep.memory.roomName, creep.memory.controller);
     if (!creep.memory.controller) {
-      let controller = this.getNearestController(creep);
+      let controller = this.getRoomController(creep);
       console.log('controller: ' + controller);
       if (controller.length) {
-        creep.memory.controller = controller.id;
+        creep.memory.controller = controller[0].id;
       }
     }
     if (creep.memory.controller) {
@@ -22,10 +22,10 @@ let roleClaimer = {
       }
     }
   },
-  getNearestController: function(creep) {
+  getRoomController: function(creep) {
     return creep.room.find(FIND_STRUCTURES, {
       filter: s => s.structureType == STRUCTURE_CONTROLLER
-    })[0];
+    });
   }
 };
 module.exports = roleClaimer;
