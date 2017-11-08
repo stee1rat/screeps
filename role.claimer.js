@@ -12,8 +12,8 @@ module.exports = { // role claimer
       creep.moveTo(creep.room.controller);
     }
     if (claim == OK) {
-      let flag = creep.room.find(FIND_FLAGS, {filter: f => f.memory.claim});
-      _.each(flag, f => f.remove());
+      let flags = creep.room.find(FIND_FLAGS, {filter: f => f.memory.claim});
+      _.each(flags, flag => flag.remove());
       creep.suicide();
     }
   }
