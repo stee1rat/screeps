@@ -8,10 +8,13 @@ module.exports = { // role claimer
       return;
     }
     let claim = creep.claimController(creep.room.controller);
-    console.log(claim);
     if (claim == ERR_NOT_IN_RANGE) {
-      let move = creep.moveTo(creep.room.controller);
-      console.log(move);
+      creep.moveTo(creep.room.controller);
+    }
+    if (claim == OK) {
+      let flag = creep.room.find(FIND_FLAGS, {filter: f => f.memory.claim});
+      _.each(flag, f => f.remove());
+      creep.suicide();
     }
   }
 };
