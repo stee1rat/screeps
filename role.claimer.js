@@ -24,7 +24,7 @@ let roleClaimer = {
   getNearestController: function(creep) {
     return creep.room.find(FIND_STRUCTURES, {
       filter: s => s.structureType == STRUCTURE_CONTROLLER
-    });
+    })[0];
   }
 };
 module.exports = roleClaimer;
