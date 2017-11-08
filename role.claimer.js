@@ -7,6 +7,30 @@ let roleClaimer = {
       creep.moveTo(new RoomPosition(25, 25, creep.memory.roomName));
       return;
     }
+    /*if (!creep.memory.controller) {
+      let controller = this.getRoomController(creep);
+      if (controller.length) {
+        creep.memory.controller = controller[0].id;
+      }
+    }*/
+    //if (creep.memory.controller) {
+      let claim = creep.claimController(creep.room.controller);
+      console.log(claim);
+      if (!claim) {
+        creep.moveTo(controller);
+      }
+  //  }
+  }
+};
+/*let roleClaimer = {
+  run: function(creep) {
+    if (creep.spawning) {
+      return;
+    }
+    if (creep.pos.roomName != creep.memory.roomName) {
+      creep.moveTo(new RoomPosition(25, 25, creep.memory.roomName));
+      return;
+    }
     if (!creep.memory.controller) {
       let controller = this.getRoomController(creep);
       if (controller.length) {
@@ -15,7 +39,7 @@ let roleClaimer = {
     }
     if (creep.memory.controller) {
       let controller = Game.getObjectById(creep.memory.controller);
-      if (!creep.claimController(controller)) {
+      if (!creep.claimController(creep.room.controller)) {
         console.log(creep.moveTo(controller));
       }
     }
@@ -25,5 +49,5 @@ let roleClaimer = {
       filter: s => s.structureType == STRUCTURE_CONTROLLER
     });
   }
-};
+};*/
 module.exports = roleClaimer;
