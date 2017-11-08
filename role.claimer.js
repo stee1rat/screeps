@@ -7,7 +7,7 @@ let roleClaimer = {
       creep.moveTo(new RoomPosition(25, 25, creep.memory.roomName));
       return;
     }
-    console.log(creep.pos.roomName, creep.memory.roomName);
+    console.log(creep.pos.roomName, creep.memory.roomName, creep.memory.controller);
     if (!creep.memory.controller) {
       let controller = this.getNearestController(creep);
       if (controller.length) {
