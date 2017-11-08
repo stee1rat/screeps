@@ -101,7 +101,7 @@ module.exports.loop = function () {
     }
   }
 
-  let spawn = !Game.spawns.Spawn1;
+  let spawn = Game.spawns.Spawn1;
   if (!spawn.spawning) {
     // Spawning remote claimers
     _.each(_.filter(Game.flags, f => f.memory.claim &&
