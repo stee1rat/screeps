@@ -17,7 +17,7 @@ let roleClaimer = {
       let claim = creep.claimController(creep.room.controller);
       console.log(claim);
       if (claim == ERR_NOT_IN_RANGE) {
-        let move = creep.moveTo(controller);
+        let move = creep.moveTo(creep.room.controller);
         console.log(move);
       }
   //  }
