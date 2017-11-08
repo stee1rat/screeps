@@ -131,7 +131,7 @@ profiler.wrap(function() {
     });
     // Spawning remote claimers
     _.each(_.filter(Game.flags, f => f.memory.claim &&
-      !_.some(Game.creeps, c => c.memory.flagName == f.name)), flag => {
+      !_.some(Game.creeps, c => c.memory.roomName == f.pos.roomName)), flag => {
         console.log('NEED TO SPAWN A CLAIMER FOR ' + flag.name);
         let parts = _.map({ claim: 1, move: 1 }, (p, n) => _.times(p, x => n));
         parts = _.reduce(parts, (t, n) => t.concat(n),[]);
