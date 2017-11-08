@@ -141,7 +141,7 @@ profiler.wrap(function() {
           role: role,
           roomName: flag.pos.roomName
         };
-        let spawn = spawn.spawnCreep(parts, name, { memory: parameters } );    
+        spawn.spawnCreep(parts, name, { memory: parameters } );    
         return false;
     });
   }
