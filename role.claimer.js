@@ -10,6 +10,7 @@ let roleClaimer = {
     console.log(creep.pos.roomName, creep.memory.roomName, creep.memory.controller);
     if (!creep.memory.controller) {
       let controller = this.getNearestController(creep);
+      console.log('controller: ' + controller);
       if (controller.length) {
         creep.memory.controller = controller.id;
       }
