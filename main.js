@@ -11,6 +11,9 @@ let towers = require('towers');
 
 require('creeps.prototype')();
 
+const profiler = require('screeps-profiler');
+profiler.enable();
+
 let spawnCreeps = [
   {
     role: 'harvester',
@@ -69,6 +72,7 @@ if (Memory.sources == []._) Memory.sources = [];
 Memory.parkingArea = [[34, 38], [39, 40]];
 
 module.exports.loop = function () {
+profiler.wrap(function() {
   let TOTAL_CPU = Game.cpu.getUsed();
   let existingCreeps = {};
 
@@ -127,7 +131,7 @@ module.exports.loop = function () {
         c.memory.flagName == flag.name).length;
       if (harvesters < flag.memory.harvesters) {
           console.log('NEED TO SPAWN ' + (flag.memory.harvesters - harvesters) +
-                      ' REMOTE HARVESTERS FOR ' + flag.name);          
+                      ' REMOTE HARVESTERS FOR ' + flag.name);
           let parts = _.map({ move: 12, work: 7, carry: 5}, (p,n) => _.times(p, x => n));
           parts = _.reduce(parts, (t, n) => t.concat(n),[]);
           let role = 'remoteHarvester';
@@ -258,4 +262,5 @@ module.exports.loop = function () {
   towers.run();
   //console.log( 'TOWERS: ' + (Game.cpu.getUsed() - cpuUsed ));
   //console.log( 'TOTAL: ' + (Game.cpu.getUsed() - TOTAL_CPU ));
+});
 };
