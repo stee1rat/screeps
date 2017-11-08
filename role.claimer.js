@@ -3,11 +3,11 @@ let roleClaimer = {
     if (creep.spawning) {
       return;
     }
-    console.log(creep.pos.roomName, creep.memory.roomName);
     if (creep.pos.roomName != creep.memory.roomName) {
       creep.moveTo(new RoomPosition(25, 25, creep.memory.roomName));
       return;
     }
+    console.log(creep.pos.roomName, creep.memory.roomName);
     if (!creep.memory.controller) {
       let controller = this.getNearestController(creep);
       if (controller.length) {
