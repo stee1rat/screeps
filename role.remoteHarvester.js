@@ -5,7 +5,6 @@ module.exports = { // remote harvester role
       return;
     }
     if (creep.carry.energy === 0 || creep.memory.harvesting) {
-      console.log(creep.name + ': ' + creep.memory.flagName);
       if (creep.pos.roomName != Game.flags[creep.memory.flagName].pos.roomName) {
         creep.moveTo(Game.flags[creep.memory.flagName].pos, {reusePath: 10});
         return;
