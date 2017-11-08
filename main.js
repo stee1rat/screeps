@@ -7,6 +7,7 @@ let roleBuilder = require('role.builder');
 let roleHauler = require('role.hauler');
 let roleFixer = require('role.fixer');
 let roleMiner = require('role.miner');
+let roleClaimer = require('role.claimer');
 let towers = require('towers');
 
 require('creeps.prototype')();
@@ -130,8 +131,6 @@ profiler.wrap(function() {
     });
 
     // Spawning remote claimers
-    console.log('CLAIMERS: ' + _.filter(Game.flags, f => f.memory.claim &&
-      !_.some(Game.creeps, c => c.memory.flagName == f.name)).length);
     _.each(_.filter(Game.flags, f => f.memory.claim &&
       !_.some(Game.creeps, c => c.memory.flagName == f.name), flag => {
         console.log('NEED TO SPAWN A CLAIMER FOR ' + flag.name);
@@ -143,7 +142,8 @@ profiler.wrap(function() {
           role: role,
           roomName: flag.pos.roomName
         };
-        spawn.spawnCreep(parts, name, { memory: parameters } );
+        let spawn = spawn.spawnCreep(parts, name, { memory: parameters } );
+        console.log ('CLAIMER SPAWN: ' + spawn);
         return false;
     }));
   }
@@ -247,11 +247,15 @@ profiler.wrap(function() {
   });
 
   _.each(_.filter(Game.creeps, c => c.memory.role == 'remoteHarvester'), creep => {
-    if(creep.memory.role == 'remoteHarvester') {
-      cpuUsed = Game.cpu.getUsed();
-      roleRemoteHarvester.run(creep);
-      //console.log( 'REMOTEHARVESTER: ' + (Game.cpu.getUsed() - cpuUsed ));
-    }
+    cpuUsed = Game.cpu.getUsed();
+    roleRemoteHarvester.run(creep);
+    //console.log( 'REMOTEHARVESTER: ' + (Game.cpu.getUsed() - cpuUsed ));
+  });
+
+  _.each(_.filter(Game.creeps, c => c.memory.role == 'claimer'), creep => {
+    cpuUsed = Game.cpu.getUsed();
+    roleRemoteHarvester.run(creep);
+    //console.log( 'REMOTEHARVESTER: ' + (Game.cpu.getUsed() - cpuUsed ));
   });
 
   //for (let name in Game.flags) {
