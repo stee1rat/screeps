@@ -54,7 +54,7 @@ let spawnCreeps = [
   {
     role: 'builder',
     priority: 4,
-    goal: 2,
+    goal: 0,
     parameters: { harvesting: false },
     bodyParts: { move: 8, carry: 4, work: 4 }
   },
@@ -223,6 +223,19 @@ profiler.wrap(function() {
         let parts = _.map({ move: 1, work: 1, carry: 1}, (p,n) => _.times(p, x => n));
         parts = _.reduce(parts, (t, n) => t.concat(n),[]);
         let role = 'harvester';
+        let name = role + Game.time;
+        let parameters = { role: role, harvesting: false }
+        spawn.spawnCreep(parts, name, { memory: parameters } )
+      }
+
+      //spawn upgraders
+      const upgraders = _.filter(Game.creeps, c =>
+          c.memory.role == 'upgrader' &&
+          c.pos.roomName == spawn.pos.roomName).length;
+      if (upgraders < 3) {
+        let parts = _.map({ move: 1, work: 1, carry: 1}, (p,n) => _.times(p, x => n));
+        parts = _.reduce(parts, (t, n) => t.concat(n),[]);
+        let role = 'upgrader';
         let name = role + Game.time;
         let parameters = { role: role, harvesting: false }
         spawn.spawnCreep(parts, name, { memory: parameters } )
