@@ -141,7 +141,7 @@ profiler.wrap(function() {
           role: role,
           roomName: flag.pos.roomName
         };
-        spawn.spawnCreep(parts, name, { memory: parameters } );    
+        spawn.spawnCreep(parts, name, { memory: parameters } );
         return false;
     });
   }
@@ -252,7 +252,7 @@ profiler.wrap(function() {
 
   _.each(_.filter(Game.creeps, c => c.memory.role == 'claimer'), creep => {
     cpuUsed = Game.cpu.getUsed();
-    roleRemoteHarvester.run(creep);
+    roleClaimer.run(creep);
     //console.log( 'REMOTEHARVESTER: ' + (Game.cpu.getUsed() - cpuUsed ));
   });
 
