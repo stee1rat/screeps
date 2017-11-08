@@ -1,13 +1,7 @@
 module.exports = { // remote harvester role
 
   run: function(creep) {
-    if (creep.spawning || !creep.memory.init) {
-      if (!creep.memory.init) {
-        let flag = _.map(_.filter(Game.flags, f => f.memory.harvesting), f => f)
-        creep.memory.flagName = flag[0].name;
-        creep.memory.home = creep.pos.roomName;
-        creep.memory.init = true;
-      }
+    if (creep.spawning) {
       return;
     }
     if (creep.carry.energy === 0 || creep.memory.harvesting) {

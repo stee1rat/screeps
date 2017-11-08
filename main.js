@@ -107,6 +107,28 @@ profiler.wrap(function() {
 
   let spawn = Game.spawns.Spawn1;
   if (!spawn.spawning) {
+    // Spawning remote harvesters
+    _.each(_.filter(Game.flags, f => f.memory.harvesters), flag => {
+      let harvesters = _.filter(Game.creeps, c =>
+        c.memory.role == 'remoteHarvester' &&
+        c.memory.flagName == flag.name).length;
+      if (harvesters < flag.memory.harvesters) {
+          console.log('NEED TO SPAWN ' + (flag.memory.harvesters - harvesters) +
+                      ' REMOTE HARVESTERS FOR ' + flag.name);
+          let parts = _.map({ move: 12, work: 7, carry: 5}, (p,n) => _.times(p, x => n));
+          parts = _.reduce(parts, (t, n) => t.concat(n),[]);
+          let role = 'remoteHarvester';
+          let name = role + Game.time;
+          let parameters = {
+            role: role,
+            home: spawn.pos.roomName,
+            flagName: flag.name
+          }
+          spawn.spawnCreep(parts, name, { memory: parameters } );
+          return false;
+        }
+    });
+    
     // Spawning remote claimers
     _.each(_.filter(Game.flags, f => f.memory.claim &&
       !_.some(Game.creeps, c => c.memory.flagName == f.name), flag => {
@@ -122,30 +144,6 @@ profiler.wrap(function() {
         spawn.spawnCreep(parts, name, { memory: parameters } );
         return false;
     }));
-
-    // Spawning remote harvesters
-    _.each(_.filter(Game.flags, f => f.memory.harvesters), flag => {
-      let harvesters = _.filter(Game.creeps, c =>
-        c.memory.role == 'remoteHarvester' &&
-        c.memory.flagName == flag.name).length;
-      if (harvesters < flag.memory.harvesters) {
-          console.log('NEED TO SPAWN ' + (flag.memory.harvesters - harvesters) +
-                      ' REMOTE HARVESTERS FOR ' + flag.name);
-          let parts = _.map({ move: 12, work: 7, carry: 5}, (p,n) => _.times(p, x => n));
-          parts = _.reduce(parts, (t, n) => t.concat(n),[]);
-          let role = 'remoteHarvester';
-          let name = role + Game.time;
-          let parameters = {
-            role: role,
-            harvesting: false,
-            init: true,
-            home: spawn.pos.roomName,
-            flagName: flag.name
-          }
-          spawn.spawnCreep(parts, name, { memory: parameters } );
-          return false;
-        }
-    });
   }
 
   for (let i = 0; i < spawnCreeps.length; i++) {
