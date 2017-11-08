@@ -252,7 +252,7 @@ profiler.wrap(function() {
 
   _.each(_.filter(Game.creeps, c => c.memory.role == 'claimer'), creep => {
     cpuUsed = Game.cpu.getUsed();
-    roleClaimer.run(creep);
+    //roleClaimer.run(creep);
     //console.log( 'REMOTEHARVESTER: ' + (Game.cpu.getUsed() - cpuUsed ));
   });
 
