@@ -129,10 +129,9 @@ profiler.wrap(function() {
           return false;
         }
     });
-
     // Spawning remote claimers
     _.each(_.filter(Game.flags, f => f.memory.claim &&
-      !_.some(Game.creeps, c => c.memory.flagName == f.name), flag => {
+      !_.some(Game.creeps, c => c.memory.flagName == f.name)), flag => {
         console.log('NEED TO SPAWN A CLAIMER FOR ' + flag.name);
         let parts = _.map({ claim: 1, move: 1 }, (p, n) => _.times(p, x => n));
         parts = _.reduce(parts, (t, n) => t.concat(n),[]);
@@ -142,10 +141,9 @@ profiler.wrap(function() {
           role: role,
           roomName: flag.pos.roomName
         };
-        let spawn = spawn.spawnCreep(parts, name, { memory: parameters } );
-        console.log ('CLAIMER SPAWN: ' + spawn);
+        let spawn = spawn.spawnCreep(parts, name, { memory: parameters } );    
         return false;
-    }));
+    });
   }
 
   for (let i = 0; i < spawnCreeps.length; i++) {
