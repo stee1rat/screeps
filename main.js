@@ -110,8 +110,7 @@ profiler.wrap(function() {
     // Spawning remote claimers
     _.each(_.filter(Game.flags, f => f.memory.claim &&
       !_.some(Game.creeps, c => c.memory.flagName == f.name), flag => {
-        console.log('NEED TO SPAWN ' + (flag.memory.harvesters - harvesters) +
-                    ' A CLAIMER FOR ' + flag.name);
+        console.log('NEED TO SPAWN A CLAIMER FOR ' + flag.name);
         let parts = _.map({ claim: 1, move: 1 }, (p, n) => _.times(p, x => n));
         parts = _.reduce(parts, (t, n) => t.concat(n),[]);
         let role = 'claimer';
