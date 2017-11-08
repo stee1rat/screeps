@@ -22,7 +22,7 @@ let roleClaimer = {
   },
   getNearestController: function(creep) {
     return creep.room.find(FIND_STRUCTURES, {
-      filter: s => structure.structureType == STRUCTURE_CONTROLLER
+      filter: s => s.structureType == STRUCTURE_CONTROLLER
     });
   }
 };
