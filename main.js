@@ -7,6 +7,7 @@ let roleHauler = require('role.hauler');
 let roleFixer = require('role.fixer');
 let roleMiner = require('role.miner');
 let roleClaimer = require('role.claimer');
+let roleDefender = require('role.defender');
 let towers = require('towers');
 
 require('creeps.prototype')();
@@ -58,11 +59,18 @@ let spawnCreeps = [
     bodyParts: { move: 8, carry: 4, work: 4 }
   },
   {
+    role: 'defender',
+    priority: 9,
+    goal: 2,
+    parameters: { harvesting: false, repairTaget: null},
+    bodyParts: { move: 7, tough: 3, attack: 3, heal: 1 }
+  },
+  {
     role: 'fixer',
     priority: 5,
     goal: 0,
-    parameters: { harvesting: false, repairTaget: null},
-    bodyParts: { move: 5, carry: 2, work: 3 }
+    parameters: { },
+    bodyParts: { move: 7, carry: 2, work: 3 }
   }];
 
 spawnCreeps.sort((a, b) => a.priority - b.priority);
@@ -168,8 +176,6 @@ profiler.wrap(function() {
     }
   }
 
-  let cpuUsed = Game.cpu.getUsed();
-
   let structures = Game.spawns.Spawn1.room.find(FIND_STRUCTURES);
 
   Memory.structures = structures.map(s => s.id);
@@ -199,39 +205,109 @@ profiler.wrap(function() {
 /*  console.log('------- rooms --------')
   _.each(_.filter(Game.rooms, r => r.controller.my), r => console.log(r.name, r.name));*/
 
+  _.each(_.filter(Game.spawns, s => s.name != 'Spawn1'), spawn => {
+    if (!spawn.memory.sources) {
+      spawn.memory.sources = spawn.room.find(FIND_SOURCES).length;
+    }
+
+    const miners = _.filter(Game.creeps, c =>
+      c.memory.role == 'miner' &&
+      c.pos.roomName == spawn.pos.roomName).length;
+
+    if (spawn.room.energyCapacityAvailable == 300) {
+      //spawn harvesters
+      const harvesters = _.filter(Game.creeps, c =>
+          c.memory.role == 'harvester' &&
+          c.pos.roomName == spawn.pos.roomName).length;
+      if (harvesters/2 < spawn.memory.sources) {
+        let parts = _.map({ move: 1, work: 1, carry: 1}, (p,n) => _.times(p, x => n));
+        parts = _.reduce(parts, (t, n) => t.concat(n),[]);
+        let role = 'harvester';
+        let name = role + Game.time;
+        let parameters = { role: role, harvesting: false }
+        spawn.spawnCreep(parts, name, { memory: parameters } )
+      }
+    }
+
+    if (spawn.room.energyCapacityAvailable >= 750) {
+      // upgrader = [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY]
+      // miner = [MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK]
+      // hauler = [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY]
+
+      const upgraders = _.filter(Game.creeps, c =>
+          c.memory.role == 'upgrader' &&
+          c.pos.roomName == spawn.pos.roomName).length;
+
+      if (upgraders < spawn.memory.sources*2) {
+        let role = 'upgrader';
+        let name = role + Game.time;
+        let parameters = { role: role }
+        spawn.spawnCreep([MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY], name, { memory: parameters } );
+      }
+
+      const haulers = _.filter(Game.creeps, c =>
+          c.memory.role == 'hauler' &&
+          c.pos.roomName == spawn.pos.roomName).length;
+
+      if (haulers < spawn.memory.sources*2) {
+        let role = 'hauler';
+        let name = role + Game.time;
+        let parameters = { role: role }
+        spawn.spawnCreep([MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], name, { memory: parameters } );
+      }
+
+      const miners = _.filter(Game.creeps, c =>
+          c.memory.role == 'miner' &&
+          c.pos.roomName == spawn.pos.roomName).length;
+
+      if (miners < spawn.memory.sources) {
+        let role = 'miner';
+        let name = role + Game.time;
+        let parameters = { role: role }
+        spawn.spawnCreep([MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK], name, { memory: parameters } );
+      }
+
+    }
+
+    if (miners < spawn.memory.sources) {
+      //spawn miner
+      /*let parts = _.map({ move: 1, work: 1}, (p,n) => _.times(p, x => n));
+      parts = _.reduce(parts, (t, n) => t.concat(n),[]);
+      let role = 'miner';
+      let name = role + Game.time;
+      let parameters = {
+        role: role,
+        home: spawn.pos.roomName,
+        flagName: flag.name
+      }
+      spawn.spawnCreep(parts, name, { memory: parameters } );*/
+    }
+  });
+
   _.each(_.filter(Game.creeps, c => c.memory.role != 'remoteHarvester'), creep => {
     if(creep.memory.role == 'harvester') {
-      cpuUsed = Game.cpu.getUsed();
       roleHarvester.run(creep);
     }
     if(creep.memory.role == 'harvester2') {
-      cpuUsed = Game.cpu.getUsed();
       roleHarvester2.run(creep);
     }
     if(creep.memory.role == 'upgrader') {
-      cpuUsed = Game.cpu.getUsed();
       roleUpgrader.run(creep);
-      if (Game.cpu.getUsed() - cpuUsed > 0.5) {
-      }
     }
     if(creep.memory.role == 'builder') {
-      cpuUsed = Game.cpu.getUsed();
       roleBuilder.run(creep);
     }
     if(creep.memory.role == 'hauler') {
-      cpuUsed = Game.cpu.getUsed();
       roleHauler.run(creep);
-      if (Game.cpu.getUsed() - cpuUsed > 0.5) {
-        creep.say('CPU: ' + (Game.cpu.getUsed() - cpuUsed) + '!!!!!')
-      }
     }
     if(creep.memory.role == 'fixer') {
-      cpuUsed = Game.cpu.getUsed();
       roleFixer.run(creep);
     }
     if(creep.memory.role == 'miner') {
-      cpuUsed = Game.cpu.getUsed();
       roleMiner.run(creep);
+    }
+    if(creep.memory.role == 'defender') {
+      roleDefender.run(creep);
     }
   });
 
@@ -243,6 +319,7 @@ profiler.wrap(function() {
   _.each(_.filter(Game.creeps, c => c.memory.role == 'claimer'), creep => {
     cpuUsed = Game.cpu.getUsed();
   });
+
   cpuUsed = Game.cpu.getUsed();
   towers.run();
 });
