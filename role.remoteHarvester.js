@@ -1,4 +1,4 @@
-let roleRemoteHarvester = {
+module.exports = { // remote harvester role
 
   run: function(creep) {
     if (creep.spawning || !creep.memory.init) {
@@ -12,7 +12,7 @@ let roleRemoteHarvester = {
     }
     if (creep.carry.energy === 0 || creep.memory.harvesting) {
       if (creep.pos.roomName != Game.flags[creep.memory.flagName].pos.roomName) {
-        creep.moveTo(Game.flags[creep.memory.flagName].pos);
+        creep.moveTo(Game.flags[creep.memory.flagName].pos, {reusePath: 10});
         return;
       }
       let source = Game.getObjectById(creep.memory.source);
@@ -77,7 +77,7 @@ let roleRemoteHarvester = {
         if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
           creep.moveTo(target, {
               visualizePathStyle: {stroke: '#ffffff'},
-              reusePath: 5
+              reusePath: 10
           });
         }
       } else {
@@ -86,5 +86,3 @@ let roleRemoteHarvester = {
     }
 	}
 };
-
-module.exports = roleRemoteHarvester;
