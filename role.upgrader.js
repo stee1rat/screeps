@@ -5,6 +5,9 @@ let roleUpgrader = {
   run: function(creep) {
     var startCpu = Game.cpu.getUsed();
     if (creep.spawning || !creep.memory.init ) {
+      if (!creep.memory.controller) {
+        creep.memory.controller = creep.room.controller.id;
+      }
       creep.memory.init = true;
       return;
     }
@@ -19,8 +22,9 @@ let roleUpgrader = {
     }
     if (creep.memory.upgrading) {
       var upgradeCpu = Game.cpu.getUsed();
-      if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-        creep.moveTo(creep.room.controller, {
+      const controller = Game.getObjectById(creep.memory.controller);
+      if (creep.upgradeController(controller) == ERR_NOT_IN_RANGE) {
+        creep.moveTo(controller, {
             visualizePathStyle: {stroke: '#ffffff'}, reusePath: 5
         });
         //console.log('MOVE TO CONTROLLER: ' + (Game.cpu.getUsed() - startCpu ));
