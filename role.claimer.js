@@ -7,10 +7,8 @@ let roleClaimer = {
       creep.moveTo(new RoomPosition(25, 25, creep.memory.roomName));
       return;
     }
-    console.log(creep.pos.roomName, creep.memory.roomName, creep.memory.controller);
     if (!creep.memory.controller) {
       let controller = this.getRoomController(creep);
-      console.log('controller: ' + controller);
       if (controller.length) {
         creep.memory.controller = controller[0].id;
       }
@@ -18,7 +16,7 @@ let roleClaimer = {
     if (creep.memory.controller) {
       let controller = Game.getObjectById(creep.memory.controller);
       if (!creep.claimController(controller)) {
-        creep.moveTo(controller);
+        console.log(creep.moveTo(controller));
       }
     }
   },
