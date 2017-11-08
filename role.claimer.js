@@ -11,10 +11,10 @@ module.exports = { // role claimer
     if (claim == ERR_NOT_IN_RANGE) {
       creep.moveTo(creep.room.controller);
     }
-    if (claim == OK) {
+    /*if (claim == OK) {
       let flags = creep.room.find(FIND_FLAGS, {filter: f => f.memory.claim});
       _.each(flags, flag => flag.remove());
       creep.suicide();
-    }
+    }*/
   }
 };
