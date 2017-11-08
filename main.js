@@ -128,8 +128,10 @@ profiler.wrap(function() {
           return false;
         }
     });
-    
+
     // Spawning remote claimers
+    console.log('CLAIMERS: ' + _.filter(Game.flags, f => f.memory.claim &&
+      !_.some(Game.creeps, c => c.memory.flagName == f.name).length);
     _.each(_.filter(Game.flags, f => f.memory.claim &&
       !_.some(Game.creeps, c => c.memory.flagName == f.name), flag => {
         console.log('NEED TO SPAWN A CLAIMER FOR ' + flag.name);
