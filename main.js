@@ -101,17 +101,37 @@ module.exports.loop = function () {
     }
   }
 
-  if (!Game.spawns.Spawn1.spawning) {
+  let spawn = !Game.spawns.Spawn1;
+  if (!spawn.spawning) {
+    // Spawning remote claimers
+    _.each(_.filter(Game.flags, f => f.memory.claim &&
+      !_.some(Game.creeps, c => c.memory.flagName == f.name), flag => {
+        //console.log('NEED TO SPAWN ' + (flag.memory.harvesters - harvesters) + ' A CLAIMER FOR ' + flag.name);
+        console.log('NEED TO SPAWN %d A CLAIMER FOR %s',
+          (flag.memory.harvesters - harvesters), flag.name);
+        let parts = _.map({ claim: 1, move: 1 }, (p, n) => _.times(p, x => n));
+        parts = _.reduce(parts, (t, n) => t.concat(n),[]);
+        let role = 'claimer';
+        let name = role + Game.time;
+        let parameters = {
+          role: role,
+          roomName: flag.pos.roomName
+        };
+        spawn.spawnCreep(parts, name, { memory: parameters } );
+        return false;
+    });
+
+    // Spawning remote harvesters
     _.each(_.filter(Game.flags, f => f.memory.harvesters), flag => {
       let harvesters = _.filter(Game.creeps, c =>
         c.memory.role == 'remoteHarvester' &&
         c.memory.flagName == flag.name).length;
-
       if (harvesters < flag.memory.harvesters) {
-        console.log('NEED TO SPAWN ' + (flag.memory.harvesters - harvesters) +
-          ' REMOTE HARVESTERS FOR ' + flag.name);
-
-          let parts = _.map({ move: 12, work: 7, carry: 5}, (p,n) => _.times(p, x => n))
+          /*console.log('NEED TO SPAWN ' + (flag.memory.harvesters - harvesters) +
+          ' REMOTE HARVESTERS FOR ' + flag.name);*/
+          console.log('NEED TO SPAWN %d REMOTE HARVESTERS FOR %s',
+            (flag.memory.harvesters - harvesters), flag.name);
+          let parts = _.map({ move: 12, work: 7, carry: 5}, (p,n) => _.times(p, x => n));
           parts = _.reduce(parts, (t, n) => t.concat(n),[]);
           let role = 'remoteHarvester';
           let name = role + Game.time;
@@ -119,11 +139,10 @@ module.exports.loop = function () {
             role: role,
             harvesting: false,
             init: true,
-            home: Game.spawns.Spawn1.pos.roomName,
+            home: spawn.pos.roomName,
             flagName: flag.name
           }
-
-          Game.spawns.Spawn1.spawnCreep(parts, name, { memory: parameters } );
+          spawn.spawnCreep(parts, name, { memory: parameters } );
           return false;
         }
     });

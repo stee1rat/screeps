@@ -1,14 +1,29 @@
 let roleClaimer = {
   run: function(creep) {
-    if (creep.spawning || !creep.memory.init ) {
-      _.each(_.filter(Game.flags, f => f.memory.claim &&
-          !_.some(Game.creeps, c => c.memory.flagName == f.name)), flag => {
-        creep.memory.flagName = flag.name;
-        creep.memory.init = true;
-      });
+    if (creep.spawning) {
       return;
     }
+    if (!creep.memory.controller) {
+      if (creep.pos.roomName != creep.memory.roomName) {
+        creep.moveTo(new roomPosition(25, 25, creep.memory.roomName);
+        return;
+      }
+      let controller = getNearestController(creep);
+      if (controller.length) {
+        creep.memory.controller = controller.id;
+      }
+    }
+    if (creep.memory.controller) {
+      let controller = Game.getObjectById(creep.memory.controller);
+      if (!creep.claimController(controller)) {
+        creep.moveTo(controller);
+      }
+    }
+  },
+  getNearestController: function(creep) {
+    return creep.room.find(FIND_STRUCTURES, {
+      filter: s => structure.structureType == STRUCTURE_CONTROLLER
+    });
   }
 };
-
 module.exports = roleClaimer;
