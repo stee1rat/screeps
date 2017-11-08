@@ -5,6 +5,11 @@ module.exports = { // remote harvester role
       return;
     }
     if (creep.carry.energy === 0 || creep.memory.harvesting) {
+      // FIX THIS !!!!!!!!!!!!!!!!!!!!!!!
+      if (!Game.flags[creep.memory.flagName]) {
+        cree.suicide();
+      }
+      // FIX THIS ^^^^^^^^^^^^^^^^^^^^^^
       if (creep.pos.roomName != Game.flags[creep.memory.flagName].pos.roomName) {
         creep.moveTo(Game.flags[creep.memory.flagName].pos, {reusePath: 10});
         return;

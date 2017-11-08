@@ -1,7 +1,4 @@
-let customFunctions = require('custom.functions');
-
 let roleMiner = {
-
   run: function(creep) {
     if (creep.spawning || !creep.memory.init ) {
       // assign to a source

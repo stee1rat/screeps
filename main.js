@@ -1,4 +1,3 @@
-//
 let roleHarvester = require('role.harvester');
 let roleHarvester2 = require('role.new.harvester');
 let roleRemoteHarvester = require('role.remoteHarvester');
@@ -54,7 +53,7 @@ let spawnCreeps = [
   {
     role: 'builder',
     priority: 4,
-    goal: 0,
+    goal: 2,
     parameters: { harvesting: false },
     bodyParts: { move: 8, carry: 4, work: 4 }
   },
@@ -68,9 +67,7 @@ let spawnCreeps = [
 
 spawnCreeps.sort((a, b) => a.priority - b.priority);
 
-//if (Memory.containers == []._) Memory.containers = [];
 if (Memory.sources == []._) Memory.sources = [];
-Memory.parkingArea = [[34, 38], [39, 40]];
 
 module.exports.loop = function () {
 profiler.wrap(function() {
@@ -199,35 +196,31 @@ profiler.wrap(function() {
       Game.spawns.Spawn1.pos.y,
       {align: 'left', opacity: 0.8});
   }
+/*  console.log('------- rooms --------')
+  _.each(_.filter(Game.rooms, r => r.controller.my), r => console.log(r.name, r.name));*/
 
   _.each(_.filter(Game.creeps, c => c.memory.role != 'remoteHarvester'), creep => {
     if(creep.memory.role == 'harvester') {
       cpuUsed = Game.cpu.getUsed();
       roleHarvester.run(creep);
-    //  console.log( 'HARVESTER: ' + (Game.cpu.getUsed() - cpuUsed ));
     }
     if(creep.memory.role == 'harvester2') {
       cpuUsed = Game.cpu.getUsed();
       roleHarvester2.run(creep);
-      //console.log( 'HARVESTER2: ' + (Game.cpu.getUsed() - cpuUsed ));
     }
     if(creep.memory.role == 'upgrader') {
       cpuUsed = Game.cpu.getUsed();
       roleUpgrader.run(creep);
-      //console.log( 'UPGADER: ' + (Game.cpu.getUsed() - cpuUsed ));
       if (Game.cpu.getUsed() - cpuUsed > 0.5) {
-        //creep.say('CPU: ' + (Game.cpu.getUsed() - cpuUsed) + '!!!!!')
       }
     }
     if(creep.memory.role == 'builder') {
       cpuUsed = Game.cpu.getUsed();
       roleBuilder.run(creep);
-      //console.log( 'BUILDER: ' + (Game.cpu.getUsed() - cpuUsed ));
     }
     if(creep.memory.role == 'hauler') {
       cpuUsed = Game.cpu.getUsed();
       roleHauler.run(creep);
-      //console.log( 'HAULER: ' + (Game.cpu.getUsed() - cpuUsed ));
       if (Game.cpu.getUsed() - cpuUsed > 0.5) {
         creep.say('CPU: ' + (Game.cpu.getUsed() - cpuUsed) + '!!!!!')
       }
@@ -235,33 +228,22 @@ profiler.wrap(function() {
     if(creep.memory.role == 'fixer') {
       cpuUsed = Game.cpu.getUsed();
       roleFixer.run(creep);
-      //console.log( 'FIXER: ' + (Game.cpu.getUsed() - cpuUsed ));
     }
     if(creep.memory.role == 'miner') {
       cpuUsed = Game.cpu.getUsed();
       roleMiner.run(creep);
-      //console.log( 'MINER: ' + (Game.cpu.getUsed() - cpuUsed ));
     }
   });
 
   _.each(_.filter(Game.creeps, c => c.memory.role == 'remoteHarvester'), creep => {
     cpuUsed = Game.cpu.getUsed();
     roleRemoteHarvester.run(creep);
-    //console.log( 'REMOTEHARVESTER: ' + (Game.cpu.getUsed() - cpuUsed ));
   });
 
   _.each(_.filter(Game.creeps, c => c.memory.role == 'claimer'), creep => {
     cpuUsed = Game.cpu.getUsed();
-    //roleClaimer.run(creep);
-    //console.log( 'REMOTEHARVESTER: ' + (Game.cpu.getUsed() - cpuUsed ));
   });
-
-  //for (let name in Game.flags) {
-    //console.log(JSON.stringify(Game.flags[name].memory));
-  //}
   cpuUsed = Game.cpu.getUsed();
   towers.run();
-  //console.log( 'TOWERS: ' + (Game.cpu.getUsed() - cpuUsed ));
-  //console.log( 'TOTAL: ' + (Game.cpu.getUsed() - TOTAL_CPU ));
 });
 };
