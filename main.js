@@ -205,6 +205,25 @@ profiler.wrap(function() {
 /*  console.log('------- rooms --------')
   _.each(_.filter(Game.rooms, r => r.controller.my), r => console.log(r.name, r.name));*/
 
+  let optimalBody = energy => {
+    parts = [WORK, CARRY];
+    result = [];
+
+    Total = energy;
+    move_cost = BODYPART_COST[MOVE];
+    while (Total > 0) {
+       for (part of parts) {
+         part_cost = BODYPART_COST[part]
+         if (part_cost + move_cost < Total) {
+           result.push.apply(result, [part, MOVE]);
+           Total -= (part_cost + move_cost);
+         }
+       }
+      if (Total <= move_cost + 50) break;
+    }
+     return result.sort();
+  }
+
   _.each(_.filter(Game.spawns, s => s.name != 'Spawn1'), spawn => {
     if (!spawn.memory.sources) {
       spawn.memory.sources = spawn.room.find(FIND_SOURCES).length;
@@ -220,8 +239,9 @@ profiler.wrap(function() {
           c.memory.role == 'fixer' &&
           c.pos.roomName == spawn.pos.roomName).length;
       if (fixers < 2) {
-        let parts = _.map({ move: 1, work: 1, carry: 1}, (p,n) => _.times(p, x => n));
-        parts = _.reduce(parts, (t, n) => t.concat(n),[]);
+        //let parts = _.map({ move: 1, work: 1, carry: 1}, (p,n) => _.times(p, x => n));
+        //parts = _.reduce(parts, (t, n) => t.concat(n),[]);
+        let parts = optimalBody(spawn.room.energyCapacityAvailable);
         let role = 'fixer';
         let name = role + Game.time;
         let parameters = { role: role, harvesting: false }
@@ -233,8 +253,9 @@ profiler.wrap(function() {
           c.memory.role == 'harvester' &&
           c.pos.roomName == spawn.pos.roomName).length;
       if (harvesters/2 < spawn.memory.sources) {
-        let parts = _.map({ move: 1, work: 1, carry: 1}, (p,n) => _.times(p, x => n));
-        parts = _.reduce(parts, (t, n) => t.concat(n),[]);
+        /*let parts = _.map({ move: 1, work: 1, carry: 1}, (p,n) => _.times(p, x => n));
+        parts = _.reduce(parts, (t, n) => t.concat(n),[]);*/
+        let parts = optimalBody(spawn.room.energyCapacityAvailable);
         let role = 'harvester';
         let name = role + Game.time;
         let parameters = { role: role, harvesting: false }
@@ -246,8 +267,9 @@ profiler.wrap(function() {
           c.memory.role == 'upgrader' &&
           c.pos.roomName == spawn.pos.roomName).length;
       if (upgraders < 3) {
-        let parts = _.map({ move: 1, work: 1, carry: 1}, (p,n) => _.times(p, x => n));
-        parts = _.reduce(parts, (t, n) => t.concat(n),[]);
+        /*let parts = _.map({ move: 1, work: 1, carry: 1}, (p,n) => _.times(p, x => n));
+        parts = _.reduce(parts, (t, n) => t.concat(n),[]);*/
+        let parts = optimalBody(spawn.room.energyCapacityAvailable);
         let role = 'upgrader';
         let name = role + Game.time;
         let parameters = { role: role, harvesting: false }
