@@ -330,6 +330,13 @@ profiler.wrap(function() {
       }
       spawn.spawnCreep(parts, name, { memory: parameters } );*/
     }
+
+    if (spawn.spawning) {
+      let spawningCreep = Game.creeps[spawn.spawning.name];
+      spawn.room.visual.text(
+        'Spawning ' + spawningCreep.memory.role, spawn.pos.x + 1, spawn.pos.y,
+        {align: 'left', opacity: 0.8});
+    }
   });
 
   _.each(_.filter(Game.creeps, c => c.memory.role != 'remoteHarvester'), creep => {
