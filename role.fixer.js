@@ -26,6 +26,7 @@ var roleFixer = {
       }*/
     } else {
       if (!creep.memory.repairTaget) {
+          console.log(creep.memory.home);
         let targets = Game.rooms[creep.memory.home].find(FIND_STRUCTURES, {
             filter: structure => structure.hits < structure.hitsMax * 0.7 &&
               structure.hits < 50000
@@ -35,6 +36,14 @@ var roleFixer = {
           if (target) {
             creep.memory.repairTaget = target.id;
           }
+        } else {
+             const controller = Game.rooms[creep.memory.home].controller;
+             if (creep.upgradeController(controller) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(controller, {
+                    visualizePathStyle: {stroke: '#ffffff'}, reusePath: 5
+                });
+                //console.log('MOVE TO CONTROLLER: ' + (Game.cpu.getUsed() - startCpu ));
+              }
         }
       } else {
         let target = Game.getObjectById(creep.memory.repairTaget);
