@@ -61,9 +61,10 @@ let spawnCreeps = [
   {
     role: 'defender',
     priority: 9,
-    goal: 2,
+    goal: 3,
     parameters: { harvesting: false, repairTaget: null},
-    bodyParts: { move: 7, tough: 3, attack: 3, heal: 1 }
+    //bodyParts: { move: 7, tough: 3, attack: 3, heal: 1 }
+    bodyParts: { move: 12, tough: 5, attack: 5, heal: 2 }
   },
   {
     role: 'fixer',
