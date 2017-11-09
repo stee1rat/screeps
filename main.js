@@ -215,6 +215,19 @@ profiler.wrap(function() {
       c.pos.roomName == spawn.pos.roomName).length;
 
     if (spawn.room.energyCapacityAvailable < 750) {
+      //spawn fixers
+      const fixers = _.filter(Game.creeps, c =>
+          c.memory.role == 'fixer' &&
+          c.pos.roomName == spawn.pos.roomName).length;
+      if (fixers < 2) {
+        let parts = _.map({ move: 1, work: 1, carry: 1}, (p,n) => _.times(p, x => n));
+        parts = _.reduce(parts, (t, n) => t.concat(n),[]);
+        let role = 'fixer';
+        let name = role + Game.time;
+        let parameters = { role: role, harvesting: false }
+        spawn.spawnCreep(parts, name, { memory: parameters } )
+      }
+
       //spawn harvesters
       const harvesters = _.filter(Game.creeps, c =>
           c.memory.role == 'harvester' &&

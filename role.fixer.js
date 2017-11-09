@@ -1,6 +1,13 @@
 var roleFixer = {
 
   run: function(creep) {
+    if (creep.spawning || !creep.memory.init ) {
+      if (!creep.memory.home) {
+        creep.memory.home = creep.room.name;
+      }
+      creep.memory.init = true;
+      return;
+    }
     if (creep.carry.energy === 0 || creep.memory.harvesting) {
       creep.getEnergy();
       /*let source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
@@ -19,13 +26,15 @@ var roleFixer = {
       }*/
     } else {
       if (!creep.memory.repairTaget) {
-        let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+        let target = Game.rooms[creep.memory.home].pos.find(FIND_STRUCTURES, {
             filter: structure => structure.hits < structure.hitsMax * 0.7 &&
               structure.hits < 50000
         });
-
-        if (target) {
-          creep.memory.repairTaget = target.id;
+        if (targets.length > 0) {
+          let target = creep.pos.findClosestByPath(targets);
+          if (target) {
+            creep.memory.repairTaget = target.id;
+          }
         }
       } else {
         let target = Game.getObjectById(creep.memory.repairTaget);
