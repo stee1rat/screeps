@@ -214,7 +214,7 @@ profiler.wrap(function() {
       c.memory.role == 'miner' &&
       c.pos.roomName == spawn.pos.roomName).length;
 
-    if (spawn.room.energyCapacityAvailable == 300) {
+    if (spawn.room.energyCapacityAvailable < 750) {
       //spawn harvesters
       const harvesters = _.filter(Game.creeps, c =>
           c.memory.role == 'harvester' &&
