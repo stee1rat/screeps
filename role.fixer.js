@@ -26,7 +26,7 @@ var roleFixer = {
       }*/
     } else {
       if (!creep.memory.repairTaget) {
-        let target = Game.rooms[creep.memory.home].find(FIND_STRUCTURES, {
+        let targets = Game.rooms[creep.memory.home].find(FIND_STRUCTURES, {
             filter: structure => structure.hits < structure.hitsMax * 0.7 &&
               structure.hits < 50000
         });
