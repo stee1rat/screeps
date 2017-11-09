@@ -248,20 +248,6 @@ profiler.wrap(function() {
         spawn.spawnCreep(parts, name, { memory: parameters } )
       }
 
-      //spawn harvesters
-      const harvesters = _.filter(Game.creeps, c =>
-          c.memory.role == 'harvester' &&
-          c.pos.roomName == spawn.pos.roomName).length;
-      if (harvesters/2 < spawn.memory.sources) {
-        /*let parts = _.map({ move: 1, work: 1, carry: 1}, (p,n) => _.times(p, x => n));
-        parts = _.reduce(parts, (t, n) => t.concat(n),[]);*/
-        let parts = optimalBody(spawn.room.energyCapacityAvailable);
-        let role = 'harvester';
-        let name = role + Game.time;
-        let parameters = { role: role, harvesting: false }
-        spawn.spawnCreep(parts, name, { memory: parameters } )
-      }
-
       //spawn upgraders
       const upgraders = _.filter(Game.creeps, c =>
           c.memory.role == 'upgrader' &&
@@ -271,6 +257,20 @@ profiler.wrap(function() {
         parts = _.reduce(parts, (t, n) => t.concat(n),[]);*/
         let parts = optimalBody(spawn.room.energyCapacityAvailable);
         let role = 'upgrader';
+        let name = role + Game.time;
+        let parameters = { role: role, harvesting: false }
+        spawn.spawnCreep(parts, name, { memory: parameters } )
+      }
+
+      //spawn harvesters
+      const harvesters = _.filter(Game.creeps, c =>
+          c.memory.role == 'harvester' &&
+          c.pos.roomName == spawn.pos.roomName).length;
+      if (harvesters/2 < spawn.memory.sources) {
+        /*let parts = _.map({ move: 1, work: 1, carry: 1}, (p,n) => _.times(p, x => n));
+        parts = _.reduce(parts, (t, n) => t.concat(n),[]);*/
+        let parts = optimalBody(spawn.room.energyCapacityAvailable);
+        let role = 'harvester';
         let name = role + Game.time;
         let parameters = { role: role, harvesting: false }
         spawn.spawnCreep(parts, name, { memory: parameters } )
