@@ -315,7 +315,18 @@ profiler.wrap(function() {
         let parameters = { role: role }
         spawn.spawnCreep([MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK], name, { memory: parameters } );
       }
-
+      const harvesters = _.filter(Game.creeps, c =>
+          c.memory.role == 'harvester' &&
+          c.pos.roomName == spawn.pos.roomName).length;
+      if (harvesters < spawn.memory.sources) {
+        /*let parts = _.map({ move: 1, work: 1, carry: 1}, (p,n) => _.times(p, x => n));
+        parts = _.reduce(parts, (t, n) => t.concat(n),[]);*/
+        let parts = [WORK,CARRY,MOVE];
+        let role = 'harvester';
+        let name = role + Game.time;
+        let parameters = { role: role, harvesting: false }
+        spawn.spawnCreep(parts, name, { memory: parameters } )
+      }
     }
 
     if (miners < spawn.memory.sources) {
