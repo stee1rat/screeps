@@ -69,7 +69,7 @@ let spawnCreeps = [
   {
     role: 'fixer',
     priority: 5,
-    goal: 0,
+    goal: 1,
     parameters: { },
     bodyParts: { move: 7, carry: 2, work: 3 }
   }];
@@ -177,24 +177,6 @@ profiler.wrap(function() {
     }
   }
 
-  let structures = Game.spawns.Spawn1.room.find(FIND_STRUCTURES);
-
-  Memory.structures = structures.map(s => s.id);
-
-  Memory.targetsToRefill = _.filter(structures, s => (s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION ||
-               (s.structureType == STRUCTURE_TOWER && s.energy <= s.energyCapacity/2)) &&
-                s.energy < s.energyCapacity).map(s => s.id);
-
-  Memory.droppedEnergy = Game.spawns.Spawn1.room.find(FIND_DROPPED_RESOURCES, {
-    filter: s => s.resourceType == RESOURCE_ENERGY}).map(s => s.id);
-
-  Memory.containers = _.filter(structures, s => s.structureType == STRUCTURE_CONTAINER).map(s => s.id);
-
-  Memory.storageID = _.filter(structures, s => s.structureType == STRUCTURE_STORAGE).map(s => s.id || null);
-  if (!Memory.storageID.length) {
-    delete Memory.storageID ;
-  }
-
   if (Game.spawns.Spawn1.spawning) {
     let spawningCreep = Game.creeps[Game.spawns.Spawn1.spawning.name];
     Game.spawns.Spawn1.room.visual.text(
@@ -205,6 +187,39 @@ profiler.wrap(function() {
   }
 /*  console.log('------- rooms --------')
   _.each(_.filter(Game.rooms, r => r.controller.my), r => console.log(r.name, r.name));*/
+
+  delete Memory.rooms;
+  Memory.rooms = {}
+  _.each(Game.rooms, room => {
+    //console.log(room.name);
+    let structures = room.find(FIND_STRUCTURES);
+    let roomObject = {};
+    roomObject.name = room.name;
+    roomObject.structures = structures.map(s => s.id);
+
+    roomObject.targetsToRefill = _.filter(structures, s => (
+      s.structureType == STRUCTURE_SPAWN ||
+      s.structureType == STRUCTURE_EXTENSION ||
+      (s.structureType == STRUCTURE_TOWER &&
+       s.energy <= s.energyCapacity/2)) &&
+       s.energy < s.energyCapacity).map(s => s.id);
+
+    roomObject.droppedEnergy = room.find(FIND_DROPPED_RESOURCES, {
+      filter: s => s.resourceType == RESOURCE_ENERGY
+    }).map(s => s.id);
+
+    roomObject.containers = _.filter(structures, s =>
+      s.structureType == STRUCTURE_CONTAINER).map(s => s.id);
+
+    let roomStorage = _.filter(structures, s =>
+      s.structureType == STRUCTURE_STORAGE).map(s => s.id);
+
+    if (roomStorage.length) {
+      roomObject.storageID = roomStorage[0];
+    }
+
+    Memory.rooms[room.name] = roomObject;
+  });
 
   let optimalBody = energy => {
     parts = [WORK, CARRY];
@@ -226,10 +241,6 @@ profiler.wrap(function() {
   }
 
   _.each(_.filter(Game.spawns, s => s.name != 'Spawn1'), spawn => {
-    if (!spawn.memory.sources) {
-      spawn.memory.sources = spawn.room.find(FIND_SOURCES).length;
-    }
-
     const miners = _.filter(Game.creeps, c =>
       c.memory.role == 'miner' &&
       c.pos.roomName == spawn.pos.roomName).length;
@@ -278,7 +289,7 @@ profiler.wrap(function() {
       }
     }
 
-    if (spawn.room.energyCapacityAvailable >= 750) {
+    if (spawn.room.energyCapacityAvailable >= 750 && !spawn.spawning) {
       // upgrader = [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY]
       // miner = [MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK]
       // hauler = [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY]
@@ -289,12 +300,14 @@ profiler.wrap(function() {
 
       if (upgraders < spawn.memory.sources*2) {
         let role = 'upgrader';
+        //[MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY]
+        let parts = optimalBody(spawn.room.energyCapacityAvailable);
         let name = role + Game.time;
         let parameters = { role: role }
-        spawn.spawnCreep([MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY], name, { memory: parameters } );
+        spawn.spawnCreep(parts, name, { memory: parameters } );
       }
 
-      const haulers = _.filter(Game.creeps, c =>
+  /*    const haulers = _.filter(Game.creeps, c =>
           c.memory.role == 'hauler' &&
           c.pos.roomName == spawn.pos.roomName).length;
 
@@ -314,17 +327,26 @@ profiler.wrap(function() {
         let name = role + Game.time;
         let parameters = { role: role }
         spawn.spawnCreep([MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK], name, { memory: parameters } );
-      }
+      }*/
+
+      let roomCreeps = _.filter(Game.creeps, c =>
+        c.pos.roomName == spawn.pos.roomName &&
+        c.memory.home == spawn.pos.roomName).length;
+
       const harvesters = _.filter(Game.creeps, c =>
-          c.memory.role == 'harvester' &&
+          c.memory.role == 'harvester2' &&
           c.pos.roomName == spawn.pos.roomName).length;
-      if (harvesters < spawn.memory.sources) {
-        /*let parts = _.map({ move: 1, work: 1, carry: 1}, (p,n) => _.times(p, x => n));
-        parts = _.reduce(parts, (t, n) => t.concat(n),[]);*/
-        let parts = [WORK,CARRY,MOVE];
-        let role = 'harvester';
+
+      console.log(spawn.room.energyAvailable + '/' + spawn.room.energyCapacityAvailable, optimalBody(spawn.room.energyAvailable))
+
+      if (spawn.room.energyAvailable >= 251 && harvesters/2 < spawn.memory.sources) {
+        let parts = roomCreeps <= 2 ?
+          optimalBody(spawn.room.energyAvailable) :
+          optimalBody(spawn.room.energyCapacityAvailable)
+
+        let role = 'harvester2';
         let name = role + Game.time;
-        let parameters = { role: role, harvesting: false }
+        let parameters = { role: role, home: spawn.pos.roomName }
         spawn.spawnCreep(parts, name, { memory: parameters } )
       }
     }
@@ -350,6 +372,33 @@ profiler.wrap(function() {
         {align: 'left', opacity: 0.8});
     }
   });
+
+  /*_.each(Memory.rooms, room => {
+    //console.log('===========' + room.name + '=============')
+    _.each(room.targetsToRefill, t => {
+      //console.log(Game.getObjectById(t).structureType);
+    });
+  });*/
+
+  // TO BE REMOVED
+  let structures = Game.spawns.Spawn1.room.find(FIND_STRUCTURES);
+
+  Memory.structures = structures.map(s => s.id);
+
+  Memory.targetsToRefill = _.filter(structures, s => (s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION ||
+               (s.structureType == STRUCTURE_TOWER && s.energy <= s.energyCapacity/2)) &&
+                s.energy < s.energyCapacity).map(s => s.id);
+
+  Memory.droppedEnergy = Game.spawns.Spawn1.room.find(FIND_DROPPED_RESOURCES, {
+    filter: s => s.resourceType == RESOURCE_ENERGY}).map(s => s.id);
+
+  Memory.containers = _.filter(structures, s => s.structureType == STRUCTURE_CONTAINER).map(s => s.id);
+
+  Memory.storageID = _.filter(structures, s => s.structureType == STRUCTURE_STORAGE).map(s => s.id || null);
+  if (!Memory.storageID.length) {
+    delete Memory.storageID ;
+  }
+  // TO BE REMOVED ^^^^^^
 
   _.each(_.filter(Game.creeps, c => c.memory.role != 'remoteHarvester'), creep => {
     if(creep.memory.role == 'harvester') {
@@ -379,15 +428,14 @@ profiler.wrap(function() {
   });
 
   _.each(_.filter(Game.creeps, c => c.memory.role == 'remoteHarvester'), creep => {
-    cpuUsed = Game.cpu.getUsed();
     roleRemoteHarvester.run(creep);
   });
 
-  _.each(_.filter(Game.creeps, c => c.memory.role == 'claimer'), creep => {
+/*  _.each(_.filter(Game.creeps, c => c.memory.role == 'claimer'), creep => {
     cpuUsed = Game.cpu.getUsed();
   });
+*/
 
-  cpuUsed = Game.cpu.getUsed();
   towers.run();
 });
 };

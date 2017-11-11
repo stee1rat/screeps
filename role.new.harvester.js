@@ -3,13 +3,18 @@ let roleRemoteHarvester = {
   run: function(creep) {
     if (creep.spawning || !creep.memory.init ) {
       // assign to a source
-      let sources = creep.room.find(FIND_SOURCES);
+      if (!creep.memory.home) {
+        creep.memory.home = creep.room.name;
+      }
+      let homeRoom = Game.rooms[creep.memory.home];
+      let sources = homeRoom.find(FIND_SOURCES);
+
       for (let i = 0; i < sources.length; i++) {
-        let source = creep.room.find(FIND_MY_CREEPS, {
+        let source = homeRoom.find(FIND_MY_CREEPS, {
           filter: c => c.memory.source == sources[i].id
         });
-        // assign 3 (0, 1, 2) creeps per source
-        if(source === null || source.length <= 2) {
+        // assign 2 (0, 1) creeps per source
+        if(source === null || source.length <= 1) {
           creep.memory.source = sources[i].id;
         }
       }
@@ -34,21 +39,42 @@ let roleRemoteHarvester = {
         creep.memory.harvesting = false;
       }
     } else {
+      // refills needed for spawn and extentions
       if (!creep.memory.target) {
-        let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-          filter: structure =>
-            (structure.structureType == STRUCTURE_SPAWN ||
-             structure.structureType == STRUCTURE_EXTENSION) &&
-             structure.energy < structure.energyCapacity
-        });
-        if (target === null) {
-          target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-            filter: structure =>
-              (structure.structureType == STRUCTURE_STORAGE ||
-               structure.structureType == STRUCTURE_CONTAINER) &&
-               _.sum(structure.store) < structure.storeCapacity
-          });
+        let target;
+
+        let targetsToRefill = _.map(
+          Memory.rooms[creep.memory.home].targetsToRefill, x =>
+            Game.getObjectById(x)
+        );
+
+        let spawn = _.filter(targetsToRefill, s =>
+          (s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION) &&
+          s.energy < s.energyCapacity && !_.some(Game.creeps, c => c.memory.targetID == s.id));
+
+        if (spawn.length) {
+          target = creep.pos.findClosestByPath(spawn);
         }
+
+        // refills needed for towers
+        if (!target) {
+          let towers = _.filter(targetsToRefill, s =>
+            s.structureType == STRUCTURE_TOWER && s.energy <= s.energyCapacity/2 &&
+            !_.some(Game.creeps, c => c.memory.targetID == s.id));
+
+          if (towers.length) {
+            target = creep.pos.findClosestByPath(towers);
+          }
+        }
+
+        // drop energy to a storage
+        if (!target && Memory.rooms[creep.memory.home].storageID) {
+          let storage = Game.getObjectById(Memory.rooms[creep.memory.home].storageID);
+          if (_.sum(storage.store) < storage.storeCapacity) {
+            target = storage;
+          }
+        }
+
         if (target) creep.memory.target = target.id;
       }
       let target = Game.getObjectById(creep.memory.target);
