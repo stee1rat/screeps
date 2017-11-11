@@ -85,7 +85,8 @@ let roleRemoteHarvester = {
             ((target.structureType == STRUCTURE_STORAGE ||
               target.structureType == STRUCTURE_CONTAINER) &&
               _.sum(target.store) == target.storeCapacity))  {
-          creep.memory.target = null;
+          //creep.memory.target = null;
+          delete creep.memory.target;
           return;
         }
         if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
