@@ -50,7 +50,7 @@ let roleUpgrader = {
             source = creep.pos.findClosestByPath(availableEnergy);
           }
         }
-        // take energy from container or storagem, whatever is closer
+        // take energy from container or storage, whatever is closer
         if (!source) {
           let containersAndStorage = [];
           if (Memory.containers.length) {
@@ -115,7 +115,7 @@ let roleUpgrader = {
           }
         // otherwise it has to be a source, so harvest it
         } else {
-          if (source.structureType) {
+          if (source.structureType || source.energy == 0) {
             creep.memory.source = null;
             return;
           }

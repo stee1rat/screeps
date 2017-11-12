@@ -1,7 +1,7 @@
 module.exports = { // Role miner
 
   run: function(creep) {
-    if (creep.spawning || !creep.memory.init ) {
+    if (creep.spawning || !creep.memory.init ) {      
       if (!creep.memory.home) {
         creep.memory.home = creep.room.name;
       }
