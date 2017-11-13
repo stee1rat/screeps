@@ -94,7 +94,7 @@ module.exports ={ // Role hauler
         //console.log(Memory.targetsToRefill.length)
         if (source.structureType == STRUCTURE_STORAGE)  {
           if (source.store[RESOURCE_ENERGY] > 0 &&
-              Memory.rooms[homeRoom].targetsToRefill.length > 0) {
+              Memory.rooms[creep.memory.home].targetsToRefill.length > 0) {
             let withdraw = creep.withdraw(source, RESOURCE_ENERGY);
             if (withdraw == ERR_NOT_IN_RANGE) {
               creep.moveTo(source, { visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 5 });
