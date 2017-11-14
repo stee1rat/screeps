@@ -83,7 +83,7 @@ if (Memory.sources == []._) Memory.sources = [];
 
 module.exports.loop = function () {
 profiler.wrap(function() {
-  roleUpgrader2.run();
+  //roleUpgrader2.run();
   let existingCreeps = {};
   let cpuUsed = Game.cpu.getUsed();
 
