@@ -8,7 +8,7 @@ const STATE_HARVESTING = 2;
 const STATE_DEPOSITING = 3;
 
 module.exports = {
-  run: function(creep) {
+  run (creep) {
     if(!creep.memory.state) {
       creep.memory.state = STATE_SPAWNING;
     }
