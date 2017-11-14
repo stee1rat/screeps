@@ -14,6 +14,7 @@ module.exports = {
     }
     switch(creep.memory.state) {
       case STATE_SPAWNING:
+
         runSpawning(creep);
         console.log(creep.memory.state)
         break;
