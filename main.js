@@ -466,22 +466,22 @@ profiler.wrap(function() {
     if(creep.memory.role == 'harvester2') {
       roleHarvester2.run(creep);
     }
-    creepCPU = Game.cpu.getUsed();
     if(creep.memory.role == 'upgrader') {
+      creepCPU = Game.cpu.getUsed();
       roleUpgrader.run(creep);
       console.log(creep.name + ' CPU: ' + (Game.cpu.getUsed() - creepCPU));
-    }    
-    upgraderCPU += Game.cpu.getUsed() - creepCPU;
-    creepCPU = Game.cpu.getUsed();
+      upgraderCPU += Game.cpu.getUsed() - creepCPU;
+    }
     if(creep.memory.role == 'builder') {
+      creepCPU = Game.cpu.getUsed();
       roleBuilder.run(creep);
+      builderCPU += Game.cpu.getUsed() - creepCPU;
     }
-    builderCPU += Game.cpu.getUsed() - creepCPU;
-    creepCPU = Game.cpu.getUsed();
     if(creep.memory.role == 'hauler') {
+      creepCPU = Game.cpu.getUsed();
       roleHauler.run(creep);
-    }
-    haulerCPU += Game.cpu.getUsed() - creepCPU;
+      haulerCPU += Game.cpu.getUsed() - creepCPU    }
+
     if(creep.memory.role == 'fixer') {
       roleFixer.run(creep);
     }
@@ -494,11 +494,12 @@ profiler.wrap(function() {
     if(creep.memory.role == 'miner2') {
       roleMiner2.run(creep);
     }
-    creepCPU = Game.cpu.getUsed();
     if(creep.memory.role == 'hauler2') {
+      creepCPU = Game.cpu.getUsed();
       roleHauler2.run(creep);
+      hauler2CPU += Game.cpu.getUsed() - creepCPU;
     }
-    hauler2CPU += Game.cpu.getUsed() - creepCPU;
+
   });
   console.log('+---------------------------+')
   console.log('| Tick: ' + Game.time + '             |')
