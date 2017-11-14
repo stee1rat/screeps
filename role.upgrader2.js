@@ -8,17 +8,18 @@ const STATE_HARVESTING = 2;
 const STATE_DEPOSITING = 3;
 
 module.exports = {
-  run (creep) {
+  run(creep) {
     if(!creep.memory.state) {
       creep.memory.state = STATE_SPAWNING;
     }
     switch(creep.memory.state) {
       case STATE_SPAWNING:
-        //runSpawning(creep);
+        runSpawning(creep);
         console.log(creep.memory.state)
         break;
       case STATE_MOVING:
-        runMoving(creep);
+        //runMoving(creep);
+        console.log('MOVING');
         break;
       case STATE_HARVESTING:
         runHarvesting(creep);
@@ -26,6 +27,16 @@ module.exports = {
       case STATE_DEPOSITING:
         runDepositing(creep);
         break;
+    }
+  },
+  runSpawning(creep) {
+    if(!creep.spawning) {
+      creep.memory.state = STATE_MOVING;
+      run(creep);
+      return;
+    }
+    if (!creep.memory.init) {
+      creep.memory.init = true;
     }
   }
 };
