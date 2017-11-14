@@ -33,7 +33,7 @@ module.exports = {
     console.log('SPAWNING');
     if(!creep.spawning) {
       creep.memory.state = STATE_MOVING;
-      run(creep);
+      this.run(creep);
       return;
     }
     if (!creep.memory.init) {
