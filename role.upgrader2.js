@@ -15,7 +15,7 @@ module.exports = {
     switch(creep.memory.state) {
       case STATE_SPAWNING:
         //runSpawning(creep);
-        console.log('IT"S WORKING')
+        console.log(creep.memory.state)
         break;
       case STATE_MOVING:
         runMoving(creep);
