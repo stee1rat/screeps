@@ -2,6 +2,7 @@ let roleHarvester = require('role.harvester');
 let roleHarvester2 = require('role.new.harvester');
 let roleRemoteHarvester = require('role.remoteHarvester');
 let roleUpgrader = require('role.upgrader');
+let roleUpgrader2 = require('role.upgrader2');
 let roleBuilder = require('role.builder');
 let roleHauler = require('role.hauler');
 let roleHauler2 = require('role.hauler2');
@@ -82,6 +83,7 @@ if (Memory.sources == []._) Memory.sources = [];
 
 module.exports.loop = function () {
 profiler.wrap(function() {
+  roleUpgrader2.run();
   let existingCreeps = {};
   let cpuUsed = Game.cpu.getUsed();
 
