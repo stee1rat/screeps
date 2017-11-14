@@ -2,13 +2,12 @@
 // https://screepsworld.com/2017/09/screeps-tutorial-handling-creep-roles-with-a-state-machine/
 // Upgrader role implementation using the state machine from the tutorial above
 
+const STATE_SPAWNING = 0;
+const STATE_MOVING = 1;
+const STATE_HARVESTING = 2;
+const STATE_DEPOSITING = 3;
+
 module.exports = {
-
-  const STATE_SPAWNING = 0;
-  const STATE_MOVING = 1;
-  const STATE_HARVESTING = 2;
-  const STATE_DEPOSITING = 3;
-
   let run = function(creep) {
     if(!creep.memory.state) {
       creep.memory.state = STATE_SPAWNING;
