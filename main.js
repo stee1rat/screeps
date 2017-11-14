@@ -469,8 +469,8 @@ profiler.wrap(function() {
     creepCPU = Game.cpu.getUsed();
     if(creep.memory.role == 'upgrader') {
       roleUpgrader.run(creep);
-    }
-    console.log(creep.name + ' CPU: ' + (Game.cpu.getUsed() - creepCPU));
+      console.log(creep.name + ' CPU: ' + (Game.cpu.getUsed() - creepCPU));
+    }    
     upgraderCPU += Game.cpu.getUsed() - creepCPU;
     creepCPU = Game.cpu.getUsed();
     if(creep.memory.role == 'builder') {
