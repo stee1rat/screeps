@@ -456,6 +456,7 @@ profiler.wrap(function() {
   cpuUsed = Game.cpu.getUsed();
 
   let upgraderCPU = 0;
+  let upgrader2CPU = 0;
   let haulerCPU = 0;
   let hauler2CPU = 0;
   let builderCPU = 0;
@@ -473,6 +474,12 @@ profiler.wrap(function() {
       roleUpgrader.run(creep);
       console.log(creep.name + ' CPU: ' + (Game.cpu.getUsed() - creepCPU));
       upgraderCPU += Game.cpu.getUsed() - creepCPU;
+    }
+    if(creep.memory.role == 'upgrader2') {
+      creepCPU = Game.cpu.getUsed();
+      roleUpgrader.run(creep);
+      console.log(creep.name + ' CPU: ' + (Game.cpu.getUsed() - creepCPU));
+      upgrader2CPU += Game.cpu.getUsed() - creepCPU;
     }
     if(creep.memory.role == 'builder') {
       creepCPU = Game.cpu.getUsed();
@@ -515,6 +522,7 @@ profiler.wrap(function() {
   console.log('=======================');
   console.log('ALL CREEPS CPU: ' + Math.round((Game.cpu.getUsed() - cpuUsed),2));
   console.log('   Upgraders CPU: ' + Math.round(upgraderCPU));
+  console.log('   Upgraders2 CPU: ' + Math.round(upgrader2CPU));  
   console.log('   Haulers CPU: ' + Math.round(haulerCPU));
   console.log('   Haulers2 CPU: ' + Math.round(hauler2CPU));
   console.log('   Builders CPU: ' + Math.round(builderCPU));
