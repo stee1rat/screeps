@@ -433,8 +433,8 @@ profiler.wrap(function() {
       //console.log(Game.getObjectById(t).structureType);
     });
   });*/
+  SpawnsCPU = (Game.cpu.getUsed() - spawnsCPU);
 
-  console.log('SPAWNS CPU: '  + (Game.cpu.getUsed() - spawnsCPU));
   // TO BE REMOVED
   let structures = Game.spawns.Spawn1.room.find(FIND_STRUCTURES);
 
@@ -454,7 +454,7 @@ profiler.wrap(function() {
     delete Memory.storageID ;
   }
   // TO BE REMOVED ^^^^^^
-  //console.log('CALCULATIONS CPU: ' + Math.round((Game.cpu.getUsed() - cpuUsed),2) );
+  console.log('CALCULATIONS CPU: ' + Math.round((Game.cpu.getUsed() - cpuUsed),2) );
   cpuUsed = Game.cpu.getUsed();
 
   let upgraderCPU = 0;
@@ -522,6 +522,7 @@ profiler.wrap(function() {
   console.log('| Tick: ' + Game.time + '             |')
   console.log('+---------------------------+')
   console.log('=======================');
+  console.log('SPAWNS CPU: '  + spawnsCPU);
   console.log('ALL CREEPS CPU: ' + Math.round((Game.cpu.getUsed() - cpuUsed),2));
   console.log('   Upgraders CPU: ' + Math.round(upgraderCPU));
   console.log('   Upgraders2 CPU: ' + Math.round(upgrader2CPU));
