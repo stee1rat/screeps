@@ -227,6 +227,7 @@ profiler.wrap(function() {
 
   //console.log(JSON.stringify(Memory.rooms))
 
+  let spawnsCPU = Game.cpu.getUsed();
   let optimalBody = (energy, parts = [WORK, CARRY]) => {
     //parts = [WORK, CARRY];
     result = [];
@@ -433,6 +434,7 @@ profiler.wrap(function() {
     });
   });*/
 
+  console.log('Spawns CPU: ' (Game.cpu.getUsed() - spawnsCPU));
   // TO BE REMOVED
   let structures = Game.spawns.Spawn1.room.find(FIND_STRUCTURES);
 
