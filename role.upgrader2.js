@@ -29,7 +29,7 @@ module.exports = {
     creep.moveTo(target, {
       visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 5
     });
-    console.log('MOVING TO: ' + target)
+    console.log('MOVING TO: ' + target + ', X:' + creep.pos.x + ' Y:' + creep.pos.y)
   },
   runSpawning: function(creep) {
     if (!creep.memory.init) {
