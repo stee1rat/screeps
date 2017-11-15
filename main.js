@@ -508,7 +508,6 @@ profiler.wrap(function() {
   _.each(_.filter(Game.creeps, c => c.memory.role == 'remoteHarvester'), creep => {
     roleRemoteHarvester.run(creep);
   });
-  console.log('REMOTE HARVESTERS CPU: ' + Math.round((Game.cpu.getUsed() - remoteHarvestersCPU),2) );
 
   console.log('+---------------------------+')
   console.log('| Tick: ' + Game.time + '             |')
@@ -519,8 +518,9 @@ profiler.wrap(function() {
   console.log('   Haulers CPU: ' + Math.round(haulerCPU));
   console.log('   Haulers2 CPU: ' + Math.round(hauler2CPU));
   console.log('   Builders CPU: ' + Math.round(builderCPU));
+  console.log('   Remote harvesters CPU: ' + Math.round((Game.cpu.getUsed() - remoteHarvestersCPU),2) );
   console.log('=======================');
-  
+
 /*  _.each(_.filter(Game.creeps, c => c.memory.role == 'claimer'), creep => {
     cpuUsed = Game.cpu.getUsed();
   });
