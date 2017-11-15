@@ -8,6 +8,8 @@ const STATE_UPGRADING = 3;
 
 module.exports = {
   run: function(creep) {
+    creep.say(':D');
+    
     if(!creep.memory.state) {
       creep.memory.state = STATE_SPAWNING;
     }
