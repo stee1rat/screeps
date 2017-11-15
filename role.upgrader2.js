@@ -9,7 +9,7 @@ const STATE_UPGRADING = 3;
 module.exports = {
   run: function(creep) {
     creep.say(':D');
-    
+
     if(!creep.memory.state) {
       creep.memory.state = STATE_SPAWNING;
     }
@@ -63,14 +63,15 @@ module.exports = {
       this.run(creep);
       return;
     }
+    let result;
     if (source.resourceType) {
-      let result = creep.pickup(source);
+      result = creep.pickup(source);
     }
     if (source.structureType)  {
-      let result = creep.withdraw(source, RESOURCE_ENERGY);
+      result = creep.withdraw(source, RESOURCE_ENERGY);
     }
     if (source.ticksToRegeneration) {
-      let result = creep.harvest(source);
+      result = creep.harvest(source);
     }
     if (result == ERR_NOT_ENOUGH_RESOURCES) {
       creep.memory.source = false;
