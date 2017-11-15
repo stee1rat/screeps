@@ -124,8 +124,9 @@ module.exports = {
       }
     }
     if (roomMemory.storageID) {
-      let storage = Game.getObjectById(Memory.storageID);
-      console.log('  storage: ' + storage + ', storage.store: ' + storage.store[RESOURCE_ENERGY])
+      let storage = Game.getObjectById(roomMemory.storageID);
+      console.log('  storage: ' + storage)
+      console.log('  storage.store: ' + storage.store[RESOURCE_ENERGY])
 
       if (storage.store[RESOURCE_ENERGY] > 0) {
         containersAndStorage = containersAndStorage.concat(storage);
