@@ -66,12 +66,21 @@ module.exports = {
     let result;
     if (source.resourceType) {
       result = creep.pickup(source);
+      if (result) {
+        console.log('GOT DROPPED ENERGY');
+      }
     }
     if (source.structureType)  {
       result = creep.withdraw(source, RESOURCE_ENERGY);
+      if (result) {
+        console.log('GOT ENERGY FROM ' + source.structureType);
+      }
     }
     if (source.ticksToRegeneration) {
       result = creep.harvest(source);
+      if (result) {
+        console.log('GOT ENERGY FROM SOURCE');
+      }
     }
     if (result == ERR_NOT_ENOUGH_RESOURCES) {
       creep.memory.source = false;
