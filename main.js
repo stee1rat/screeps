@@ -434,7 +434,7 @@ profiler.wrap(function() {
     });
   });*/
 
-  console.log('Spawns CPU: ' (Game.cpu.getUsed() - spawnsCPU));
+  console.log('SPAWNS CPU: '  + (Game.cpu.getUsed() - spawnsCPU));
   // TO BE REMOVED
   let structures = Game.spawns.Spawn1.room.find(FIND_STRUCTURES);
 
