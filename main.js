@@ -84,7 +84,7 @@ if (Memory.sources == []._) Memory.sources = [];
 module.exports.loop = function () {
 profiler.wrap(function() {
   //roleUpgrader2.run({memory:{}});
-  let existingCreeps = {};
+  //let existingCreeps = {};
   let cpuUsed = Game.cpu.getUsed();
 
   for (let name in Memory.creeps) {
@@ -99,14 +99,14 @@ profiler.wrap(function() {
 
       delete Memory.creeps[name];
       console.log('Clearing non-existing creep memory:', name);
-    } else {
+    } /*else {
       let role = Game.creeps[name].memory.role;
       if (existingCreeps[role] == []._) {
         existingCreeps[role] = 1;
       } else {
         existingCreeps[role] ++;
       }
-    }
+    }*/
   }
 
   for (let name in Memory.flags) {
@@ -157,14 +157,23 @@ profiler.wrap(function() {
   }
 
   for (let i = 0; i < spawnCreeps.length; i++) {
-
     let role = spawnCreeps[i].role;
     let goal = spawnCreeps[i].goal;
-    let count = existingCreeps[role] || 0;
+    //let count = existingCreeps[role] || 0;
+    let count;
+
+    if (role == 'builder') {
+      count = _.filter(Game.creeps, c => c.memory.role == role).length;
+    } else {
+      let count = _.filter(Game.creeps, c =>
+        c.room.name == Game.spawns.Spawn1.room.name &&
+        c.memory.role == role).length;
+    }
+
 
     if (count < goal) {
       let name = role + Game.time;
-      //console.log('Need to spawn a new ' + role + ' [' + count + '/' + goal +']');
+      console.log('Need to spawn a new ' + role + ' [' + count + '/' + goal +']');
 
       let parts = [];
       for (let key in spawnCreeps[i].bodyParts) {
