@@ -66,19 +66,19 @@ module.exports = {
     let result;
     if (source.resourceType) {
       result = creep.pickup(source);
-      if (result) {
+      if (result === 0) {
         console.log('GOT DROPPED ENERGY');
       }
     }
     if (source.structureType)  {
       result = creep.withdraw(source, RESOURCE_ENERGY);
-      if (result) {
+      if (result === 0) {
         console.log('GOT ENERGY FROM ' + source.structureType);
       }
     }
     if (source.ticksToRegeneration) {
       result = creep.harvest(source);
-      if (result) {
+      if (result === 0) {
         console.log('GOT ENERGY FROM SOURCE');
       }
     }
