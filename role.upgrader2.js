@@ -134,6 +134,7 @@ module.exports = {
     console.log('  containersAndStorage: ' + containersAndStorage)
     if (containersAndStorage.length) {
       const source = creep.pos.findClosestByPath(containersAndStorage);
+      console.log(JSON.stringify(source))
       creep.memory.source = source.id;
       return;
     }
