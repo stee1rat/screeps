@@ -516,7 +516,7 @@ profiler.wrap(function() {
     roleRemoteHarvester.run(creep);
   });
 
-  console.log('+---------------------------+')
+  /*console.log('+---------------------------+')
   console.log('| Tick: ' + Game.time + '             |')
   console.log('+---------------------------+')
   console.log('=======================');
@@ -528,13 +528,13 @@ profiler.wrap(function() {
   console.log('   Builders CPU: ' + Math.round(builderCPU));
   console.log('   Remote harvesters CPU: ' + Math.round((Game.cpu.getUsed() - remoteHarvestersCPU),2) );
   console.log('=======================');
-
+*/
 /*  _.each(_.filter(Game.creeps, c => c.memory.role == 'claimer'), creep => {
     cpuUsed = Game.cpu.getUsed();
   });
 */
   cpuUsed = Game.cpu.getUsed();
   towers.run();
-  console.log('TOWERS CPU: ' + Math.round((Game.cpu.getUsed() - cpuUsed),2) );
+  //console.log('TOWERS CPU: ' + Math.round((Game.cpu.getUsed() - cpuUsed),2) );
 });
 };
