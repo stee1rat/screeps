@@ -452,7 +452,7 @@ profiler.wrap(function() {
     delete Memory.storageID ;
   }
   // TO BE REMOVED ^^^^^^
-  console.log('CALCULATIONS CPU: ' + Math.round((Game.cpu.getUsed() - cpuUsed),2) );
+  //console.log('CALCULATIONS CPU: ' + Math.round((Game.cpu.getUsed() - cpuUsed),2) );
   cpuUsed = Game.cpu.getUsed();
 
   let upgraderCPU = 0;
@@ -472,13 +472,13 @@ profiler.wrap(function() {
     if(creep.memory.role == 'upgrader') {
       creepCPU = Game.cpu.getUsed();
       roleUpgrader.run(creep);
-      console.log(creep.name + ' CPU: ' + (Game.cpu.getUsed() - creepCPU));
+      //console.log(creep.name + ' CPU: ' + (Game.cpu.getUsed() - creepCPU));
       upgraderCPU += Game.cpu.getUsed() - creepCPU;
     }
     if(creep.memory.role == 'upgrader2') {
       creepCPU = Game.cpu.getUsed();
       roleUpgrader2.run(creep);
-      console.log(creep.name + ' CPU: ' + (Game.cpu.getUsed() - creepCPU));
+    //  console.log(creep.name + ' CPU: ' + (Game.cpu.getUsed() - creepCPU));
       upgrader2CPU += Game.cpu.getUsed() - creepCPU;
     }
     if(creep.memory.role == 'builder') {

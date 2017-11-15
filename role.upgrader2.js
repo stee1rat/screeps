@@ -90,6 +90,7 @@ module.exports = {
   },
   findEnergySource: function(creep) {
     const roomMemory = Memory.rooms[creep.room.name];
+    console.log('UPGRADER2 SEARCH ROOM:' + creep.room.name);
     // look for available dropped energy
     if (roomMemory.droppedEnergy.length) {
       const energyAvailable = _.filter(roomMemory.droppedEnergy, function(e) {
@@ -100,7 +101,7 @@ module.exports = {
         const energy = Game.getObjectById(e);
         return (energy.amount - amount) > 0
       });
-
+      console.log('  energyAvailable.length:' + energyAvailable.length)
       if (energyAvailable.length) {
         source = creep.pos.findClosestByPath(energyAvailable);
         creep.memory.source = source.id;
@@ -117,16 +118,20 @@ module.exports = {
            Game.getObjectById(c.memory.source)) &&
            c.carryCapacity || 0)) > 0
       );
+      console.log('  availableContainers: ' + availableContainers)
       if (availableContainers) {
           containersAndStorage = containersAndStorage.concat(availableContainers);
       }
     }
     if (roomMemory.storageID) {
       let storage = Game.getObjectById(Memory.storageID);
+      console.log('  storage: ' + storage + ', storage.store: ' + storage.store[RESOURCE_ENERGY])
+
       if (storage.store[RESOURCE_ENERGY] > 0) {
         containersAndStorage = containersAndStorage.concat(storage);
       }
     }
+    console.log('  containersAndStorage: ' + containersAndStorage)
     if (containersAndStorage.length) {
       const source = creep.pos.findClosestByPath(containersAndStorage);
       creep.memory.source = source.id;
