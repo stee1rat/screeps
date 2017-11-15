@@ -165,9 +165,10 @@ profiler.wrap(function() {
     if (role == 'builder') {
       count = _.filter(Game.creeps, c => c.memory.role == role).length;
     } else {
-      let count = _.filter(Game.creeps, c =>
+      count = _.filter(Game.creeps, c =>
         c.room.name == Game.spawns.Spawn1.room.name &&
         c.memory.role == role).length;
+      console.log(role, count, goal);
     }
 
 
