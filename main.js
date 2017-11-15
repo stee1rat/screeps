@@ -471,7 +471,7 @@ profiler.wrap(function() {
     }
     if(creep.memory.role == 'upgrader') {
       creepCPU = Game.cpu.getUsed();
-      roleUpgrader.run(creep);
+      roleUpgrader2.run(creep);
       //console.log(creep.name + ' CPU: ' + (Game.cpu.getUsed() - creepCPU));
       upgraderCPU += Game.cpu.getUsed() - creepCPU;
     }

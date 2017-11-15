@@ -3,13 +3,11 @@
 // https://screepsworld.com/2017/09/screeps-tutorial-handling-creep-roles-with-a-state-machine/
 
 const STATE_SPAWNING = 0;
-const STATE_HARVESTING = 2;
-const STATE_UPGRADING = 3;
+const STATE_HARVESTING = 1;
+const STATE_UPGRADING = 2;
 
 module.exports = {
   run: function(creep) {
-    creep.say(':D');
-
     if(!creep.memory.state) {
       creep.memory.state = STATE_SPAWNING;
     }
@@ -29,7 +27,6 @@ module.exports = {
     creep.moveTo(target, {
       visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 5
     });
-    console.log('MOVING TO: ' + target + ', X:' + creep.pos.x + ' Y:' + creep.pos.y)
   },
   runSpawning: function(creep) {
     if (!creep.memory.init) {
@@ -53,9 +50,6 @@ module.exports = {
     if (result == ERR_NOT_IN_RANGE) {
       this.moveTo(creep, controller);
     }
-    if (result == 0) {
-      console.log('UPGRADING CONTROLLER: ' + creep.carry[RESOURCE_ENERGY]);
-    }
   },
   runHarvesting: function(creep) {
     if (!creep.memory.source) {
@@ -71,21 +65,12 @@ module.exports = {
     let result;
     if (source.resourceType) {
       result = creep.pickup(source);
-      if (result === 0) {
-        console.log('GOT DROPPED ENERGY');
-      }
     }
     if (source.structureType)  {
       result = creep.withdraw(source, RESOURCE_ENERGY);
-      if (result === 0) {
-        console.log('GOT ENERGY FROM ' + source.structureType);
-      }
     }
     if (source.ticksToRegeneration) {
       result = creep.harvest(source);
-      if (result === 0) {
-        console.log('GOT ENERGY FROM SOURCE');
-      }
     }
     if (result == ERR_NOT_ENOUGH_RESOURCES) {
       creep.memory.source = false;
@@ -104,7 +89,6 @@ module.exports = {
   },
   findEnergySource: function(creep) {
     const roomMemory = Memory.rooms[creep.room.name];
-    console.log('UPGRADER2 SEARCH ROOM:' + creep.room.name);
     // look for available dropped energy
     if (roomMemory.droppedEnergy.length) {
       const energyAvailable = _.filter(roomMemory.droppedEnergy, function(e) {
@@ -113,9 +97,8 @@ module.exports = {
         // how much of this energy they will pick up
         const amount = _.sum(creeps, c => c.carryCapacity - _.sum(c.carry));
         const energy = Game.getObjectById(e);
-        return (energy.amount - amount) > 0
+        return (energy.amount - amount) > 0;
       });
-      console.log('  energyAvailable.length:' + energyAvailable.length)
       if (energyAvailable.length) {
         const energy = _.map(energyAvailable, e => Game.getObjectById(e));
         source = creep.pos.findClosestByPath(energy);
@@ -123,7 +106,6 @@ module.exports = {
         return;
       }
     }
-    // take energy from container or storage, whichever is closer
     let containersAndStorage = [];
     if (roomMemory.containers.length) {
       let containers = _.map(roomMemory.containers, e => Game.getObjectById(e));
@@ -133,25 +115,18 @@ module.exports = {
            Game.getObjectById(c.memory.source)) &&
            c.carryCapacity || 0)) > 0
       );
-      console.log('  availableContainers: ' + availableContainers)
       if (availableContainers) {
           containersAndStorage = containersAndStorage.concat(availableContainers);
       }
     }
     if (roomMemory.storageID) {
       let storage = Game.getObjectById(roomMemory.storageID);
-      console.log('  storage: ' + storage)
-      console.log('  storage.store: ' + storage.store[RESOURCE_ENERGY])
-
       if (storage.store[RESOURCE_ENERGY] > 0) {
         containersAndStorage = containersAndStorage.concat(storage);
       }
     }
-    console.log('  containersAndStorage: ' + containersAndStorage)
     if (containersAndStorage.length) {
-      console.log('!!!' + containersAndStorage);
       const source = creep.pos.findClosestByPath(containersAndStorage);
-      console.log(JSON.stringify(source))
       creep.memory.source = source.id;
       return;
     }
