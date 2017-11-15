@@ -49,11 +49,12 @@ module.exports = {
       return;
     }
     const controller = Game.getObjectById(creep.memory.controller);
-    if (controller == 0) {
-      console.log('UPGRADING CONTROLLER: ' + creep.carry[RESOURCE_ENERGY]);
-    }
-    if (creep.upgradeController(controller) == ERR_NOT_IN_RANGE) {
+    const result = creep.upgradeController(controller);
+    if (result == ERR_NOT_IN_RANGE) {
       this.moveTo(creep, controller);
+    }
+    if (result == 0) {
+      console.log('UPGRADING CONTROLLER: ' + creep.carry[RESOURCE_ENERGY]);
     }
   },
   runHarvesting: function(creep) {
