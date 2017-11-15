@@ -103,7 +103,8 @@ module.exports = {
       });
       console.log('  energyAvailable.length:' + energyAvailable.length)
       if (energyAvailable.length) {
-        source = creep.pos.findClosestByPath(energyAvailable);
+        const energy = _.map(energyAvailable, e => Game.getObjectById(e));
+        source = creep.pos.findClosestByPath(energy);
         creep.memory.source = source.id;
         return;
       }
