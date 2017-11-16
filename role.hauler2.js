@@ -137,7 +137,7 @@ module.exports ={ // Role hauler
       // refills needed for towers
       if (!target) {
         let towers = _.filter(targetsToRefill, s =>
-          s.structureType == STRUCTURE_TOWER && s.energy <= s.energyCapacity/2 &&
+          s.structureType == STRUCTURE_TOWER && s.energy <= s.energyCapacity - 100 &&
           !_.some(Game.creeps, c => c.memory.targetID == s.id));
 
         if (towers.length) {
