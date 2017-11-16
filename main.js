@@ -162,7 +162,7 @@ profiler.wrap(function() {
     //let count = existingCreeps[role] || 0;
     let count;
 
-    if (role == 'builder') {
+    if (role == 'builder' || role == 'defender') {
       count = _.filter(Game.creeps, c => c.memory.role == role).length;
     } else {
       count = _.filter(Game.creeps, c =>
