@@ -1,55 +1,70 @@
 // Role remote harvester
 
-  const STATE_SPAWNING = 0;
-  const STATE_HARVESTING = 1;
-  const STATE_DEPOSITING = 2;
+const STATE_SPAWNING = 0;
+const STATE_HARVESTING = 1;
+const STATE_DEPOSITING = 2;
 
-  module.exports = {
-    run: function(creep) {
-      if(!creep.memory.state) {
-        creep.memory.state = STATE_SPAWNING;
-      }
-      switch(creep.memory.state) {
-        case STATE_SPAWNING:
-          this.runSpawning(creep);
-          break;
-        case STATE_DEPOSITING:
-          this.runDepositing(creep);
-          break;
-        case STATE_HARVESTING:
-          this.runHarvesting(creep);
-          break;
-      }
-    },
-    moveTo: function(creep, target) {
-      creep.moveTo(target, {reusePath: 10});
-    },
-    runSpawning: function(creep) {
-      if(!creep.spawning) {
-        creep.memory.state = STATE_HARVESTING;
-        this.run(creep);
-        return;
-      }
-    },
-    runHarvesting: function(creep) {
-      const flagName = creep.memory.flagName;
-      if (!Game.flags[flagName]) {
-        creep.suicide();
-      }
-      if (creep.memory.roomName != Game.flags[flagName].pos.roomName) {
-        this.moveTo(creep, Game.flags[flagName].pos);
-        return;
-      }
-      if (!creep.memory.source) {
-        const sources = creep.room.find(FIND_SOURCES);
-        const o = _.filter(Game.creeps, c => c.memory.flagName == flagName);
-        const c = _.countBy(o, c => c.memory.source);
+module.exports = {
+  run: function(creep) {
+    if(!creep.memory.state) {
+      creep.memory.state = STATE_SPAWNING;
+    }
+    switch(creep.memory.state) {
+      case STATE_SPAWNING:
+        this.runSpawning(creep);
+        break;
+      case STATE_DEPOSITING:
+        this.runDepositing(creep);
+        break;
+      case STATE_HARVESTING:
+        this.runHarvesting(creep);
+        break;
+    }
+  },
+  moveTo: function(creep, target) {
+    creep.moveTo(target, {reusePath: 10});
+  },
+  runSpawning: function(creep) {
+    if(!creep.spawning) {
+      creep.memory.state = STATE_HARVESTING;
+      this.run(creep);
+      return;
+    }
+  },
+  runHarvesting: function(creep) {
+    const flagName = creep.memory.flagName;
+    if (!Game.flags[flagName]) {
+      creep.suicide();
+    }
+    if (creep.memory.roomName != Game.flags[flagName].pos.roomName) {
+      this.moveTo(creep, Game.flags[flagName].pos);
+      return;
+    }
+    if (!creep.memory.source) {
+      const sources = creep.room.find(FIND_SOURCES);
+      //const o = _.filter(Game.creeps, c => c.memory.flagName == flagName);
+      //const c = _.countBy(o, c => c.memory.source);
 
+      const source = _.min(_.map(sources, id => {
+          const count = _.filter(Game.creeps, c => c.memory.source == id).length;
+          return {id: id , count: count}
+      }), x => x.count);
+
+      creep.memory.source = source.id;
 /*
   JSON.stringify(_.countBy(_.filter(Game.creeps, c => c.memory.flagName == 'Flag1'), c => c.memory.source));
 ;
 */
         // Flag7 || Flag1
+      }
+      const source = Game.getObjectById(creep.memory.source);
+      const harvest = creep.harvest(source);
+      if (harvest == ERR_NOT_IN_RANGE) {
+        this.moveTo(creep, source);
+      }
+      if (creep.carry.energy == creep.carryCapacity) {
+        creep.memory.state = STATE_DEPOSITING;
+        this.runDepositing(creep);
       }
     },
 
