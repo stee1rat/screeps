@@ -77,7 +77,7 @@ let spawnCreeps = [
     bodyParts: { move: 7, carry: 2, work: 3 }
   }*/];
 
-spawnCreeps.sort((a, b) => a.priority - b.priority);
+//spawnCreeps.sort((a, b) => a.priority - b.priority);
 
 if (Memory.sources == []._) Memory.sources = [];
 
@@ -147,7 +147,7 @@ profiler.wrap(function() {
   //console.log('Claimers CPU: ' + (Game.cpu.getUsed() - cpuUsed));
   cpuUsed = Game.cpu.getUsed();
 
-  for (let i = 0; i < spawnCreeps.length; i++) {
+  /*for (let i = 0; i < spawnCreeps.length; i++) {
     let role = spawnCreeps[i].role;
     let goal = spawnCreeps[i].goal;
     //let count = existingCreeps[role] || 0;
@@ -180,7 +180,7 @@ profiler.wrap(function() {
 
       break;
     }
-  }
+  }*/
 
   if (Game.spawns.Spawn1.spawning) {
     let spawningCreep = Game.creeps[Game.spawns.Spawn1.spawning.name];
