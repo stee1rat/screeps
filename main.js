@@ -107,49 +107,6 @@ profiler.wrap(function() {
     });
   }
 
-  let spawn = Game.spawns.Spawn1;
-  if (!spawn.spawning) {
-    // Spawning remote harvesters
-    _.each(_.filter(Game.flags, f => f.memory.harvesters), flag => {
-      let harvesters = _.filter(Game.creeps, c =>
-        c.memory.role == 'remoteHarvester' &&
-        c.memory.flagName == flag.name).length;
-      if (harvesters < flag.memory.harvesters) {
-          /*console.log('NEED TO SPAWN ' + (flag.memory.harvesters - harvesters) +
-                      ' REMOTE HARVESTERS FOR ' + flag.name);*/
-          let parts = _.map({ move: 12, work: 7, carry: 5}, (p,n) => _.times(p, x => n));
-          parts = _.reduce(parts, (t, n) => t.concat(n),[]);
-          let role = 'remoteHarvester';
-          let name = role + Game.time;
-          let parameters = {
-            role: role,
-            home: spawn.pos.roomName,
-            flagName: flag.name
-          }
-          spawn.spawnCreep(parts, name, { memory: parameters } );
-          return false;
-        }
-    });
-
-    //console.log('Spawn1 CPU: ' + (Game.cpu.getUsed() - cpuUsed));
-    cpuUsed = Game.cpu.getUsed();
-    // Spawning remote claimers
-    _.each(_.filter(Game.flags, f => f.memory.claim &&
-      !_.some(Game.creeps, c => c.memory.roomName == f.pos.roomName)), flag => {
-        //console.log('NEED TO SPAWN A CLAIMER FOR ' + flag.name);
-        let parts = _.map({ claim: 1, move: 1 }, (p, n) => _.times(p, x => n));
-        parts = _.reduce(parts, (t, n) => t.concat(n),[]);
-        let role = 'claimer';
-        let name = role + Game.time;
-        let parameters = {
-          role: role,
-          roomName: flag.pos.roomName
-        };
-        spawn.spawnCreep(parts, name, { memory: parameters } );
-        return false;
-    });
-  }
-
   function countCreepsByRole(spawn, role) {
     return _.filter(Game.creeps, c =>
       c.memory.role == role &&
@@ -158,6 +115,8 @@ profiler.wrap(function() {
 
   //_.each(_.filter(Game.spawns, s => s.name != 'Spawn1'), spawn => {
   _.each(Game.spawns, spawn => {
+    freeToSpawn = true;
+
     const roomCreeps = _.filter(Game.creeps, c =>
       c.pos.roomName == spawn.pos.roomName &&
       c.memory.home == spawn.pos.roomName).length;
@@ -169,13 +128,25 @@ profiler.wrap(function() {
     const haulers = countCreepsByRole(spawn, 'hauler2');
 
     if (spawn.room.energyCapacityAvailable < 750) {
-      if (fixers < 2) spawnCreep(spawn, 'fixer', false);
-      if (upgraders < 3) spawnCreep(spawn, 'upgrader2');
-      if (harvesters/2 < spawn.memory.sources) spawnCreep(spawn, 'harvester');
+      if (fixers < 2) {
+        spawnCreep(spawn, 'fixer');
+        freeToSpawn = false;
+      }
+      if (upgraders < 3) {
+        spawnCreep(spawn, 'upgrader2');
+        freeToSpawn = false;
+      }
+      if (harvesters/2 < spawn.memory.sources) {
+        spawnCreep(spawn, 'harvester');
+        freeToSpawn = false;
+      }
     }
 
     if (spawn.room.energyCapacityAvailable >= 750 && !spawn.spawning) {
-      if (upgraders < spawn.memory.sources*2) spawnCreep(spawn, 'upgrader2');
+      if (upgraders < spawn.memory.sources*2) {
+        spawnCreep(spawn, 'upgrader2');
+        freeToSpawn = false;
+      }
 
       if (spawn.room.energyAvailable >= 251 && haulers/2 < spawn.memory.sources) {
         let parts = roomCreeps <= 2 ?
@@ -185,23 +156,70 @@ profiler.wrap(function() {
            optimalBody(800);
 
         spawnCreep(spawn, 'hauler2', parts);
+        freeToSpawn = false;
       }
 
       if (miners < spawn.memory.sources) {
         let parts = roomCreeps <= 2 ?
           [MOVE,WORK] : [MOVE, MOVE, WORK, WORK, WORK, WORK, WORK, WORK ];
         spawnCreep(spawn, 'miner2', parts);
+        freeToSpawn = false;
       }
 
       const builders = _.filter(Game.creeps, c =>
           c.memory.role == 'builder').length;
 
-      if (builders < spawn.memory.sources) spawnCreep(spawn, 'builder');
+      if (builders < spawn.memory.sources) {
+        spawnCreep(spawn, 'builder');
+        freeToSpawn = false;
+      }
 
       const defenders = _.filter(Game.creeps, c =>
           c.memory.role == 'defender').length;
 
-      if (defenders < spawn.memory.sources) spawnCreep(spawn, 'defender');
+      if (defenders < spawn.memory.sources) {
+        spawnCreep(spawn, 'defender');
+        freeToSpawn = false;
+      }
+    }
+
+    if (freeToSpawn && !spawn.spawning) {
+      // Spawning remote harvesters
+      _.each(_.filter(Game.flags, f => f.memory.harvesters), flag => {
+        let harvesters = _.filter(Game.creeps, c =>
+          c.memory.role == 'remoteHarvester' &&
+          c.memory.flagName == flag.name).length;
+        if (harvesters < flag.memory.harvesters) {
+            let parts = _.map({ move: 12, work: 7, carry: 5}, (p,n) => _.times(p, x => n));
+            parts = _.reduce(parts, (t, n) => t.concat(n),[]);
+            let role = 'remoteHarvester';
+            let name = role + Game.time;
+            let parameters = {
+              role: role,
+              home: spawn.pos.roomName,
+              flagName: flag.name
+            }
+            spawn.spawnCreep(parts, name, { memory: parameters } );
+            return false;
+          }
+      });
+
+      // Spawning remote claimers
+      _.each(_.filter(Game.flags, f => f.memory.claim &&
+        !_.some(Game.creeps, c => c.memory.roomName == f.pos.roomName)), flag => {
+          //console.log('NEED TO SPAWN A CLAIMER FOR ' + flag.name);
+          let parts = _.map({ claim: 1, move: 1 }, (p, n) => _.times(p, x => n));
+          parts = _.reduce(parts, (t, n) => t.concat(n),[]);
+          let role = 'claimer';
+          let name = role + Game.time;
+          let parameters = {
+            role: role,
+            roomName: flag.pos.roomName
+          };
+          spawn.spawnCreep(parts, name, { memory: parameters } );
+          return false;
+      });
+
     }
 
     if (spawn.spawning) {
