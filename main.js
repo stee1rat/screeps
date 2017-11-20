@@ -168,55 +168,32 @@ profiler.wrap(function() {
     });
   }
 
+  function countCreepsByRole(role) {
+    return _.filter(Game.creeps, c =>
+      c.memory.role == role &&
+      c.pos.roomName == spawn.pos.roomName).length;
+  }
+
   //_.each(_.filter(Game.spawns, s => s.name != 'Spawn1'), spawn => {
   _.each(Game.spawns, spawn => {
-    const miners = _.filter(Game.creeps, c =>
-      c.memory.role == 'miner' &&
-      c.pos.roomName == spawn.pos.roomName).length;
+    const roomCreeps = _.filter(Game.creeps, c =>
+      c.pos.roomName == spawn.pos.roomName &&
+      c.memory.home == spawn.pos.roomName).length;
+
+    const miners = countCreepsByRole('miner');
+    const fixers = countCreepsByRole('fixer');
+    const upgraders = countCreepsByRole('upgrader2');
+    const harvesters = countCreepsByRole('harvester');
+    const haulers = countCreepsByRole('hauler2');
 
     if (spawn.room.energyCapacityAvailable < 750) {
-      //spawn fixers
-      const fixers = _.filter(Game.creeps, c =>
-          c.memory.role == 'fixer' &&
-          c.pos.roomName == spawn.pos.roomName).length;
-
       if (fixers < 2) spawnCreep(spawn, 'fixer', false);
-
-      //spawn upgraders
-      const upgraders = _.filter(Game.creeps, c =>
-          c.memory.role == 'upgrader2' &&
-          c.pos.roomName == spawn.pos.roomName).length;
-
       if (upgraders < 3) spawnCreep(spawn, 'upgrader2');
-
-      //spawn harvesters
-      const harvesters = _.filter(Game.creeps, c =>
-          c.memory.role == 'harvester' &&
-          c.pos.roomName == spawn.pos.roomName).length;
-
-      if (harvesters/2 < spawn.memory.sources) {
-        spawnCreep(spawn, 'harvester', false);
-      }
+      if (harvesters/2 < spawn.memory.sources) spawnCreep(spawn, 'harvester');
     }
 
     if (spawn.room.energyCapacityAvailable >= 750 && !spawn.spawning) {
-      const upgraders = _.filter(Game.creeps, c =>
-          c.memory.role == 'upgrader2' &&
-          c.pos.roomName == spawn.pos.roomName).length;
-
       if (upgraders < spawn.memory.sources*2) spawnCreep(spawn, 'upgrader2');
-
-      let roomCreeps = _.filter(Game.creeps, c =>
-        c.pos.roomName == spawn.pos.roomName &&
-        c.memory.home == spawn.pos.roomName).length;
-
-      const harvesters = _.filter(Game.creeps, c =>
-          c.memory.role == 'harvester2' &&
-          c.pos.roomName == spawn.pos.roomName).length;
-
-      const haulers = _.filter(Game.creeps, c =>
-          c.memory.role == 'hauler2' &&
-          c.pos.roomName == spawn.pos.roomName).length;
 
       if (spawn.room.energyAvailable >= 251 && haulers/2 < spawn.memory.sources) {
         let parts = roomCreeps <= 2 ?
@@ -227,10 +204,6 @@ profiler.wrap(function() {
 
         spawnCreep(spawn, 'hauler2', parts);
       }
-
-      const miners = _.filter(Game.creeps, c =>
-          c.memory.role == 'miner2' &&
-          c.pos.roomName == spawn.pos.roomName).length;
 
       if (miners < spawn.memory.sources) {
         let parts = roomCreeps <= 2 ?
