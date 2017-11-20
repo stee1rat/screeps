@@ -168,7 +168,7 @@ profiler.wrap(function() {
     });
   }
 
-  function countCreepsByRole(role) {
+  function countCreepsByRole(spawn, role) {
     return _.filter(Game.creeps, c =>
       c.memory.role == role &&
       c.pos.roomName == spawn.pos.roomName).length;
@@ -180,11 +180,11 @@ profiler.wrap(function() {
       c.pos.roomName == spawn.pos.roomName &&
       c.memory.home == spawn.pos.roomName).length;
 
-    const miners = countCreepsByRole('miner');
-    const fixers = countCreepsByRole('fixer');
-    const upgraders = countCreepsByRole('upgrader2');
-    const harvesters = countCreepsByRole('harvester');
-    const haulers = countCreepsByRole('hauler2');
+    const miners = countCreepsByRole(spawn, 'miner');
+    const fixers = countCreepsByRole(spawn, 'fixer');
+    const upgraders = countCreepsByRole(spawn, 'upgrader2');
+    const harvesters = countCreepsByRole(spawn, 'harvester');
+    const haulers = countCreepsByRole(spawn, 'hauler2');
 
     if (spawn.room.energyCapacityAvailable < 750) {
       if (fixers < 2) spawnCreep(spawn, 'fixer', false);
