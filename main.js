@@ -100,8 +100,7 @@ profiler.wrap(function() {
     }
   }
 
-  console.log('Memory clean up CPU: ' + (Game.cpu.getUsed() - cpuUsed));
-  cpuUsed = Game.cpu.getUsed();
+  let cpuUsed = Game.cpu.getUsed();
 
   let spawn = Game.spawns.Spawn1;
   if (!spawn.spawning) {
@@ -126,6 +125,9 @@ profiler.wrap(function() {
           return false;
         }
     });
+
+    console.log('Spawn1 CPU: ' + (Game.cpu.getUsed() - cpuUsed));
+    cpuUsed = Game.cpu.getUsed();
     // Spawning remote claimers
     _.each(_.filter(Game.flags, f => f.memory.claim &&
       !_.some(Game.creeps, c => c.memory.roomName == f.pos.roomName)), flag => {
@@ -142,6 +144,8 @@ profiler.wrap(function() {
         return false;
     });
   }
+  console.log('Claimers CPU: ' + (Game.cpu.getUsed() - cpuUsed));
+  cpuUsed = Game.cpu.getUsed();
 
   for (let i = 0; i < spawnCreeps.length; i++) {
     let role = spawnCreeps[i].role;
@@ -186,6 +190,10 @@ profiler.wrap(function() {
       Game.spawns.Spawn1.pos.y,
       {align: 'left', opacity: 0.8});
   }
+
+  console.log('Spawning CPU: ' + (Game.cpu.getUsed() - cpuUsed));
+  cpuUsed = Game.cpu.getUsed();
+
 /*  console.log('------- rooms --------')
   _.each(_.filter(Game.rooms, r => r.controller.my), r => console.log(r.name, r.name));*/
 
@@ -222,6 +230,9 @@ profiler.wrap(function() {
     Memory.rooms[room.name] = roomObject;
   });
 
+  console.log('Forming Memory.rooms CPU: ' + (Game.cpu.getUsed() - cpuUsed));
+  cpuUsed = Game.cpu.getUsed();
+
   //console.log(JSON.stringify(Memory.rooms))
 
   let spawnsCPU = Game.cpu.getUsed();
@@ -243,6 +254,9 @@ profiler.wrap(function() {
     }
      return result.sort();
   }
+
+  console.log('Otpimal body CALCULATIONS CPU: ' + (Game.cpu.getUsed() - cpuUsed));
+  cpuUsed = Game.cpu.getUsed();
 
   _.each(_.filter(Game.spawns, s => s.name != 'Spawn1'), spawn => {
     const miners = _.filter(Game.creeps, c =>
@@ -423,6 +437,10 @@ profiler.wrap(function() {
         {align: 'left', opacity: 0.8});
     }
   });
+
+  console.log('New spawn procedure CPU: ' + (Game.cpu.getUsed() - cpuUsed));
+  cpuUsed = Game.cpu.getUsed();
+
 
   /*_.each(Memory.rooms, room => {
     //console.log('===========' + room.name + '=============')
