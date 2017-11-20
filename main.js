@@ -180,7 +180,7 @@ profiler.wrap(function() {
       c.pos.roomName == spawn.pos.roomName &&
       c.memory.home == spawn.pos.roomName).length;
 
-    const miners = countCreepsByRole(spawn, 'miner');
+    const miners = countCreepsByRole(spawn, 'miner2');
     const fixers = countCreepsByRole(spawn, 'fixer');
     const upgraders = countCreepsByRole(spawn, 'upgrader2');
     const harvesters = countCreepsByRole(spawn, 'harvester');
