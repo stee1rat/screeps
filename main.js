@@ -37,24 +37,6 @@ profiler.wrap(function() {
     }
   }
 
-  //console.log('Claimers CPU: ' + (Game.cpu.getUsed() - cpuUsed));
-  cpuUsed = Game.cpu.getUsed();
-
-  if (Game.spawns.Spawn1.spawning) {
-    let spawningCreep = Game.creeps[Game.spawns.Spawn1.spawning.name];
-    Game.spawns.Spawn1.room.visual.text(
-      'Spawning ' + spawningCreep.memory.role,
-      Game.spawns.Spawn1.pos.x + 1,
-      Game.spawns.Spawn1.pos.y,
-      {align: 'left', opacity: 0.8});
-  }
-
-  //console.log('Spawning CPU: ' + (Game.cpu.getUsed() - cpuUsed));
-  cpuUsed = Game.cpu.getUsed();
-
-/*  console.log('------- rooms --------')
-  _.each(_.filter(Game.rooms, r => r.controller.my), r => console.log(r.name, r.name));*/
-
   delete Memory.rooms;
   Memory.rooms = {}
   _.each(Game.rooms, room => {
@@ -230,13 +212,19 @@ profiler.wrap(function() {
     }
   });
 
-  //console.log('New spawn procedure CPU: ' + (Game.cpu.getUsed() - cpuUsed));
-  cpuUsed = Game.cpu.getUsed();
+  if (Game.spawns.Spawn1.spawning) {
+    let spawningCreep = Game.creeps[Game.spawns.Spawn1.spawning.name];
+    Game.spawns.Spawn1.room.visual.text(
+      'Spawning ' + spawningCreep.memory.role,
+      Game.spawns.Spawn1.pos.x + 1,
+      Game.spawns.Spawn1.pos.y,
+      {align: 'left', opacity: 0.8});
+  }
 
   SpawnsCPU = (Game.cpu.getUsed() - spawnsCPU);
 
   // TO BE REMOVED
-  let structures = Game.spawns.Spawn1.room.find(FIND_STRUCTURES);
+/*  let structures = Game.spawns.Spawn1.room.find(FIND_STRUCTURES);
 
   Memory.structures = structures.map(s => s.id);
 
@@ -255,7 +243,7 @@ profiler.wrap(function() {
   }
   // TO BE REMOVED ^^^^^^
   //console.log('CALCULATIONS CPU: ' + Math.round((Game.cpu.getUsed() - cpuUsed),2) );
-  cpuUsed = Game.cpu.getUsed();
+  cpuUsed = Game.cpu.getUsed();*/
 
   let upgraderCPU = 0;
   let upgrader2CPU = 0;
