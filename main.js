@@ -1,10 +1,10 @@
 let roleHarvester = require('role.harvester');
 let roleHarvester2 = require('role.new.harvester');
 let roleRemoteHarvester = require('role.remoteHarvester');
-let roleUpgrader = require('role.upgrader');
+//let roleUpgrader = require('role.upgrader');
 let roleUpgrader2 = require('role.upgrader2');
 let roleBuilder = require('role.builder');
-let roleHauler = require('role.hauler');
+//let roleHauler = require('role.hauler');
 let roleHauler2 = require('role.hauler2');
 let roleFixer = require('role.fixer');
 let roleMiner = require('role.miner');
@@ -141,10 +141,10 @@ profiler.wrap(function() {
 
       //spawn upgraders
       const upgraders = _.filter(Game.creeps, c =>
-          c.memory.role == 'upgrader' &&
+          c.memory.role == 'upgrader2' &&
           c.pos.roomName == spawn.pos.roomName).length;
 
-      if (upgraders < 3) spawnCreep(spawn, 'upgrader', false);
+      if (upgraders < 3) spawnCreep(spawn, 'upgrader2');
 
       //spawn harvesters
       const harvesters = _.filter(Game.creeps, c =>
@@ -158,10 +158,10 @@ profiler.wrap(function() {
 
     if (spawn.room.energyCapacityAvailable >= 750 && !spawn.spawning) {
       const upgraders = _.filter(Game.creeps, c =>
-          c.memory.role == 'upgrader' &&
+          c.memory.role == 'upgrader2' &&
           c.pos.roomName == spawn.pos.roomName).length;
 
-      if (upgraders < spawn.memory.sources*2) spawnCreep(spawn, 'upgrader');
+      if (upgraders < spawn.memory.sources*2) spawnCreep(spawn, 'upgrader2');
 
       let roomCreeps = _.filter(Game.creeps, c =>
         c.pos.roomName == spawn.pos.roomName &&
@@ -256,17 +256,10 @@ profiler.wrap(function() {
         return false;
     });
   }
-  
+
   //console.log('New spawn procedure CPU: ' + (Game.cpu.getUsed() - cpuUsed));
   cpuUsed = Game.cpu.getUsed();
 
-
-  /*_.each(Memory.rooms, room => {
-    //console.log('===========' + room.name + '=============')
-    _.each(room.targetsToRefill, t => {
-      //console.log(Game.getObjectById(t).structureType);
-    });
-  });*/
   SpawnsCPU = (Game.cpu.getUsed() - spawnsCPU);
 
   // TO BE REMOVED
@@ -305,12 +298,12 @@ profiler.wrap(function() {
     if(creep.memory.role == 'harvester2') {
       roleHarvester2.run(creep);
     }
-    if(creep.memory.role == 'upgrader') {
+/*    if(creep.memory.role == 'upgrader') {
       creepCPU = Game.cpu.getUsed();
       roleUpgrader2.run(creep);
       //console.log(creep.name + ' CPU: ' + (Game.cpu.getUsed() - creepCPU));
       upgraderCPU += Game.cpu.getUsed() - creepCPU;
-    }
+    }*/
     if(creep.memory.role == 'upgrader2') {
       creepCPU = Game.cpu.getUsed();
       roleUpgrader2.run(creep);
@@ -322,11 +315,11 @@ profiler.wrap(function() {
       roleBuilder.run(creep);
       builderCPU += Game.cpu.getUsed() - creepCPU;
     }
-    if(creep.memory.role == 'hauler') {
+    /*if(creep.memory.role == 'hauler') {
       creepCPU = Game.cpu.getUsed();
       roleHauler.run(creep);
       haulerCPU += Game.cpu.getUsed() - creepCPU    }
-
+*/
     if(creep.memory.role == 'fixer') {
       roleFixer.run(creep);
     }
