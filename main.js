@@ -143,6 +143,22 @@ profiler.wrap(function() {
     }
 
     if (spawn.room.energyCapacityAvailable >= 750 && !spawn.spawning) {
+      const defenders = _.filter(Game.creeps, c =>
+          c.memory.role == 'defender').length;
+
+      if (defenders < spawn.memory.sources) {
+        spawnCreep(spawn, 'defender');
+        freeToSpawn = false;
+      }
+
+      const builders = _.filter(Game.creeps, c =>
+          c.memory.role == 'builder').length;
+
+      if (builders < spawn.memory.sources) {
+        spawnCreep(spawn, 'builder');
+        freeToSpawn = false;
+      }
+      
       if (upgraders < spawn.memory.sources*2) {
         spawnCreep(spawn, 'upgrader2');
         freeToSpawn = false;
@@ -163,22 +179,6 @@ profiler.wrap(function() {
         let parts = roomCreeps <= 2 ?
           [MOVE,WORK] : [MOVE, MOVE, WORK, WORK, WORK, WORK, WORK, WORK ];
         spawnCreep(spawn, 'miner2', parts);
-        freeToSpawn = false;
-      }
-
-      const builders = _.filter(Game.creeps, c =>
-          c.memory.role == 'builder').length;
-
-      if (builders < spawn.memory.sources) {
-        spawnCreep(spawn, 'builder');
-        freeToSpawn = false;
-      }
-
-      const defenders = _.filter(Game.creeps, c =>
-          c.memory.role == 'defender').length;
-
-      if (defenders < spawn.memory.sources) {
-        spawnCreep(spawn, 'defender');
         freeToSpawn = false;
       }
     }
