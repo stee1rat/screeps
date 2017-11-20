@@ -83,30 +83,14 @@ if (Memory.sources == []._) Memory.sources = [];
 
 module.exports.loop = function () {
 profiler.wrap(function() {
-  //roleUpgrader2.run({memory:{}});
-  //let existingCreeps = {};
+
   let cpuUsed = Game.cpu.getUsed();
 
   for (let name in Memory.creeps) {
     if (!Game.creeps[name]) {
-
-      if (Memory.creeps[name].role == 'miner') {
-        if (Memory.creeps[name].source != []._) {
-          let i = Memory.sources.indexOf(Memory.creeps[name].source);
-          Memory.sources.splice(i, 1);
-        }
-      }
-
       delete Memory.creeps[name];
       console.log('Clearing non-existing creep memory:', name);
-    } /*else {
-      let role = Game.creeps[name].memory.role;
-      if (existingCreeps[role] == []._) {
-        existingCreeps[role] = 1;
-      } else {
-        existingCreeps[role] ++;
-      }
-    }*/
+    }
   }
 
   for (let name in Memory.flags) {
@@ -115,6 +99,9 @@ profiler.wrap(function() {
       console.log('Clearing non-existing flag memory:', name);
     }
   }
+
+  console.log('Memory clean up CPU: ' + (Game.cpu.getUsed() - cpuUsed));
+  cpuUsed = Game.cpu.getUsed();
 
   let spawn = Game.spawns.Spawn1;
   if (!spawn.spawning) {
