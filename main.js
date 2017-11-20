@@ -19,7 +19,7 @@ const profiler = require('screeps-profiler');
 profiler.enable();
 
 let spawnCreeps = [
-  {
+/*  {
     role: 'harvester',
     priority: 0,
     goal: 0,
@@ -75,7 +75,7 @@ let spawnCreeps = [
     goal: 0,
     parameters: { },
     bodyParts: { move: 7, carry: 2, work: 3 }
-  }];
+  }*/];
 
 spawnCreeps.sort((a, b) => a.priority - b.priority);
 
@@ -126,7 +126,7 @@ profiler.wrap(function() {
         }
     });
 
-    console.log('Spawn1 CPU: ' + (Game.cpu.getUsed() - cpuUsed));
+    //console.log('Spawn1 CPU: ' + (Game.cpu.getUsed() - cpuUsed));
     cpuUsed = Game.cpu.getUsed();
     // Spawning remote claimers
     _.each(_.filter(Game.flags, f => f.memory.claim &&
@@ -144,7 +144,7 @@ profiler.wrap(function() {
         return false;
     });
   }
-  console.log('Claimers CPU: ' + (Game.cpu.getUsed() - cpuUsed));
+  //console.log('Claimers CPU: ' + (Game.cpu.getUsed() - cpuUsed));
   cpuUsed = Game.cpu.getUsed();
 
   for (let i = 0; i < spawnCreeps.length; i++) {
@@ -159,13 +159,13 @@ profiler.wrap(function() {
       count = _.filter(Game.creeps, c =>
         c.room.name == Game.spawns.Spawn1.room.name &&
         c.memory.role == role).length;
-      console.log(role, count, goal);
+//      console.log(role, count, goal);
     }
 
 
     if (count < goal) {
       let name = role + Game.time;
-      console.log('Need to spawn a new ' + role + ' [' + count + '/' + goal +']');
+  //    console.log('Need to spawn a new ' + role + ' [' + count + '/' + goal +']');
 
       let parts = [];
       for (let key in spawnCreeps[i].bodyParts) {
@@ -191,7 +191,7 @@ profiler.wrap(function() {
       {align: 'left', opacity: 0.8});
   }
 
-  console.log('Spawning CPU: ' + (Game.cpu.getUsed() - cpuUsed));
+  //console.log('Spawning CPU: ' + (Game.cpu.getUsed() - cpuUsed));
   cpuUsed = Game.cpu.getUsed();
 
 /*  console.log('------- rooms --------')
@@ -230,7 +230,7 @@ profiler.wrap(function() {
     Memory.rooms[room.name] = roomObject;
   });
 
-  console.log('Forming Memory.rooms CPU: ' + (Game.cpu.getUsed() - cpuUsed));
+  //console.log('Forming Memory.rooms CPU: ' + (Game.cpu.getUsed() - cpuUsed));
   cpuUsed = Game.cpu.getUsed();
 
   //console.log(JSON.stringify(Memory.rooms))
@@ -255,10 +255,11 @@ profiler.wrap(function() {
      return result.sort();
   }
 
-  console.log('Otpimal body CALCULATIONS CPU: ' + (Game.cpu.getUsed() - cpuUsed));
+  //console.log('Otpimal body CALCULATIONS CPU: ' + (Game.cpu.getUsed() - cpuUsed));
   cpuUsed = Game.cpu.getUsed();
 
-  _.each(_.filter(Game.spawns, s => s.name != 'Spawn1'), spawn => {
+  //_.each(_.filter(Game.spawns, s => s.name != 'Spawn1'), spawn => {
+  _.each(Game.spawns, spawn => {
     const miners = _.filter(Game.creeps, c =>
       c.memory.role == 'miner' &&
       c.pos.roomName == spawn.pos.roomName).length;
@@ -308,24 +309,6 @@ profiler.wrap(function() {
     }
 
     if (spawn.room.energyCapacityAvailable >= 750 && !spawn.spawning) {
-      /*const fixers = _.filter(Game.creeps, c =>
-          c.memory.role == 'fixer' &&
-          c.pos.roomName == spawn.pos.roomName).length;
-      if (fixers < 1) {
-        //let parts = _.map({ move: 1, work: 1, carry: 1}, (p,n) => _.times(p, x => n));
-        //parts = _.reduce(parts, (t, n) => t.concat(n),[]);
-        //let parts = optimalBody(spawn.room.energyCapacityAvailable);
-
-        let parts = spawn.room.energyCapacityAvailable <= 800 ?
-          optimalBody(spawn.room.energyCapacityAvailable) :
-          optimalBody(800);
-
-        let role = 'fixer';
-        let name = role + Game.time;
-        let parameters = { role: role, harvesting: false }
-        spawn.spawnCreep(parts, name, { memory: parameters } )
-      }*/
-
       const upgraders = _.filter(Game.creeps, c =>
           c.memory.role == 'upgrader' &&
           c.pos.roomName == spawn.pos.roomName).length;
@@ -339,28 +322,6 @@ profiler.wrap(function() {
         spawn.spawnCreep(parts, name, { memory: parameters } );
       }
 
-  /*    const haulers = _.filter(Game.creeps, c =>
-          c.memory.role == 'hauler' &&
-          c.pos.roomName == spawn.pos.roomName).length;
-
-      if (haulers < spawn.memory.sources*2) {
-        let role = 'hauler';
-        let name = role + Game.time;
-        let parameters = { role: role }
-        spawn.spawnCreep([MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], name, { memory: parameters } );
-      }
-
-      const miners = _.filter(Game.creeps, c =>
-          c.memory.role == 'miner' &&
-          c.pos.roomName == spawn.pos.roomName).length;
-
-      if (miners < spawn.memory.sources) {
-        let role = 'miner';
-        let name = role + Game.time;
-        let parameters = { role: role }
-        spawn.spawnCreep([MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK], name, { memory: parameters } );
-      }*/
-
       let roomCreeps = _.filter(Game.creeps, c =>
         c.pos.roomName == spawn.pos.roomName &&
         c.memory.home == spawn.pos.roomName).length;
@@ -368,20 +329,6 @@ profiler.wrap(function() {
       const harvesters = _.filter(Game.creeps, c =>
           c.memory.role == 'harvester2' &&
           c.pos.roomName == spawn.pos.roomName).length;
-
-      //console.log(spawn.room.energyAvailable + '/' + spawn.room.energyCapacityAvailable, optimalBody(spawn.room.energyAvailable))
-
-      //if (spawn.room.energyAvailable >= 251 && harvesters/2 < spawn.memory.sources) {
-      /*if (spawn.room.energyAvailable >= 251 && harvesters < 2) {
-        let parts = roomCreeps <= 2 ?
-          optimalBody(spawn.room.energyAvailable) :
-          optimalBody(spawn.room.energyCapacityAvailable)
-
-        let role = 'harvester2';
-        let name = role + Game.time;
-        let parameters = { role: role, home: spawn.pos.roomName }
-        spawn.spawnCreep(parts, name, { memory: parameters } )
-      }*/
 
       const haulers = _.filter(Game.creeps, c =>
           c.memory.role == 'hauler2' &&
@@ -404,7 +351,6 @@ profiler.wrap(function() {
           c.memory.role == 'miner2' &&
           c.pos.roomName == spawn.pos.roomName).length;
 
-      //if (spawn.room.energyAvailable >= 251 && miners < 1) {
       if (miners < spawn.memory.sources) {
         let parts = roomCreeps <= 2 ?
           [MOVE,WORK] : [MOVE, MOVE, WORK, WORK, WORK, WORK, WORK, WORK ];
@@ -414,20 +360,28 @@ profiler.wrap(function() {
         let parameters = { role: role, home: spawn.pos.roomName }
         spawn.spawnCreep(parts, name, { memory: parameters } )
       }
-    }
 
-    if (miners < spawn.memory.sources) {
-      //spawn miner
-      /*let parts = _.map({ move: 1, work: 1}, (p,n) => _.times(p, x => n));
-      parts = _.reduce(parts, (t, n) => t.concat(n),[]);
-      let role = 'miner';
-      let name = role + Game.time;
-      let parameters = {
-        role: role,
-        home: spawn.pos.roomName,
-        flagName: flag.name
+      const builders = _.filter(Game.creeps, c =>
+          c.memory.role == 'builder').length;
+
+      if (builders < spawn.memory.sources) {
+        let parts = optimalBody(spawn.room.energyCapacityAvailable);
+        let role = 'builder';
+        let name = role + Game.time;
+        let parameters = { role: role, home: spawn.pos.roomName }
+        spawn.spawnCreep(parts, name, { memory: parameters } )
       }
-      spawn.spawnCreep(parts, name, { memory: parameters } );*/
+
+      const defenders = _.filter(Game.creeps, c =>
+          c.memory.role == 'defender').length;
+
+      if (defenders < spawn.memory.sources) {
+        let parts = optimalBody(spawn.room.energyCapacityAvailable);
+        let role = 'defender';
+        let name = role + Game.time;
+        let parameters = { role: role, home: spawn.pos.roomName }
+        spawn.spawnCreep(parts, name, { memory: parameters } )
+      }
     }
 
     if (spawn.spawning) {
@@ -438,7 +392,7 @@ profiler.wrap(function() {
     }
   });
 
-  console.log('New spawn procedure CPU: ' + (Game.cpu.getUsed() - cpuUsed));
+  //console.log('New spawn procedure CPU: ' + (Game.cpu.getUsed() - cpuUsed));
   cpuUsed = Game.cpu.getUsed();
 
 
@@ -469,7 +423,7 @@ profiler.wrap(function() {
     delete Memory.storageID ;
   }
   // TO BE REMOVED ^^^^^^
-  console.log('CALCULATIONS CPU: ' + Math.round((Game.cpu.getUsed() - cpuUsed),2) );
+  //console.log('CALCULATIONS CPU: ' + Math.round((Game.cpu.getUsed() - cpuUsed),2) );
   cpuUsed = Game.cpu.getUsed();
 
   let upgraderCPU = 0;
@@ -533,7 +487,7 @@ profiler.wrap(function() {
     roleRemoteHarvester.run(creep);
   });
 
-  console.log('+---------------------------+')
+  /*console.log('+---------------------------+')
   console.log('| Tick: ' + Game.time + '             |')
   console.log('+---------------------------+')
   console.log('=======================');
@@ -546,13 +500,13 @@ profiler.wrap(function() {
   console.log('   Builders CPU: ' + Math.round(builderCPU));
   console.log('   Remote harvesters CPU: ' + Math.round((Game.cpu.getUsed() - remoteHarvestersCPU),2) );
   console.log('=======================');
-
+*/
 /*  _.each(_.filter(Game.creeps, c => c.memory.role == 'claimer'), creep => {
     cpuUsed = Game.cpu.getUsed();
   });
 */
   cpuUsed = Game.cpu.getUsed();
   towers.run();
-  console.log('TOWERS CPU: ' + Math.round((Game.cpu.getUsed() - cpuUsed),2) );
+//  console.log('TOWERS CPU: ' + Math.round((Game.cpu.getUsed() - cpuUsed),2) );
 });
 };
