@@ -100,7 +100,7 @@ profiler.wrap(function() {
     }
   }
 
-  let cpuUsed = Game.cpu.getUsed();
+  cpuUsed = Game.cpu.getUsed();
 
   let spawn = Game.spawns.Spawn1;
   if (!spawn.spawning) {
