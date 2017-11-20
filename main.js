@@ -258,6 +258,15 @@ profiler.wrap(function() {
   //console.log('Otpimal body CALCULATIONS CPU: ' + (Game.cpu.getUsed() - cpuUsed));
   cpuUsed = Game.cpu.getUsed();
 
+  function spawnCreep(spawn, role, parts = false) {
+    if (!parts) {
+      parts = optimalBody(spawn.room.energyCapacityAvailable);
+    }
+    const name = role + Game.time;
+    const parameters = { role: role };
+    spawn.spawnCreep(parts, name, { memory: parameters } );
+  }
+
   //_.each(_.filter(Game.spawns, s => s.name != 'Spawn1'), spawn => {
   _.each(Game.spawns, spawn => {
     const miners = _.filter(Game.creeps, c =>
