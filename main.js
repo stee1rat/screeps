@@ -153,7 +153,7 @@ profiler.wrap(function() {
       const builders = _.filter(Game.creeps, c =>
           c.memory.role == 'builder').length;
 
-      if (builders < spawn.memory.sources*2f) {
+      if (builders < spawn.memory.sources*2) {
         spawnCreep(spawn, 'builder');
         freeToSpawn = false;
       }
