@@ -2,18 +2,16 @@ var towers = {
 
   run: function() {
     _.each(Game.spawns, spawn => {
-      let towers = spawn.room.find(FIND_MY_STRUCTURES,
-          { filter: { structureType: STRUCTURE_TOWER } }
-      );
 
-      let towersLength = towers.length;
-      for (let i = 0; i < towersLength; i++) {
-        let tower = towers[i];
+      const towers = _.filter(spawn.room.find(FIND_MY_STRUCTURES),
+        s => s.structureType == STRUCTURE_TOWER);
+
+      _.each(towers, tower => {
 
         let hostiles = tower.room.find(FIND_HOSTILE_CREEPS);
         if (hostiles.length) {
           tower.attack(hostiles[0]);
-          continue;
+          return;
         }
 
         if (tower.energy > tower.energyCapacity/2) {
@@ -23,7 +21,7 @@ var towers = {
 
           if (hurtCreeps.length) {
             tower.heal(hurtCreeps[0]);
-            continue;
+            return;
           }
 
           let damagedStructure = tower.room.find(FIND_STRUCTURES, {
@@ -32,13 +30,15 @@ var towers = {
           });
 
           if(damagedStructure.length) {
-            tower.repair(damagedStructure.sort((a, b) => b.hitsMax/100*b.hits - a.hitsMax/100*a.hits)[0]);
-            continue;
+            const repair = tower.repair(damagedStructure.sort((a, b) =>
+              b.hitsMax/100*b.hits - a.hitsMax/100*a.hits)[0]);
+            console.log('repair result: ' + repair);
+            return;
           } else {
-            break;
+            return false;
           }
         }
-      }
+      });
     });
   }
 };
