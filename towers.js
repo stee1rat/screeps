@@ -37,8 +37,6 @@ var towers = {
           } else {
             return false;
           }
-        } else {
-          console.log('Not enough energy: ' + tower.energy + '/' + tower.energyCapacity);
         }
       });
     });
