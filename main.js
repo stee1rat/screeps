@@ -47,9 +47,9 @@ profiler.wrap(function() {
     roomObject.structures = structures.map(s => s.id);
 
     roomObject.targetsToRefill = _.filter(structures, s => (
-      (s.structureType == STRUCTURE_SPAWN ||
-       s.structureType == STRUCTURE_EXTENSION ||
-       s.structureType == STRUCTURE_TOWER) &&
+      s.structureType == STRUCTURE_SPAWN ||
+      s.structureType == STRUCTURE_EXTENSION ||
+      s.structureType == STRUCTURE_TOWER) &&
        s.energy < s.energyCapacity).map(s => s.id);
 
     roomObject.droppedEnergy = room.find(FIND_DROPPED_RESOURCES, {
