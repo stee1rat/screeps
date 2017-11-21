@@ -142,11 +142,17 @@ profiler.wrap(function() {
     }
 
     if (spawn.room.energyCapacityAvailable >= 750 && !spawn.spawning) {
+
       const defenders = _.filter(Game.creeps, c =>
           c.memory.role == 'defender').length;
 
       if (defenders < spawn.memory.sources) {
         spawnCreep(spawn, 'defender');
+        freeToSpawn = false;
+      }
+
+      if (fixers < 1) {
+        spawnCreep(spawn, 'fixer');
         freeToSpawn = false;
       }
 
