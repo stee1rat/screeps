@@ -55,7 +55,7 @@ module.exports = {
     if (!creep.memory.source) {
       this.findEnergySource(creep);
     }
-    if (!creep.memory.source) {
+    if (creep.memory.source === null) {
       return;
     }
     const source = Game.getObjectById(creep.memory.source);
