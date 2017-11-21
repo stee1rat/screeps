@@ -57,7 +57,10 @@ module.exports = {
     }
 
     const source = Game.getObjectById(creep.memory.source);
-    if (source === null) return;
+
+    if (source === null) {
+      return;
+    }
 
     let result;
     if (source.resourceType) {
@@ -130,10 +133,20 @@ module.exports = {
       return;
     }
     if (creep.getActiveBodyparts(WORK) > 0) {
+      if (creep.memory.waitForSource) {
+        if (creep.memory.waitForSource > Game.time) {
+          return;
+        } else {
+          delete creep.memory.waitForSource;
+        }
+      }
       const source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
       if (source !== null) {
         creep.memory.source = source.id;
-        return;
+      } else {
+        creep.memory.waitForSource = Game.time +
+          _.min(Game.spawns.Spawn2.room.find(FIND_SOURCES),
+            s => s.ticksToRegeneration).ticksToRegeneration;
       }
     }
   }
