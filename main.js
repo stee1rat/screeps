@@ -158,7 +158,7 @@ profiler.wrap(function() {
         spawnCreep(spawn, 'builder');
         freeToSpawn = false;
       }
-      
+
       if (upgraders < spawn.memory.sources*2) {
         spawnCreep(spawn, 'upgrader2');
         freeToSpawn = false;
@@ -241,28 +241,6 @@ profiler.wrap(function() {
 
   SpawnsCPU = (Game.cpu.getUsed() - spawnsCPU);
 
-  // TO BE REMOVED
-/*  let structures = Game.spawns.Spawn1.room.find(FIND_STRUCTURES);
-
-  Memory.structures = structures.map(s => s.id);
-
-  Memory.targetsToRefill = _.filter(structures, s => (s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION ||
-               (s.structureType == STRUCTURE_TOWER && s.energy <= s.energyCapacity/2)) &&
-                s.energy < s.energyCapacity).map(s => s.id);
-
-  Memory.droppedEnergy = Game.spawns.Spawn1.room.find(FIND_DROPPED_RESOURCES, {
-    filter: s => s.resourceType == RESOURCE_ENERGY}).map(s => s.id);
-
-  Memory.containers = _.filter(structures, s => s.structureType == STRUCTURE_CONTAINER).map(s => s.id);
-
-  Memory.storageID = _.filter(structures, s => s.structureType == STRUCTURE_STORAGE).map(s => s.id || null);
-  if (!Memory.storageID.length) {
-    delete Memory.storageID ;
-  }
-  // TO BE REMOVED ^^^^^^
-  //console.log('CALCULATIONS CPU: ' + Math.round((Game.cpu.getUsed() - cpuUsed),2) );
-  cpuUsed = Game.cpu.getUsed();*/
-
   let upgraderCPU = 0;
   let upgrader2CPU = 0;
   let haulerCPU = 0;
@@ -277,16 +255,9 @@ profiler.wrap(function() {
     if(creep.memory.role == 'harvester2') {
       roleHarvester2.run(creep);
     }
-/*    if(creep.memory.role == 'upgrader') {
-      creepCPU = Game.cpu.getUsed();
-      roleUpgrader2.run(creep);
-      //console.log(creep.name + ' CPU: ' + (Game.cpu.getUsed() - creepCPU));
-      upgraderCPU += Game.cpu.getUsed() - creepCPU;
-    }*/
     if(creep.memory.role == 'upgrader2') {
       creepCPU = Game.cpu.getUsed();
       roleUpgrader2.run(creep);
-    //  console.log(creep.name + ' CPU: ' + (Game.cpu.getUsed() - creepCPU));
       upgrader2CPU += Game.cpu.getUsed() - creepCPU;
     }
     if(creep.memory.role == 'builder') {
@@ -294,11 +265,6 @@ profiler.wrap(function() {
       roleBuilder.run(creep);
       builderCPU += Game.cpu.getUsed() - creepCPU;
     }
-    /*if(creep.memory.role == 'hauler') {
-      creepCPU = Game.cpu.getUsed();
-      roleHauler.run(creep);
-      haulerCPU += Game.cpu.getUsed() - creepCPU    }
-*/
     if(creep.memory.role == 'fixer') {
       roleFixer.run(creep);
     }

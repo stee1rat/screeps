@@ -55,13 +55,11 @@ module.exports = {
     if (!creep.memory.source) {
       this.findEnergySource(creep);
     }
-    const source = Game.getObjectById(creep.memory.source);
-    if (!source) {
-      // if the source no longer exists (has been picked up), find another one
-      creep.memory.source = false;
-      this.run(creep);
+    if (!creep.memory.source) {
       return;
     }
+    const source = Game.getObjectById(creep.memory.source);
+
     let result;
     if (source.resourceType) {
       result = creep.pickup(source);
@@ -134,7 +132,7 @@ module.exports = {
     }
     if (creep.getActiveBodyparts(WORK) > 0) {
       const source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-      if (source) {
+      if (source !== null) {
         creep.memory.source = source.id;
         return;
       }
