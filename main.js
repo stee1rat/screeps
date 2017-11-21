@@ -47,10 +47,9 @@ profiler.wrap(function() {
     roomObject.structures = structures.map(s => s.id);
 
     roomObject.targetsToRefill = _.filter(structures, s => (
-      s.structureType == STRUCTURE_SPAWN ||
-      s.structureType == STRUCTURE_EXTENSION ||
-      (s.structureType == STRUCTURE_TOWER &&
-       s.energy <= s.energyCapacity/2)) &&
+      (s.structureType == STRUCTURE_SPAWN ||
+       s.structureType == STRUCTURE_EXTENSION ||
+       s.structureType == STRUCTURE_TOWER) &&
        s.energy < s.energyCapacity).map(s => s.id);
 
     roomObject.droppedEnergy = room.find(FIND_DROPPED_RESOURCES, {
@@ -154,7 +153,7 @@ profiler.wrap(function() {
       const builders = _.filter(Game.creeps, c =>
           c.memory.role == 'builder').length;
 
-      if (builders < spawn.memory.sources) {
+      if (builders < spawn.memory.sources*2f) {
         spawnCreep(spawn, 'builder');
         freeToSpawn = false;
       }

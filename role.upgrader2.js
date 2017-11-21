@@ -63,6 +63,7 @@ module.exports = {
     }
 
     let result;
+    
     if (source.resourceType) {
       result = creep.pickup(source);
     }

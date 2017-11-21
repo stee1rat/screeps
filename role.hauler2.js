@@ -135,7 +135,7 @@ module.exports ={ // Role hauler
       }
 
       // refills needed for towers
-      if (!target) {
+      if (target === null) {
         let towers = _.filter(targetsToRefill, s =>
           s.structureType == STRUCTURE_TOWER && s.energy <= s.energyCapacity - 100 &&
           !_.some(Game.creeps, c => c.memory.targetID == s.id));
@@ -153,31 +153,6 @@ module.exports ={ // Role hauler
         }
       }
 
-      // if current room doesnt' have a storage and we have to dump the energy
-      // find storage in another room
-
-      /*if (!target && Memory.rooms[homeRoom].storageID) {
-        let storage = Game.getObjectById(Memory.rooms[homeRoom].storageID);
-        if (_.sum(storage.store) < storage.storeCapacity) {
-          target = storage;
-        }
-      }*/
-
-      // drop energy to a container
-      /*if (!target && Memory.containers.length) {
-        console.log('CONTAINERS');
-        let containers = _.map(Memory.containers, e => Game.getObjectById(e));
-        let availableContainers = _.filter(containers, x =>
-          _.sum(x.store) + _.sum(_.map(Game.creeps, c =>
-            (c.memory.targetID == x.id && _.sum(c.carry)) || 0)) < x.storeCapacity
-        );
-        console.log('availableContainers: ' + availableContainers);
-        console.log('availableContainers.length: ' + availableContainers.length);
-        if (availableContainers) {
-          target = availableContainers.sort((a, b) =>
-            a.store[RESOURCE_ENERGY] - b.store[RESOURCE_ENERGY])[0];
-        }
-      }*/
       if (target) {
         creep.memory.targetID = target.id;
       }
