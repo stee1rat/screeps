@@ -59,11 +59,12 @@ module.exports = {
     const source = Game.getObjectById(creep.memory.source);
 
     if (source === null) {
+      delete creep.memory.source;
       return;
     }
 
     let result;
-    
+
     if (source.resourceType) {
       result = creep.pickup(source);
     }
